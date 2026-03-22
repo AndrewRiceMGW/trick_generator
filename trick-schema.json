@@ -1,0 +1,275 @@
+{
+	"metadata": {
+		"name": "Aggressive Inline Skating Trick Generator Schema",
+		"version": "1.0",
+		"description": "Complete data model for generating valid aggressive inline skating tricks"
+	},
+
+	"stances": {
+		"forward": { "id": "forward", "name": "Forward", "difficulty": 1 },
+		"fakie": { "id": "fakie", "name": "Fakie", "difficulty": 1.5 },
+		"switch": { "id": "switch", "name": "Switch", "difficulty": 2 }
+	},
+
+	"obstacles": {
+		"rail": {
+			"id": "rail",
+			"name": "Rail",
+			"types": ["flat", "kinked", "curved"],
+			"length_categories": {
+				"short": { "max_switch_ups": 0, "difficulty_multiplier": 1 },
+				"medium": { "max_switch_ups": 1, "difficulty_multiplier": 1.2 },
+				"long": { "max_switch_ups": 2, "difficulty_multiplier": 1.4 },
+				"very_long": { "max_switch_ups": 3, "difficulty_multiplier": 1.6 }
+			}
+		},
+		"ledge": {
+			"id": "ledge",
+			"name": "Ledge",
+			"types": ["flat", "kinked", "round"],
+			"length_categories": {
+				"short": { "max_switch_ups": 0, "difficulty_multiplier": 1 },
+				"medium": { "max_switch_ups": 1, "difficulty_multiplier": 1.1 },
+				"long": { "max_switch_ups": 2, "difficulty_multiplier": 1.3 }
+			}
+		},
+		"curb": {
+			"id": "curb",
+			"name": "Curb",
+			"length_categories": {
+				"short": { "max_switch_ups": 0, "difficulty_multiplier": 0.9 },
+				"medium": { "max_switch_ups": 1, "difficulty_multiplier": 1 }
+			}
+		},
+		"stairs": {
+			"id": "stairs",
+			"name": "Stairs",
+			"allows_grinds": false,
+			"allows_airs": true,
+			"difficulty_multiplier": 1.5
+		}
+	},
+
+	"entry_spins": {
+		"0": { "degrees": 0, "name": "", "difficulty": 0 },
+		"180": {
+			"degrees": 180,
+			"name": "180",
+			"difficulty": 1.5,
+			"flips_direction": true
+		},
+		"270": {
+			"degrees": 270,
+			"name": "270",
+			"difficulty": 2,
+			"flips_direction": true
+		},
+		"360": {
+			"degrees": 360,
+			"name": "360",
+			"difficulty": 2.5,
+			"flips_direction": false
+		},
+		"450": {
+			"degrees": 450,
+			"name": "450",
+			"difficulty": 3,
+			"flips_direction": true
+		},
+		"540": {
+			"degrees": 540,
+			"name": "540",
+			"difficulty": 3.5,
+			"flips_direction": true
+		}
+	},
+
+	"exit_spins": {
+		"0": { "degrees": 0, "name": "", "difficulty": 0 },
+		"180": { "degrees": 180, "name": "180", "difficulty": 1.5 },
+		"270": { "degrees": 270, "name": "270", "difficulty": 2 },
+		"360": { "degrees": 360, "name": "360", "difficulty": 2.5 },
+		"450": { "degrees": 450, "name": "450", "difficulty": 3 },
+		"540": { "degrees": 540, "name": "540", "difficulty": 3.5 },
+		"720": { "degrees": 720, "name": "720", "difficulty": 4.5 }
+	},
+
+	"grinds": {
+		"frontside": {
+			"id": "frontside",
+			"name": "Frontside",
+			"difficulty": 1,
+			"soul_based": false,
+			"switch_up_to": ["backslide", "soul", "mizou", "acid"]
+		},
+		"soul": {
+			"id": "soul",
+			"name": "Soul",
+			"difficulty": 1.5,
+			"soul_based": true,
+			"switch_up_to": ["frontside", "mizou", "backslide", "torque"]
+		},
+		"mizou": {
+			"id": "mizou",
+			"name": "Mizou",
+			"difficulty": 1.5,
+			"soul_based": true,
+			"switch_up_to": ["soul", "frontside", "pornstar", "acid"]
+		},
+		"backslide": {
+			"id": "backslide",
+			"name": "Backslide",
+			"difficulty": 2,
+			"soul_based": false,
+			"switch_up_to": ["frontside", "soul", "mizou"]
+		},
+		"acid": {
+			"id": "acid",
+			"name": "Acid",
+			"difficulty": 2.5,
+			"soul_based": false,
+			"switch_up_to": ["soul", "frontside", "mizou"]
+		},
+		"royale": {
+			"id": "royale",
+			"name": "Royale",
+			"difficulty": 2,
+			"soul_based": false,
+			"switch_up_to": ["frontside", "backslide", "pornstar"]
+		},
+		"pornstar": {
+			"id": "pornstar",
+			"name": "Pornstar",
+			"difficulty": 3,
+			"soul_based": false,
+			"switch_up_to": ["royale", "frontside", "soul"]
+		},
+		"torque": {
+			"id": "torque",
+			"name": "Torque",
+			"difficulty": 2.5,
+			"soul_based": true,
+			"switch_up_to": ["soul", "frontside"]
+		},
+		"unity": {
+			"id": "unity",
+			"name": "Unity",
+			"difficulty": 3.5,
+			"soul_based": false,
+			"switch_up_to": ["frontside"]
+		},
+		"alleyoop_soul": {
+			"id": "alleyoop_soul",
+			"name": "Alley-Oop Soul",
+			"difficulty": 3,
+			"soul_based": true,
+			"switch_up_to": ["alleyoop_mizou", "frontside"]
+		},
+		"alleyoop_mizou": {
+			"id": "alleyoop_mizou",
+			"name": "Alley-Oop Mizou",
+			"difficulty": 3,
+			"soul_based": true,
+			"switch_up_to": ["alleyoop_soul", "frontside"]
+		}
+	},
+
+	"modifiers": {
+		"topside": {
+			"id": "topside",
+			"name": "Topside",
+			"difficulty": 1.5,
+			"requires_soul_based": true
+		},
+		"makio": {
+			"id": "makio",
+			"name": "Makio",
+			"difficulty": 1.5,
+			"is_grind_variation": true
+		},
+		"true_topside": {
+			"id": "true_topside",
+			"name": "True Topside",
+			"difficulty": 2,
+			"requires_soul_based": true
+		},
+		"negative": {
+			"id": "negative",
+			"name": "Negative",
+			"difficulty": 1.5
+		},
+		"negative_true": {
+			"id": "negative_true",
+			"name": "Negative True",
+			"difficulty": 2.5
+		}
+	},
+
+	"grabs": {
+		"mute": { "id": "mute", "name": "Mute", "difficulty": 1.5 },
+		"rocket": { "id": "rocket", "name": "Rocket", "difficulty": 1.5 },
+		"japan": { "id": "japan", "name": "Japan", "difficulty": 2 },
+		"stale": { "id": "stale", "name": "Stalefish", "difficulty": 2 },
+		"cross_rocket": {
+			"id": "cross_rocket",
+			"name": "Cross Rocket",
+			"difficulty": 2.5
+		},
+		"christ_air": { "id": "christ_air", "name": "Christ Air", "difficulty": 3 }
+	},
+
+	"rolls": {
+		"toe_roll": {
+			"id": "toe_roll",
+			"name": "Toe Roll",
+			"difficulty": 1.5,
+			"type": "toe"
+		},
+		"heel_roll": {
+			"id": "heel_roll",
+			"name": "Heel Roll",
+			"difficulty": 1.5,
+			"type": "heel"
+		},
+		"fast_slide": {
+			"id": "fast_slide",
+			"name": "Fast Slide",
+			"difficulty": 2,
+			"type": "toe"
+		}
+	},
+
+	"flips": {
+		"540_flip": { "id": "540_flip", "name": "540 Flip", "difficulty": 4 },
+		"720_flip": { "id": "720_flip", "name": "720 Flip", "difficulty": 5 },
+		"misty": { "id": "misty", "name": "Misty Flip", "difficulty": 4.5 },
+		"bio": { "id": "bio", "name": "Bio", "difficulty": 4 }
+	},
+
+	"naming_rules": {
+		"cab": {
+			"condition": "fakie stance + 360 spin",
+			"replacement": "Cab"
+		},
+		"half_cab": {
+			"condition": "fakie stance + 180 spin",
+			"replacement": "Half Cab"
+		},
+		"alley_oop": {
+			"condition": "spin opposite to natural direction",
+			"prefix": "Alley-Oop"
+		},
+		"switch": {
+			"condition": "switch stance",
+			"prefix": "Switch"
+		}
+	},
+
+	"difficulty_levels": {
+		"beginner": { "min": 0, "max": 5, "label": "Beginner" },
+		"intermediate": { "min": 5, "max": 10, "label": "Intermediate" },
+		"advanced": { "min": 10, "max": 15, "label": "Advanced" },
+		"pro": { "min": 15, "max": 25, "label": "Pro" },
+		"insane": { "min": 25, "max": 100, "label": "Insane" }
+	}
+}

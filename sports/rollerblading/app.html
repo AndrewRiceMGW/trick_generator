@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="../../manifest.json">
+    <title>Aggressive Inline Trick Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .step-indicator {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
+
+        .step-indicator .current-step {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+
+        /* Obstacle Selection */
+        .obstacles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .obstacle-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .obstacle-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .obstacle-card.selected {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .obstacle-icon {
+            font-size: 3em;
+            margin-bottom: 12px;
+            display: block;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .obstacle-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .obstacle-description {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .obstacle-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .feature-tag {
+            background: rgba(34, 197, 94, 0.3);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.7em;
+            font-weight: 600;
+            border: 1px solid rgba(34, 197, 94, 0.5);
+        }
+
+        .feature-tag.limited {
+            background: rgba(251, 191, 36, 0.3);
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+
+        .feature-tag.no {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        /* Obstacle Options */
+        .obstacle-options {
+            display: none;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .obstacle-options.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .options-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .options-title {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .change-obstacle-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .change-obstacle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-group {
+            margin-bottom: 20px;
+        }
+
+        .option-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.2);
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+
+        /* Generate Section */
+        .generate-section {
+            display: none;
+        }
+
+        .generate-section.show {
+            display: block;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Trick Display */
+        .trick-display {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            color: #333;
+            min-height: 150px;
+            display: none;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .trick-display.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        .trick-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .trick-meta {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .difficulty-bar {
+            height: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #fbbf24, #f87171);
+            transition: width 0.5s ease;
+        }
+
+        .trick-components {
+            margin-top: 15px;
+        }
+
+        .component {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 5px;
+            background: rgba(102, 126, 234, 0.15);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .obstacles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .trick-name {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-button">← Back to Sports</a>
+        
+        <header>
+            <h1>⛸️ Aggressive Inline</h1>
+            <p class="subtitle">🎯 Obstacle-First Trick Generator</p>
+        </header>
+
+        <div class="step-indicator" id="stepIndicator">
+            <span class="current-step">Step 1:</span> Choose Your Obstacle
+        </div>
+
+        <!-- Obstacle Selection -->
+        <div class="obstacles-grid" id="obstaclesGrid">
+            <!-- Obstacles will be dynamically generated -->
+        </div>
+
+        <!-- Obstacle Options -->
+        <div class="obstacle-options" id="obstacleOptions">
+            <div class="options-header">
+                <div class="options-title" id="selectedObstacleName"></div>
+                <button class="change-obstacle-btn" id="changeObstacleBtn">Change Obstacle</button>
+            </div>
+            <div id="dynamicOptions">
+                <!-- Options will be dynamically generated based on obstacle -->
+            </div>
+        </div>
+
+        <!-- Generate Section -->
+        <div class="generate-section" id="generateSection">
+            <button class="generate-btn" id="generateBtn">🎲 Generate Trick</button>
+        </div>
+
+        <!-- Trick Display -->
+        <div class="trick-display" id="trickDisplay">
+            <div class="trick-name" id="trickName"></div>
+            <div class="trick-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Obstacle</div>
+                    <div class="meta-value" id="trickObstacle"></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Difficulty</div>
+                    <div class="meta-value" id="trickDifficulty"></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Stance</div>
+                    <div class="meta-value" id="trickStance"></div>
+                </div>
+            </div>
+            <div class="difficulty-bar">
+                <div class="difficulty-fill" id="difficultyFill"></div>
+            </div>
+            <div class="trick-components" id="trickComponents"></div>
+            <div class="action-buttons">
+                <button class="action-btn" id="generateAgainBtn">🔄 Generate Again</button>
+                <button class="action-btn" id="newObstacleBtn">📍 New Obstacle</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="generator.js"></script>
+    <script>
+        let schema = null;
+        let generator = null;
+        let selectedObstacle = null;
+
+        // Load schema
+        fetch('schema.json')
+            .then(response => response.json())
+            .then(data => {
+                schema = data;
+                generator = new TrickGenerator(schema);
+                renderObstacles();
+                console.log('Trick generator ready!');
+            })
+            .catch(error => {
+                console.error('Error loading schema:', error);
+                alert('Error loading trick data. Please check the console.');
+            });
+
+        // Obstacle metadata for display
+        const obstacleMetadata = {
+            rail: {
+                icon: '━━━',
+                name: 'Rail',
+                description: 'Metal or wood rail for grinding',
+                features: ['Grinds', 'Switch-ups', 'Spins ≤450°'],
+                hasLength: true,
+                info: 'Rails allow technical grinds and switch-ups. <strong>Max entry spin: 450° (1.25 rotations)</strong>. High spin multiplier (2.5x) - rotating into a rail grind is very technical!'
+            },
+            ledge: {
+                icon: '▬▬▬',
+                name: 'Ledge',
+                description: 'Concrete or stone ledge',
+                features: ['Grinds', 'Switch-ups', 'Spins ≤540°'],
+                hasLength: true,
+                info: 'Ledges are wider than rails, slightly more forgiving. <strong>Max entry/exit spin: 540° (1.5 rotations)</strong>. Spin multiplier: 2.2x. Great for learning grind combos!'
+            },
+            curb: {
+                icon: '⎯⎯',
+                name: 'Curb',
+                description: 'Street curb for quick grinds',
+                features: ['Grinds', 'Limited Switch-ups', 'Spins ≤360°'],
+                hasLength: true,
+                info: 'Low street obstacles, very technical. <strong>Max entry spin: 360° (1 rotation)</strong>. Highest spin multiplier (2.8x) - precision required! Limited switch-up potential.'
+            },
+            stairs: {
+                icon: '⚞⚞⚞',
+                name: 'Stairs',
+                description: 'Gap or stair set for airs',
+                features: ['Spins ≤1080°', 'Grabs', 'Flips'],
+                noGrinds: true,
+                hasHeight: true,
+                info: 'Pure air tricks - no grinds! <strong>Max spin: 1080° (3 full rotations)</strong>. Standard spin multiplier (1.0x). Height increases difficulty: bigger gaps = harder tricks!'
+            }
+        };
+
+        function renderObstacles() {
+            const grid = document.getElementById('obstaclesGrid');
+            grid.innerHTML = '';
+
+            Object.entries(schema.obstacles).forEach(([obstacleId, obstacleData]) => {
+                const metadata = obstacleMetadata[obstacleId];
+                if (!metadata) return;
+
+                const card = createObstacleCard(obstacleId, obstacleData, metadata);
+                grid.appendChild(card);
+            });
+        }
+
+        function createObstacleCard(obstacleId, obstacleData, metadata) {
+            const card = document.createElement('div');
+            card.className = 'obstacle-card';
+            card.dataset.obstacle = obstacleId;
+
+            const icon = document.createElement('div');
+            icon.className = 'obstacle-icon';
+            icon.textContent = metadata.icon;
+
+            const name = document.createElement('div');
+            name.className = 'obstacle-name';
+            name.textContent = metadata.name;
+
+            const description = document.createElement('div');
+            description.className = 'obstacle-description';
+            description.textContent = metadata.description;
+
+            const features = document.createElement('div');
+            features.className = 'obstacle-features';
+            
+            metadata.features.forEach(feature => {
+                const tag = document.createElement('span');
+                tag.className = 'feature-tag';
+                if (feature.includes('Limited')) tag.classList.add('limited');
+                tag.textContent = feature;
+                features.appendChild(tag);
+            });
+
+            if (metadata.noGrinds) {
+                const tag = document.createElement('span');
+                tag.className = 'feature-tag no';
+                tag.textContent = 'No Grinds';
+                features.appendChild(tag);
+            }
+
+            card.appendChild(icon);
+            card.appendChild(name);
+            card.appendChild(description);
+            card.appendChild(features);
+
+            card.addEventListener('click', () => selectObstacle(obstacleId, metadata));
+
+            return card;
+        }
+
+        function selectObstacle(obstacleId, metadata) {
+            selectedObstacle = obstacleId;
+
+            // Update UI
+            document.querySelectorAll('.obstacle-card').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`[data-obstacle="${obstacleId}"]`).classList.add('selected');
+
+            // Show options
+            document.getElementById('selectedObstacleName').textContent = metadata.name;
+            renderObstacleOptions(obstacleId, metadata);
+            document.getElementById('obstacleOptions').classList.add('show');
+            document.getElementById('generateSection').classList.add('show');
+            document.getElementById('stepIndicator').innerHTML = '<span class="current-step">Step 2:</span> Configure & Generate';
+
+            // Hide previous trick
+            document.getElementById('trickDisplay').classList.remove('show');
+        }
+
+        function renderObstacleOptions(obstacleId, metadata) {
+            const container = document.getElementById('dynamicOptions');
+            container.innerHTML = '';
+
+            const obstacleData = schema.obstacles[obstacleId];
+
+            // Length option (for rails, ledges, curbs)
+            if (metadata.hasLength && obstacleData.length_categories) {
+                const group = document.createElement('div');
+                group.className = 'option-group';
+
+                const label = document.createElement('label');
+                label.textContent = `${metadata.name} Length`;
+                
+                const select = document.createElement('select');
+                select.id = 'lengthSelect';
+                
+                Object.entries(obstacleData.length_categories).forEach(([lengthId, lengthData]) => {
+                    const option = document.createElement('option');
+                    option.value = lengthId;
+                    option.textContent = `${lengthId.charAt(0).toUpperCase() + lengthId.slice(1)}`;
+                    if (lengthId === 'medium') option.selected = true;
+                    select.appendChild(option);
+                });
+
+                group.appendChild(label);
+                group.appendChild(select);
+                container.appendChild(group);
+
+                // Add switch-up selector
+                const switchUpGroup = document.createElement('div');
+                switchUpGroup.className = 'option-group';
+
+                const switchUpLabel = document.createElement('label');
+                switchUpLabel.textContent = 'Number of Switch-Ups';
+                
+                const switchUpSelect = document.createElement('select');
+                switchUpSelect.id = 'switchUpSelect';
+
+                // Function to update switch-up options based on length
+                const updateSwitchUpOptions = (lengthId) => {
+                    const lengthData = obstacleData.length_categories[lengthId];
+                    const maxSwitchUps = lengthData.max_switch_ups;
+                    switchUpSelect.innerHTML = '';
+                    
+                    for (let i = 0; i <= maxSwitchUps; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i === 0 ? 'None' : i === 1 ? `1 switch-up` : `${i} switch-ups`;
+                        if (i === 0) option.selected = true;
+                        switchUpSelect.appendChild(option);
+                    }
+                };
+
+                // Update switch-up options when length changes
+                select.addEventListener('change', () => {
+                    updateSwitchUpOptions(select.value);
+                });
+
+                // Initialize with medium length
+                updateSwitchUpOptions('medium');
+
+                switchUpGroup.appendChild(switchUpLabel);
+                switchUpGroup.appendChild(switchUpSelect);
+                container.appendChild(switchUpGroup);
+            }
+
+            // Height option (for stairs)
+            if (metadata.hasHeight) {
+                const group = document.createElement('div');
+                group.className = 'option-group';
+
+                const label = document.createElement('label');
+                label.textContent = 'Stair Count';
+                
+                const select = document.createElement('select');
+                select.id = 'heightSelect';
+                
+                [3, 5, 7, 10, 12, 15].forEach(stairs => {
+                    const option = document.createElement('option');
+                    option.value = stairs;
+                    option.textContent = `${stairs} stairs`;
+                    if (stairs === 7) option.selected = true;
+                    select.appendChild(option);
+                });
+
+                group.appendChild(label);
+                group.appendChild(select);
+                container.appendChild(group);
+            }
+
+            // Difficulty filter
+            const diffGroup = document.createElement('div');
+            diffGroup.className = 'option-group';
+            const diffLabel = document.createElement('label');
+            diffLabel.textContent = 'Difficulty Range';
+            const diffSelect = document.createElement('select');
+            diffSelect.id = 'difficultyFilter';
+            
+            const diffOptions = [
+                { value: 'any', label: 'Any Difficulty' },
+                { value: 'beginner', label: 'Beginner (0-5)' },
+                { value: 'intermediate', label: 'Intermediate (5-10)' },
+                { value: 'advanced', label: 'Advanced (10-15)' },
+                { value: 'pro', label: 'Pro (15-25)' },
+                { value: 'insane', label: 'Insane (25+)' }
+            ];
+
+            diffOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.label;
+                diffSelect.appendChild(option);
+            });
+
+            diffGroup.appendChild(diffLabel);
+            diffGroup.appendChild(diffSelect);
+            container.appendChild(diffGroup);
+
+            // Flips option (only for stairs/airs)
+            if (metadata.noGrinds) {
+                const flipsGroup = document.createElement('div');
+                flipsGroup.className = 'option-group checkbox-group';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'flipsCheck';
+                
+                const label = document.createElement('label');
+                label.htmlFor = 'flipsCheck';
+                label.style.marginBottom = '0';
+                label.textContent = 'Include Flips (Advanced)';
+                
+                flipsGroup.appendChild(checkbox);
+                flipsGroup.appendChild(label);
+                container.appendChild(flipsGroup);
+            }
+
+            // Info box about obstacle
+            const infoBox = document.createElement('div');
+            infoBox.className = 'info-box';
+            infoBox.innerHTML = `<strong>ℹ️ About this obstacle:</strong><br>${metadata.info || 'Select an obstacle to see details.'}`;
+            container.appendChild(infoBox);
+        }
+
+        // Change obstacle button
+        document.getElementById('changeObstacleBtn').addEventListener('click', () => {
+            selectedObstacle = null;
+            document.getElementById('obstacleOptions').classList.remove('show');
+            document.getElementById('generateSection').classList.remove('show');
+            document.getElementById('trickDisplay').classList.remove('show');
+            document.querySelectorAll('.obstacle-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('stepIndicator').innerHTML = '<span class="current-step">Step 1:</span> Choose Your Obstacle';
+        });
+
+        // Generate trick
+        document.getElementById('generateBtn').addEventListener('click', generateTrick);
+        document.getElementById('generateAgainBtn').addEventListener('click', generateTrick);
+        
+        document.getElementById('newObstacleBtn').addEventListener('click', () => {
+            document.getElementById('changeObstacleBtn').click();
+        });
+
+        function generateTrick() {
+            if (!generator || !selectedObstacle) {
+                alert('Please select an obstacle first');
+                return;
+            }
+
+            const metadata = obstacleMetadata[selectedObstacle];
+            const options = {
+                obstacle: selectedObstacle,
+                obstacleLength: 'medium',
+                allowSwitchUps: true,
+                numSwitchUps: null, // null means random
+                allowFlips: false
+            };
+
+            // Get length if applicable
+            const lengthSelect = document.getElementById('lengthSelect');
+            if (lengthSelect) {
+                options.obstacleLength = lengthSelect.value;
+            }
+
+            // Get switch-up count if applicable
+            const switchUpSelect = document.getElementById('switchUpSelect');
+            if (switchUpSelect) {
+                options.numSwitchUps = parseInt(switchUpSelect.value);
+            }
+
+            // Get flips option if applicable
+            const flipsCheck = document.getElementById('flipsCheck');
+            if (flipsCheck) {
+                options.allowFlips = flipsCheck.checked;
+            }
+
+            // Generate trick
+            let trick = generator.generateTrick('random', options);
+
+            // Filter by difficulty if set
+            const difficultyFilter = document.getElementById('difficultyFilter').value;
+            if (difficultyFilter !== 'any') {
+                let attempts = 0;
+                const levelData = schema.difficulty_levels[difficultyFilter];
+                while ((trick.difficulty < levelData.min || trick.difficulty > levelData.max) && attempts < 50) {
+                    trick = generator.generateTrick('random', options);
+                    attempts++;
+                }
+            }
+
+            displayTrick(trick);
+        }
+
+        function displayTrick(trick) {
+            document.getElementById('trickName').textContent = trick.name;
+            document.getElementById('trickObstacle').textContent = trick.obstacle.charAt(0).toUpperCase() + trick.obstacle.slice(1);
+            document.getElementById('trickDifficulty').textContent = trick.difficulty.toFixed(1);
+            document.getElementById('trickStance').textContent = trick.stance.charAt(0).toUpperCase() + trick.stance.slice(1);
+
+            // Set difficulty bar
+            const maxDifficulty = 25;
+            const percentage = Math.min((trick.difficulty / maxDifficulty) * 100, 100);
+            document.getElementById('difficultyFill').style.width = percentage + '%';
+
+            // Display components
+            const componentsDiv = document.getElementById('trickComponents');
+            componentsDiv.innerHTML = '';
+            trick.components.forEach(comp => {
+                const span = document.createElement('span');
+                span.className = 'component';
+                span.textContent = `${comp.type}: ${comp.value}`;
+                componentsDiv.appendChild(span);
+            });
+
+            document.getElementById('trickDisplay').classList.add('show');
+
+            // Scroll to trick
+            document.getElementById('trickDisplay').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>

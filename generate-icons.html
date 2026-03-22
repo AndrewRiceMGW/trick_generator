@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate App Icons</title>
+</head>
+<body>
+    <h1>Generating Icons...</h1>
+    <p>Right-click each icon below and "Save image as..."</p>
+    
+    <h2>Icon 192x192</h2>
+    <canvas id="icon192" width="192" height="192"></canvas>
+    
+    <h2>Icon 512x512</h2>
+    <canvas id="icon512" width="512" height="512"></canvas>
+
+    <script>
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient (purple)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add emoji/text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${size * 0.5}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🛼', size/2, size/2);
+            
+            // Add BETA badge
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = `bold ${size * 0.12}px Arial`;
+            ctx.fillText('BETA', size/2, size * 0.82);
+        }
+        
+        drawIcon('icon192', 192);
+        drawIcon('icon512', 512);
+        
+        // Auto-download icons
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+            });
+        }
+        
+        // Wait a moment then auto-download
+        setTimeout(() => {
+            console.log('Download icon-192.png and icon-512.png by right-clicking the canvases above');
+            // Uncomment to auto-download:
+            // downloadIcon('icon192', 'icon-192.png');
+            // setTimeout(() => downloadIcon('icon512', 'icon-512.png'), 500);
+        }, 1000);
+    </script>
+    
+    <div style="margin-top: 30px; padding: 20px; background: #f0f0f0; color: #333;">
+        <h3>Instructions:</h3>
+        <ol>
+            <li><strong>Right-click</strong> on each icon above</li>
+            <li>Select <strong>"Save image as..."</strong></li>
+            <li>Save the first as <code>icon-192.png</code></li>
+            <li>Save the second as <code>icon-512.png</code></li>
+            <li>Place both files in the <code>trick_generator</code> folder</li>
+            <li>Restart your server</li>
+        </ol>
+        <p><strong>Or use an online generator:</strong></p>
+        <ul>
+            <li><a href="https://favicon.io/favicon-generator/" target="_blank">favicon.io</a></li>
+            <li><a href="https://realfavicongenerator.net/" target="_blank">realfavicongenerator.net</a></li>
+        </ul>
+    </div>
+</body>
+</html>

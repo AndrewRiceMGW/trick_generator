@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
+    <title>Extreme Trick Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .version {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sport-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sport-card:nth-child(1) { animation-delay: 0.1s; transform: translateY(20px); }
+        .sport-card:nth-child(2) { animation-delay: 0.2s; transform: translateY(20px); }
+        .sport-card:nth-child(3) { animation-delay: 0.3s; transform: translateY(20px); }
+        .sport-card:nth-child(4) { animation-delay: 0.4s; transform: translateY(20px); }
+        .sport-card:nth-child(5) { animation-delay: 0.5s; transform: translateY(20px); }
+        .sport-card:nth-child(6) { animation-delay: 0.6s; transform: translateY(20px); }
+
+        .sport-card.active {
+            cursor: pointer;
+        }
+
+        .sport-card.active:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .sport-card.coming-soon {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .sport-card.coming-soon:hover {
+            transform: none;
+        }
+
+        .sport-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .sport-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .sport-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .sport-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .category-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: rgba(52, 211, 153, 0.9);
+            color: #065f46;
+        }
+
+        .status-coming-soon {
+            background: rgba(251, 191, 36, 0.9);
+            color: #78350f;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #34d399;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .sports-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sport-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔥 Extreme Trick Generator</h1>
+            <p class="subtitle">Select Your Sport</p>
+            <p class="version" id="version"></p>
+            <p style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">🎯 Obstacle-First Trick Generation</p>
+        </header>
+
+        <div class="sports-grid" id="sportsGrid">
+            <!-- Sports cards will be dynamically generated -->
+        </div>
+
+        <div class="info-section">
+            <h2>📱 How It Works</h2>
+            <p>
+                Each sport has its own unique trick generation system with sport-specific rules, 
+                terminology, and physical constraints. Select a sport above to start generating 
+                realistic trick combinations.
+            </p>
+            <ul class="feature-list">
+                <li>Smart rule-based generation (no random nonsense)</li>
+                <li>Sport-specific tricks and terminology</li>
+                <li>Obstacle-aware combinations with realistic constraints</li>
+                <li>Context-aware difficulty (same trick = different difficulty per obstacle)</li>
+                <li>Difficulty progression system</li>
+                <li>Works offline after first load</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let sportsConfig = null;
+
+        // Load sports configuration
+        fetch('sports-config.json')
+            .then(response => response.json())
+            .then(config => {
+                sportsConfig = config;
+                renderSportsGrid(config);
+                document.getElementById('version').textContent = `v${config.version}`;
+            })
+            .catch(error => {
+                console.error('Error loading sports config:', error);
+                document.getElementById('sportsGrid').innerHTML = 
+                    '<p style="text-align: center; opacity: 0.7;">Error loading sports. Please refresh.</p>';
+            });
+
+        function renderSportsGrid(config) {
+            const grid = document.getElementById('sportsGrid');
+            grid.innerHTML = '';
+
+            Object.values(config.sports).forEach(sport => {
+                const card = createSportCard(sport);
+                grid.appendChild(card);
+            });
+        }
+
+        function createSportCard(sport) {
+            const card = document.createElement('div');
+            card.className = `sport-card ${sport.status === 'active' ? 'active' : 'coming-soon'}`;
+            
+            // Add gradient background based on sport colors
+            if (sport.color_primary) {
+                card.style.background = `linear-gradient(135deg, ${sport.color_primary}33, ${sport.color_secondary}33)`;
+            }
+
+            const statusBadge = document.createElement('div');
+            statusBadge.className = `status-badge status-${sport.status.replace('_', '-')}`;
+            statusBadge.textContent = sport.status === 'active' ? 'Active' : 'Coming Soon';
+
+            const emoji = document.createElement('span');
+            emoji.className = 'sport-emoji';
+            emoji.textContent = sport.emoji;
+
+            const name = document.createElement('div');
+            name.className = 'sport-name';
+            name.textContent = sport.name;
+
+            const description = document.createElement('div');
+            description.className = 'sport-description';
+            description.textContent = sport.description;
+
+            const categories = document.createElement('div');
+            categories.className = 'sport-categories';
+            if (sport.categories) {
+                sport.categories.forEach(cat => {
+                    const tag = document.createElement('span');
+                    tag.className = 'category-tag';
+                    tag.textContent = cat.replace('_', ' ');
+                    categories.appendChild(tag);
+                });
+            }
+
+            card.appendChild(statusBadge);
+            card.appendChild(emoji);
+            card.appendChild(name);
+            card.appendChild(description);
+            card.appendChild(categories);
+
+            // Add click handler for active sports
+            if (sport.status === 'active') {
+                card.addEventListener('click', () => {
+                    window.location.href = sport.app_page;
+                });
+            } else {
+                card.addEventListener('click', () => {
+                    alert(`${sport.name} is coming soon! Currently working on implementing sport-specific rules and tricks.`);
+                });
+            }
+
+            return card;
+        }
+
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed:', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

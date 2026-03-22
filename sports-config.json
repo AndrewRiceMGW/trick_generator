@@ -1,0 +1,84 @@
+{
+	"app_name": "Extreme Trick Generator",
+	"version": "2.0",
+	"description": "Multi-sport trick generator with sport-specific rules and terminology",
+
+	"sports": {
+		"rollerblading": {
+			"id": "rollerblading",
+			"name": "Aggressive Inline",
+			"emoji": "⛸️",
+			"status": "active",
+			"description": "Inline skating tricks with grinds, spins, and switch-ups",
+			"schema_file": "sports/rollerblading/schema.json",
+			"generator_file": "sports/rollerblading/generator.js",
+			"app_page": "sports/rollerblading/app.html",
+			"color_primary": "#667eea",
+			"color_secondary": "#764ba2",
+			"categories": ["grinds", "spins", "airs", "transitions"]
+		},
+
+		"skateboarding": {
+			"id": "skateboarding",
+			"name": "Skateboarding",
+			"emoji": "🛹",
+			"status": "coming_soon",
+			"description": "Street and park skateboarding tricks with flips, grinds, and manuals",
+			"color_primary": "#f97316",
+			"color_secondary": "#dc2626",
+			"categories": ["flip_tricks", "grinds", "manuals", "transitions"]
+		},
+
+		"bmx": {
+			"id": "bmx",
+			"name": "BMX",
+			"emoji": "🚲",
+			"status": "coming_soon",
+			"description": "BMX tricks with grinds, spins, and barspins",
+			"color_primary": "#10b981",
+			"color_secondary": "#059669",
+			"categories": ["grinds", "spins", "barspins", "tailwhips"]
+		},
+
+		"scooter": {
+			"id": "scooter",
+			"name": "Scooter",
+			"emoji": "🛴",
+			"status": "coming_soon",
+			"description": "Scooter tricks with whips, grinds, and spins",
+			"color_primary": "#8b5cf6",
+			"color_secondary": "#7c3aed",
+			"categories": ["whips", "grinds", "spins", "manuals"]
+		},
+
+		"snowboarding": {
+			"id": "snowboarding",
+			"name": "Snowboarding",
+			"emoji": "🏂",
+			"status": "coming_soon",
+			"description": "Snowboard tricks with spins, flips, and rail/box tricks",
+			"color_primary": "#06b6d4",
+			"color_secondary": "#0891b2",
+			"categories": ["spins", "flips", "rails", "jumps"]
+		},
+
+		"surfing": {
+			"id": "surfing",
+			"name": "Surfing",
+			"emoji": "🏄",
+			"status": "coming_soon",
+			"description": "Surf tricks and maneuvers",
+			"color_primary": "#3b82f6",
+			"color_secondary": "#2563eb",
+			"categories": ["turns", "aerials", "barrels", "cutbacks"]
+		}
+	},
+
+	"feature_roadmap": {
+		"v2.0": ["Sport selection", "Aggressive inline complete"],
+		"v2.1": ["Skateboarding support"],
+		"v2.2": ["BMX support"],
+		"v2.3": ["Scooter support"],
+		"v3.0": ["Cross-sport combos", "Session tracking", "Trick library"]
+	}
+}

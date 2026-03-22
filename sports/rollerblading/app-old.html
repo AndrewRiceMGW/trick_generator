@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="../../manifest.json">
+    <title>Aggressive Inline Trick Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .mode-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .options-panel {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .option-group {
+            margin-bottom: 15px;
+        }
+
+        .option-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .trick-display {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            color: #333;
+            min-height: 150px;
+            display: none;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .trick-display.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .trick-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .trick-meta {
+            display: flex;
+            justify-space: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .difficulty-bar {
+            height: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #fbbf24, #f87171);
+            transition: width 0.5s ease;
+        }
+
+        .trick-components {
+            margin-top: 15px;
+        }
+
+        .component {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 5px;
+            background: rgba(102, 126, 234, 0.15);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .tricks-list {
+            margin-top: 20px;
+        }
+
+        .trick-item {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            color: #333;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .trick-item-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .trick-item-meta {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .mode-selector {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .trick-name {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-button">← Back to Sports</a>
+        
+        <header>
+            <h1>🛼 Aggressive Inline</h1>
+            <p class="subtitle">Trick Generator</p>
+        </header>
+
+        <!-- Mode Selection -->
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="random">Random</button>
+            <button class="mode-btn" data-mode="obstacle">Obstacle</button>
+            <button class="mode-btn" data-mode="difficulty">Difficulty</button>
+            <button class="mode-btn" data-mode="combo">Combo</button>
+        </div>
+
+        <!-- Options Panel -->
+        <div class="options-panel" id="optionsPanel">
+            <!-- Random Mode Options -->
+            <div id="randomOptions" class="mode-options">
+                <div class="option-group">
+                    <label>Obstacle</label>
+                    <select id="obstacleSelect">
+                        <option value="any">Any</option>
+                        <option value="rail">Rail</option>
+                        <option value="ledge">Ledge</option>
+                        <option value="curb">Curb</option>
+                        <option value="stairs">Stairs</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label>Obstacle Length</label>
+                    <select id="lengthSelect">
+                        <option value="short">Short</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="long">Long</option>
+                        <option value="very_long">Very Long</option>
+                    </select>
+                </div>
+                <div class="option-group checkbox-group">
+                    <input type="checkbox" id="switchUpsCheck" checked>
+                    <label for="switchUpsCheck" style="margin-bottom: 0;">Allow Switch-ups</label>
+                </div>
+                <div class="option-group checkbox-group">
+                    <input type="checkbox" id="flipsCheck">
+                    <label for="flipsCheck" style="margin-bottom: 0;">Allow Flips</label>
+                </div>
+            </div>
+
+            <!-- Difficulty Mode Options -->
+            <div id="difficultyOptions" class="mode-options" style="display: none;">
+                <div class="option-group">
+                    <label>Difficulty Level</label>
+                    <select id="difficultySelect">
+                        <option value="beginner">Beginner (0-5)</option>
+                        <option value="intermediate" selected>Intermediate (5-10)</option>
+                        <option value="advanced">Advanced (10-15)</option>
+                        <option value="pro">Pro (15-25)</option>
+                        <option value="insane">Insane (25+)</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label>Number of Tricks</label>
+                    <input type="number" id="trickCount" min="1" max="10" value="1">
+                </div>
+            </div>
+
+            <!-- Combo Mode Options -->
+            <div id="comboOptions" class="mode-options" style="display: none;">
+                <div class="option-group">
+                    <label>Combo Size</label>
+                    <select id="comboSize">
+                        <option value="3">3 Tricks</option>
+                        <option value="5" selected>5 Tricks</option>
+                        <option value="10">10 Tricks</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button class="generate-btn" id="generateBtn">Generate Trick</button>
+
+        <!-- Trick Display -->
+        <div class="trick-display" id="trickDisplay">
+            <div class="trick-name" id="trickName"></div>
+            <div class="trick-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Obstacle</div>
+                    <div class="meta-value" id="trickObstacle"></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Difficulty</div>
+                    <div class="meta-value" id="trickDifficulty"></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Stance</div>
+                    <div class="meta-value" id="trickStance"></div>
+                </div>
+            </div>
+            <div class="difficulty-bar">
+                <div class="difficulty-fill" id="difficultyFill"></div>
+            </div>
+            <div class="trick-components" id="trickComponents"></div>
+        </div>
+
+        <!-- Tricks List (for combo mode) -->
+        <div class="tricks-list" id="tricksList"></div>
+    </div>
+
+    <script src="generator.js"></script>
+    <script>
+        let schema = null;
+        let generator = null;
+        let currentMode = 'random';
+
+        // Load schema
+        fetch('schema.json')
+            .then(response => response.json())
+            .then(data => {
+                schema = data;
+                generator = new TrickGenerator(schema);
+                console.log('Trick generator ready!');
+            })
+            .catch(error => {
+                console.error('Error loading schema:', error);
+                alert('Error loading trick data. Please check the console.');
+            });
+
+        // Mode switching
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+                switchMode(currentMode);
+            });
+        });
+
+        function switchMode(mode) {
+            // Hide all mode options
+            document.querySelectorAll('.mode-options').forEach(opt => opt.style.display = 'none');
+            
+            // Show relevant options
+            switch(mode) {
+                case 'random':
+                case 'obstacle':
+                    document.getElementById('randomOptions').style.display = 'block';
+                    break;
+                case 'difficulty':
+                    document.getElementById('difficultyOptions').style.display = 'block';
+                    break;
+                case 'combo':
+                    document.getElementById('comboOptions').style.display = 'block';
+                    break;
+            }
+
+            // Hide previous results
+            document.getElementById('trickDisplay').classList.remove('show');
+            document.getElementById('tricksList').innerHTML = '';
+        }
+
+        // Generate trick
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            if (!generator) {
+                alert('Generator not ready yet. Please wait...');
+                return;
+            }
+
+            const tricksList = document.getElementById('tricksList');
+            tricksList.innerHTML = '';
+
+            if (currentMode === 'combo') {
+                generateCombo();
+            } else if (currentMode === 'difficulty') {
+                generateByDifficulty();
+            } else {
+                generateSingleTrick();
+            }
+        });
+
+        function generateSingleTrick() {
+            const obstacle = document.getElementById('obstacleSelect').value;
+            const length = document.getElementById('lengthSelect').value;
+            const allowSwitchUps = document.getElementById('switchUpsCheck').checked;
+            const allowFlips = document.getElementById('flipsCheck').checked;
+
+            const options = {
+                obstacle: obstacle === 'any' ? null : obstacle,
+                obstacleLength: length,
+                allowSwitchUps: allowSwitchUps,
+                allowFlips: allowFlips
+            };
+
+            const trick = generator.generateTrick(currentMode, options);
+            displayTrick(trick);
+        }
+
+        function generateByDifficulty() {
+            const difficulty = document.getElementById('difficultySelect').value;
+            const count = parseInt(document.getElementById('trickCount').value);
+
+            const tricks = [];
+            let attempts = 0;
+            const maxAttempts = count * 50;
+
+            while (tricks.length < count && attempts < maxAttempts) {
+                const trick = generator.generateTrick('random', {});
+                const levelData = schema.difficulty_levels[difficulty];
+                
+                if (trick.difficulty >= levelData.min && trick.difficulty <= levelData.max) {
+                    tricks.push(trick);
+                }
+                attempts++;
+            }
+
+            if (tricks.length === 1) {
+                displayTrick(tricks[0]);
+            } else {
+                displayTricksList(tricks);
+            }
+        }
+
+        function generateCombo() {
+            const size = parseInt(document.getElementById('comboSize').value);
+            const tricks = generator.generateMultipleTricks(size, 'random', {});
+            displayTricksList(tricks);
+        }
+
+        function displayTrick(trick) {
+            document.getElementById('trickName').textContent = trick.name;
+            document.getElementById('trickObstacle').textContent = trick.obstacle.charAt(0).toUpperCase() + trick.obstacle.slice(1);
+            document.getElementById('trickDifficulty').textContent = trick.difficulty.toFixed(1);
+            document.getElementById('trickStance').textContent = trick.stance.charAt(0).toUpperCase() + trick.stance.slice(1);
+
+            // Set difficulty bar
+            const maxDifficulty = 25;
+            const percentage = Math.min((trick.difficulty / maxDifficulty) * 100, 100);
+            document.getElementById('difficultyFill').style.width = percentage + '%';
+
+            // Display components
+            const componentsDiv = document.getElementById('trickComponents');
+            componentsDiv.innerHTML = '';
+            trick.components.forEach(comp => {
+                const span = document.createElement('span');
+                span.className = 'component';
+                span.textContent = `${comp.type}: ${comp.value}`;
+                componentsDiv.appendChild(span);
+            });
+
+            document.getElementById('trickDisplay').classList.add('show');
+        }
+
+        function displayTricksList(tricks) {
+            const listDiv = document.getElementById('tricksList');
+            listDiv.innerHTML = '';
+
+            tricks.forEach((trick, index) => {
+                const item = document.createElement('div');
+                item.className = 'trick-item';
+                item.innerHTML = `
+                    <div class="trick-item-name">${index + 1}. ${trick.name}</div>
+                    <div class="trick-item-meta">
+                        Obstacle: ${trick.obstacle} | Difficulty: ${trick.difficulty.toFixed(1)} | Stance: ${trick.stance}
+                    </div>
+                `;
+                listDiv.appendChild(item);
+            });
+
+            document.getElementById('trickDisplay').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
