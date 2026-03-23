@@ -7,7 +7,7 @@
 		"rollerblading": {
 			"id": "rollerblading",
 			"name": "Aggressive Inline",
-			"emoji": "⛸️",
+		"emoji": "🛼",
 			"status": "active",
 			"description": "Inline skating tricks with grinds, spins, and switch-ups",
 			"schema_file": "sports/rollerblading/schema.json",
