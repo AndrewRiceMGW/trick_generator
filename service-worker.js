@@ -1,5 +1,5 @@
 /**
- * Service Worker for Extreme Trick Generator
+ * Service Worker for Trick Generator
  * Enables offline functionality and app-like experience
  */
 

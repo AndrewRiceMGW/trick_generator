@@ -1,6 +1,6 @@
 # Installing Trick Generator BETA on Android
 
-This guide will help you install the Extreme Trick Generator as a Progressive Web App (PWA) on your Android device.
+This guide will help you install the Trick Generator as a Progressive Web App (PWA) on your Android device.
 
 ## Prerequisites
 

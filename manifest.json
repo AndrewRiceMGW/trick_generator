@@ -1,7 +1,7 @@
 {
-	"name": "Extreme Trick Generator (BETA)",
+	"name": "Trick Generator (BETA)",
 	"short_name": "Tricks BETA",
-	"description": "Multi-sport extreme trick generator with smart rule-based combinations - BETA Version",
+	"description": "Multi-sport Trick Generator with smart rule-based combinations - BETA Version",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#667eea",

@@ -1,13 +1,15 @@
-# 🔥 Extreme Trick Generator (Multi-Sport)
+# 🔥 Trick Generator (Multi-Sport)
 
 A comprehensive trick generator for extreme sports with sport-specific rules, terminology, and physical constraints. Each sport has its own unique generation system that creates valid, realistic trick combinations.
 
 ## 🎯 Supported Sports
 
 ### ✅ Active Sports
+
 - **🛼 Aggressive Inline** - Full support with grinds, spins, switch-ups, and more
 
 ### 🚧 Coming Soon
+
 - **🛹 Skateboarding** - Flip tricks, grinds, manuals, transitions
 - **🚲 BMX** - Grinds, spins, barspins, tailwhips
 - **🛴 Scooter** - Whips, grinds, spins, manuals
@@ -55,12 +57,14 @@ trick_generator/
 ## 🎮 Current Features (Rollerblading)
 
 ### Generation Modes
+
 - **Random** - Generate any valid trick
 - **Obstacle** - Specific obstacles (rail, ledge, curb, stairs)
 - **Difficulty** - Filter by skill level (Beginner → Insane)
 - **Combo** - Generate 3-10 trick sequences
 
 ### Smart Rules
+
 - ✅ Valid switch-up combinations only
 - ✅ Obstacle length affects complexity
 - ✅ Proper naming (Cab, Half Cab, Alley-Oop)
@@ -69,6 +73,7 @@ trick_generator/
 - ✅ Entry/exit spins with proper rotations
 
 ### Trick Components
+
 - **Stances:** Forward, Fakie, Switch
 - **Entry/Exit Spins:** 180°, 270°, 360°, 450°, 540°, 720°
 - **Grinds:** Soul, Mizou, Frontside, Backslide, Royale, Pornstar, Unity, etc.
@@ -150,6 +155,7 @@ See full Android packaging instructions in the original README.
 ### Change Sport Colors
 
 Edit `sports-config.json`:
+
 ```json
 "color_primary": "#YOUR_COLOR",
 "color_secondary": "#YOUR_COLOR"
@@ -158,6 +164,7 @@ Edit `sports-config.json`:
 ### Modify Trick Rules
 
 Each sport's `schema.json` contains:
+
 - All available tricks
 - Valid combinations
 - Difficulty values
@@ -167,6 +174,7 @@ Each sport's `schema.json` contains:
 ### UI Customization
 
 Edit the sport's `app.html` file to modify:
+
 - Layout and styling
 - Mode options
 - Display format
@@ -181,6 +189,7 @@ Edit the sport's `app.html` file to modify:
 ## 📊 Difficulty System (Example: Rollerblading)
 
 **Calculation:**
+
 - Stance (1-2 points)
 - Entry Spin (0-3.5 points)
 - Primary Grind (1-3.5 points)
@@ -190,6 +199,7 @@ Edit the sport's `app.html` file to modify:
 - Obstacle multiplier (1.0-1.6x)
 
 **Levels:**
+
 - Beginner: 0-5
 - Intermediate: 5-10
 - Advanced: 10-15
@@ -201,16 +211,19 @@ Each sport can define its own difficulty system!
 ## 🐛 Troubleshooting
 
 ### Sport won't load
+
 - Check browser console (F12) for errors
 - Verify sport paths in `sports-config.json`
 - Ensure all three files exist: schema.json, generator.js, app.html
 
 ### Tricks seem invalid
+
 - Review sport's `schema.json` for rule errors
 - Check `switch_up_to` arrays for valid combinations
 - Verify obstacle constraints
 
 ### App won't install on Android
+
 - Enable "Install unknown apps" in Android settings
 - Check that manifest.json is valid
 - Ensure PWA requirements are met (HTTPS when hosted)
@@ -218,26 +231,31 @@ Each sport can define its own difficulty system!
 ## 🚀 Roadmap
 
 ### v2.0 (Current)
+
 - ✅ Sport selection screen
 - ✅ Aggressive inline complete
 - ✅ Multi-sport architecture
 
 ### v2.1
+
 - [ ] Skateboarding support
 - [ ] Street and park obstacles
 - [ ] Flip trick combinations
 
 ### v2.2
+
 - [ ] BMX support
 - [ ] Barspin/tailwhip logic
 - [ ] Peg grinds
 
 ### v2.3
+
 - [ ] Scooter support
 - [ ] Whip variations
 - [ ] Deck grabs
 
 ### v3.0
+
 - [ ] Cross-sport session mode
 - [ ] Save favorite tricks
 - [ ] Share tricks (screenshot/text)
@@ -273,6 +291,7 @@ Want to add a sport or improve existing ones?
 ## 📖 Sport-Specific READMEs
 
 Each sport module can have its own README:
+
 - `sports/rollerblading/README.md`
 - `sports/skateboarding/README.md`
 - etc.

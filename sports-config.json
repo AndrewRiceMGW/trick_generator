@@ -1,5 +1,5 @@
 {
-	"app_name": "Extreme Trick Generator",
+	"app_name": "Trick Generator",
 	"version": "2.0",
 	"description": "Multi-sport trick generator with sport-specific rules and terminology",
 
@@ -7,7 +7,7 @@
 		"rollerblading": {
 			"id": "rollerblading",
 			"name": "Aggressive Inline",
-		"emoji": "🛼",
+			"emoji": "🛼",
 			"status": "active",
 			"description": "Inline skating tricks with grinds, spins, and switch-ups",
 			"schema_file": "sports/rollerblading/schema.json",
