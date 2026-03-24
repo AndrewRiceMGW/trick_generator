@@ -321,7 +321,8 @@ class TrickGenerator {
 		// When h_block_type changes, feet are being lifted OFF or placed ON the h-block
 		// This is vertical movement (weight transfer), not horizontal rotation
 		const isHBlockTransition = currentPhysics.h_block_type !== nextPhysics.h_block_type &&
-			currentPhysics.h_block_type !== "NA" && nextPhysics.h_block_type !== "NA";
+			currentPhysics.h_block_type !== "NA" && nextPhysics.h_block_type !== "NA" &&
+			currentPhysics.h_block_type !== null && nextPhysics.h_block_type !== null;
 
 		// 1. ANGULAR ROTATION - Calculate foot rotation difficulty
 		const backFootRotation = this.calculateAngularDistance(
@@ -377,10 +378,14 @@ class TrickGenerator {
 
 		// 2. EDGE TRANSITIONS - Detect inner↔outer edge changes
 		const backEdgeChanged = currentPhysics.back_foot_hblock_pointing !== "NA" &&
+			currentPhysics.back_foot_hblock_pointing !== null &&
 			nextPhysics.back_foot_hblock_pointing !== "NA" &&
+			nextPhysics.back_foot_hblock_pointing !== null &&
 			currentPhysics.back_foot_hblock_pointing !== nextPhysics.back_foot_hblock_pointing;
 		const frontEdgeChanged = currentPhysics.front_foot_hblock_pointing !== "NA" &&
+			currentPhysics.front_foot_hblock_pointing !== null &&
 			nextPhysics.front_foot_hblock_pointing !== "NA" &&
+			nextPhysics.front_foot_hblock_pointing !== null &&
 			currentPhysics.front_foot_hblock_pointing !== nextPhysics.front_foot_hblock_pointing;
 
 		if (backEdgeChanged) {
@@ -396,12 +401,16 @@ class TrickGenerator {
 
 		// 3. KNEE DIRECTION CHANGES - Harder to reverse knee bend
 		const backKneeChanged = currentPhysics.back_foot_knee !== "NA" &&
+			currentPhysics.back_foot_knee !== null &&
 			nextPhysics.back_foot_knee !== "NA" &&
+			nextPhysics.back_foot_knee !== null &&
 			currentPhysics.back_foot_knee !== nextPhysics.back_foot_knee &&
 			currentPhysics.back_foot_knee !== "neutral" &&
 			nextPhysics.back_foot_knee !== "neutral";
 		const frontKneeChanged = currentPhysics.front_foot_knee !== "NA" &&
+			currentPhysics.front_foot_knee !== null &&
 			nextPhysics.front_foot_knee !== "NA" &&
+			nextPhysics.front_foot_knee !== null &&
 			currentPhysics.front_foot_knee !== nextPhysics.front_foot_knee &&
 			currentPhysics.front_foot_knee !== "neutral" &&
 			nextPhysics.front_foot_knee !== "neutral";
@@ -442,6 +451,7 @@ class TrickGenerator {
 
 		// 6. CROSSED FOOT COMPLEXITY - Uncrossing/crossing feet is disorienting
 		if (currentPhysics.crossed_foot !== nextPhysics.crossed_foot &&
+			currentPhysics.crossed_foot !== null && nextPhysics.crossed_foot !== null &&
 			(currentPhysics.crossed_foot === "yes" || nextPhysics.crossed_foot === "yes")) {
 			difficulty += 0.7;
 		}
