@@ -332,6 +332,12 @@ class TrickGenerator {
 
 		let difficulty = 0;
 
+		// DETECT H-BLOCK ↔ H-BLOCK TRANSITIONS (weight transfers, not rotations)
+		// When h_block_type changes, feet are being lifted OFF or placed ON the h-block
+		// This is vertical movement (weight transfer), not horizontal rotation
+		const isHBlockTransition = currentPhysics.h_block_type !== nextPhysics.h_block_type &&
+			currentPhysics.h_block_type !== "NA" && nextPhysics.h_block_type !== "NA";
+
 		// 1. ANGULAR ROTATION - Calculate foot rotation difficulty
 		const backFootRotation = this.calculateAngularDistance(
 			currentPhysics.back_foot_degree,
@@ -342,9 +348,46 @@ class TrickGenerator {
 			nextPhysics.front_foot_degree
 		);
 
-		// Apply non-linear penalty curve: 0°=0, 45°=0.3, 90°=0.8, 135°=1.3, 180°=2.0
-		const backFootPenalty = Math.pow(backFootRotation / 90, 1.5) * 1.0;
-		const frontFootPenalty = Math.pow(frontFootRotation / 90, 1.5) * 1.0;
+		// Determine which feet are involved in h-block category change
+		let backFootIsHBlockTransfer = false;
+		let frontFootIsHBlockTransfer = false;
+		
+		if (isHBlockTransition) {
+			// Check if back foot is changing h-block status
+			// e.g., "both"→"back" means front foot lifted, back foot stayed
+			// e.g., "back"→"both" means front foot placed down, back foot stayed
+			// e.g., "both"→"front" means back foot lifted, front foot stayed
+			if ((currentPhysics.h_block_type === "both" && nextPhysics.h_block_type === "front") ||
+				(currentPhysics.h_block_type === "front" && nextPhysics.h_block_type === "both")) {
+				backFootIsHBlockTransfer = true; // Back foot lifted/placed
+			}
+			if ((currentPhysics.h_block_type === "both" && nextPhysics.h_block_type === "back") ||
+				(currentPhysics.h_block_type === "back" && nextPhysics.h_block_type === "both")) {
+				frontFootIsHBlockTransfer = true; // Front foot lifted/placed
+			}
+		}
+
+		// Apply rotation penalty only to feet that are actually rotating on the same surface
+		// Feet involved in h-block transfers get minimal penalty (just weight transfer difficulty)
+		let backFootPenalty = 0;
+		let frontFootPenalty = 0;
+		
+		if (backFootIsHBlockTransfer) {
+			// Back foot is lifting/placing, not rotating - minimal penalty
+			backFootPenalty = 0.3;
+		} else {
+			// Normal rotation: 0°=0, 45°=0.3, 90°=0.8, 135°=1.3, 180°=2.0
+			backFootPenalty = Math.pow(backFootRotation / 90, 1.5) * 1.0;
+		}
+		
+		if (frontFootIsHBlockTransfer) {
+			// Front foot is lifting/placing, not rotating - minimal penalty
+			frontFootPenalty = 0.3;
+		} else {
+			// Normal rotation
+			frontFootPenalty = Math.pow(frontFootRotation / 90, 1.5) * 1.0;
+		}
+		
 		difficulty += backFootPenalty + frontFootPenalty;
 
 		// 2. EDGE TRANSITIONS - Detect inner↔outer edge changes
