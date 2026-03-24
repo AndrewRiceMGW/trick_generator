@@ -438,10 +438,21 @@ class TrickGenerator {
 			}
 		}
 
-		// 5. H-BLOCK CATEGORY CHANGES - Still important (full h-block ↔ partial ↔ none)
+		// 5. H-BLOCK CATEGORY CHANGES - Full penalty for true category changes
+		// But NOT for soul-based grinds where h_block_type just indicates which foot is in soul position
 		if (currentPhysics.h_block_type !== nextPhysics.h_block_type) {
-			// Category transitions require major foot repositioning
-			difficulty += 1.2;
+			// Check if both are soul-based grinds (h_block: false)
+			const bothSoulBased = currentGrindData.soul_based && nextGrindData.soul_based;
+			
+			if (bothSoulBased) {
+				// Soul-based grinds: h_block_type change just means swapping which foot is in soul position
+				// This is a foot role swap, not a major category change - minimal penalty
+				difficulty += 0.4;
+			} else {
+				// True category change (h-block ↔ soul, or full h-block ↔ partial h-block)
+				// This requires major foot repositioning
+				difficulty += 1.2;
+			}
 		}
 
 		// 6. CROSSED FOOT COMPLEXITY - Uncrossing/crossing feet is disorienting
@@ -487,10 +498,13 @@ class TrickGenerator {
 		let currentGrindData = this.schema.grinds[currentGrind];
 
 		for (let i = 0; i < numSwitchUps; i++) {
-			const validSwitchUps = currentGrindData.switch_up_to;
+			// Any grind can switch to any other grind - select from all available grinds
+			const allGrinds = Object.keys(this.schema.grinds).filter(
+				grindId => grindId !== currentGrind // Don't switch to same grind (for now)
+			);
 
-			if (validSwitchUps && validSwitchUps.length > 0) {
-				const nextGrind = this.randomChoice(validSwitchUps);
+			if (allGrinds.length > 0) {
+				const nextGrind = this.randomChoice(allGrinds);
 				const nextGrindData = this.schema.grinds[nextGrind];
 
 				trickState.components.push({
