@@ -1,0 +1,103 @@
+DIFFICULTY CALCULATION BREAKDOWN
+Trick: Fakie 270 Backside Fastslide to Royale to Frontside
+================================
+
+PHYSICS DATA:
+-------------
+Fastslide:
+  back_foot_degree: 90°, front_foot_degree: 90°
+  back_foot_knee: "bent towards front", front_foot_knee: "bent towards back"
+  back_foot_hblock: "inner towards front", front_foot_hblock: "inner towards back"
+  balance: "on top", h_block_type: "both"
+
+Royale:
+  back_foot_degree: 90°, front_foot_degree: -90°
+  back_foot_knee: "bent towards front", front_foot_knee: "NA"
+  back_foot_hblock: "inner towards front", front_foot_hblock: "NA"
+  balance: "more back", h_block_type: "back" (only back foot on h-block)
+
+Frontside:
+  back_foot_degree: 90°, front_foot_degree: 90°
+  back_foot_knee: "bent towards front", front_foot_knee: "bent towards back"
+  back_foot_hblock: "inner towards front", front_foot_hblock: "inner towards back"
+  balance: "on top", h_block_type: "both"
+
+STEP-BY-STEP CALCULATION:
+-------------------------
+
+1. STANCE (Fakie)
+   + 1.5
+
+2. ENTRY SPIN (270)
+   Base: 2.0
+   Rail multiplier: 2.5
+   = 2.0 × 2.5 = 5.0
+   + 5.0
+
+3. PRIMARY GRIND (Fastslide)
+   + 2.0
+
+4. MODIFIER (Backside - mandatory for h-block)
+   + 0.5
+
+5. SWITCH-UP #1: Fastslide → Royale
+   
+   Base cost: Royale difficulty + switch cost
+   = 2.0 + 0.5 = 2.5
+   
+   Physics calculation:
+   - Back foot rotation: |90° - 90°| = 0° → penalty = 0
+   - Front foot rotation: |90° - (-90°)| = 180° → penalty = (180/90)^1.5 × 1.0 = 2.828
+   - Edge transitions: none detected
+   - Knee changes: none
+   - Balance shift: "on top" → "more back" = +0.3
+   - H-block category change: "both" → "back" = +1.2
+   
+   Physics subtotal: 2.828 + 0.3 + 1.2 = 4.328
+   
+   Total switch-up difficulty: 2.5 + 4.328 = 6.828
+   + 6.828
+
+6. SWITCH-UP #2: Royale → Frontside
+   
+   Base cost: 1.0 + 0.5 = 1.5
+   
+   Physics calculation:
+   - Back foot rotation: |90° - 90°| = 0° → penalty = 0
+   - Front foot rotation: |-90° - 90| = 180° → penalty = 2.828
+   - Edge transitions: none
+   - Knee changes: none
+   - Balance shift: "more back" → "on top" = +0.3
+   - H-block category change: "back" → "both" = +1.2
+   
+   Physics subtotal: 2.828 + 0.3 + 1.2 = 4.328
+   
+   Total switch-up difficulty: 1.5 + 4.328 = 5.828
+   + 5.828
+
+7. OBSTACLE LENGTH MULTIPLIER (medium rail)
+   Subtotal: 1.5 + 5.0 + 2.0 + 0.5 + 6.828 + 5.828 = 21.656
+   Multiplier: 1.2
+   
+   Total: 21.656 × 1.2 = 25.99 ≈ 26.0
+
+================================
+
+PROBLEM IDENTIFIED:
+The physics system is calculating a 180° front foot rotation for both switch-ups,
+but in reality:
+
+- Fastslide → Royale: You're lifting the front foot OFF the h-block (90°) and 
+  placing it on the SOUL position (-90°). This isn't rotating your foot 180° - 
+  it's just lifting your front foot and changing which part of the skate contacts
+  the obstacle.
+
+- Royale → Frontside: You're putting the front foot BACK DOWN on the h-block.
+  Again, not a 180° rotation - just placing your foot back down.
+
+The angular distance calculation works for foot rotations while STAYING on the 
+same grinding surface, but switching between h-block and soul positions is more 
+about weight transfer and vertical foot movement, not rotation.
+
+The 2.828 penalty per switch-up is way too high for what should be a relatively 
+simple weight transfer.

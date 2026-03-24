@@ -287,6 +287,7 @@
       "difficulty": 1.5,
       "soul_based": true,
       "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 30,
       "physics": {
@@ -311,6 +312,7 @@
       "difficulty": 2.5,
       "soul_based": true,
       "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 12,
       "physics": {
@@ -334,7 +336,8 @@
       "name": "Soul",
       "difficulty": 1.5,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 30,
       "physics": {
@@ -358,7 +361,8 @@
       "name": "Topsoul",
       "difficulty": 2.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -382,7 +386,8 @@
       "name": "Torque Soul",
       "difficulty": 2.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -406,7 +411,8 @@
       "name": "Top Torque Soul",
       "difficulty": 2.5,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 12,
       "physics": {
@@ -430,7 +436,8 @@
       "name": "Acid Soul",
       "difficulty": 2.5,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -454,7 +461,8 @@
       "name": "Topacid",
       "difficulty": 2.5,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -478,7 +486,8 @@
       "name": "Pstar",
       "difficulty": 3.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -502,7 +511,8 @@
       "name": "Top Pstar",
       "difficulty": 3.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -526,7 +536,8 @@
       "name": "Mizou",
       "difficulty": 1.5,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 30,
       "physics": {
@@ -550,7 +561,8 @@
       "name": "Sweatstance",
       "difficulty": 3.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -574,7 +586,8 @@
       "name": "Mistrial",
       "difficulty": 2.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -598,7 +611,8 @@
       "name": "Top Mistrial",
       "difficulty": 3.0,
       "soul_based": true,
-      "h_block": true,
+      "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -623,6 +637,7 @@
       "difficulty": 2.0,
       "soul_based": true,
       "h_block": false,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -647,6 +662,7 @@
       "difficulty": 2.5,
       "soul_based": true,
       "h_block": false,
+      "is_topside_variation": true,
       "foot_position": "mixed",
       "weight": 12,
       "physics": {
@@ -671,6 +687,7 @@
       "difficulty": 1.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 30,
       "physics": {
@@ -695,6 +712,7 @@
       "difficulty": 1.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 30,
       "physics": {
@@ -719,6 +737,7 @@
       "difficulty": 2.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -743,6 +762,7 @@
       "difficulty": 2.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -767,6 +787,7 @@
       "difficulty": 2.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -791,6 +812,7 @@
       "difficulty": 2.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -815,6 +837,7 @@
       "difficulty": 2.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -839,6 +862,7 @@
       "difficulty": 2.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -863,6 +887,7 @@
       "difficulty": 2.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -887,6 +912,7 @@
       "difficulty": 2.5,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 15,
       "physics": {
@@ -911,6 +937,7 @@
       "difficulty": 3.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -935,6 +962,7 @@
       "difficulty": 3.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -959,6 +987,7 @@
       "difficulty": 3.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -983,6 +1012,7 @@
       "difficulty": 3.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 10,
       "physics": {
@@ -1007,6 +1037,7 @@
       "difficulty": 2.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -1031,6 +1062,7 @@
       "difficulty": 2.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -1055,6 +1087,7 @@
       "difficulty": 2.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {
@@ -1079,6 +1112,7 @@
       "difficulty": 2.0,
       "soul_based": false,
       "h_block": true,
+      "is_topside_variation": false,
       "foot_position": "mixed",
       "weight": 20,
       "physics": {

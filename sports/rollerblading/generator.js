@@ -534,8 +534,14 @@ class TrickGenerator {
 
 			const currentGrindData = this.schema.grinds[currentGrind];
 
-			// Only soul-based tricks can have modifiers (topside, negative, etc.)
-			// H-block tricks now have frontside/backside as part of their trick name
+			// Never apply modifiers to:
+			// 1. H-block tricks (frontside/backside are part of their names now)
+			// 2. Tricks that are already topside variations (topsoul, topacid, etc.)
+			if (currentGrindData.h_block || currentGrindData.is_topside_variation) {
+				return;
+			}
+
+			// Only regular soul-based tricks can have modifiers (topside, negative, etc.)
 			const validModifiers = Object.values(this.schema.modifiers).filter(
 				(mod) => {
 					if (currentGrindData.soul_based) {

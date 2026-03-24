@@ -1,0 +1,35 @@
+trick name,back foot degree,front foot degree,back foot knee,front foot knee,back foot hblock pointing towards,front foot hblock pointing towards,topside or regular,can be grabbed,cross grab,crossed foot,spin multiplier,balance point ,h block ,soul or hblock
+makio,0,NA,neutral,NA,NA,NA,regular,yes,yes,NA,"0, 180",on top,NA,soul
+fishbrain,0,NA,neutral,NA,NA,NA,topside ,yes,yes,NA,"0, 180",on top,NA,soul
+soul,0,90,neutral,bent towards back,NA,inner pointing towards back ,regular,no,no,NA,"0, 180",more back,front,soul
+topsoul,0,-90,neutral,bent towards back,NA,inner pointing towards back ,topside ,no,no,NA,"0, 180",more back,front,soul
+torque soul,0,90,neutral,bent away back,NA,inner pointing away back ,regular,no,no,NA,"0, 180",more front,front,soul
+top torque soul,0,-90,neutral,bent away back,NA,inner pointing away back ,topside ,no,no,NA,"0, 180",more front,front,soul
+acid soul,0,-90,neutral,bent towards back,NA,outer pointing towards back ,regular,no,no,NA,"0, 180",more back,front,soul
+topacid,0,90,neutral,bent towards back,NA,outer pointing towards back ,topside ,no,no,NA,"0, 180",more back,front,soul
+pstar,-90,0,bent towards front,neutral,outer pointing towards front ,NA,regular,no,no,NA,"0, 180",more front,back,soul
+top pstar,90,0,bent towards front,neutral,outer pointing towards front ,NA,topside ,no,no,NA,"0, 180",more front,back,soul
+mizou,-90,0,bent towards front,neutral,inner pointing towards front,NA,regular,no,no,NA,"0, 180",more front,back,soul
+sweatstance,90,0,bent towards front,neutral,inner pointing towards front,NA,topside ,no,no,NA,"0, 180",more front,back,soul
+mistrial,-90,0,bent away front,neutral,inner pointing towards front,NA,regular,no,no,NA,"0, 180",more front,back,soul
+top mistrial ,90,0,bent away front,neutral,inner pointing towards front,NA,topside ,no,no,NA,"0, 180",more front,back ,soul
+x grind ,0,0,neutral,neutral,NA,NA,regular,no,no,NA,"0, 180",on top,NA,soul
+topside x grind,0,0,neutral,neutral,NA,NA,topside ,no,no,NA,"0, 180",on top,NA,soul
+frontside,90,90,bent towards front,bent towards back,inner pointing towards front,inner pointing towards back ,NA,no,no,NA,"0, 90",on top,both,hblock
+backside,-90,-90,bent towards front,bent towards back,inner pointing towards front,inner pointing towards back ,NA,no,no,NA,"0, 90",on top,both,hblock
+frontside royale,90,90,bent away front,bent towards back,inner pointing away front,inner pointing towards back ,NA,no,no,NA,"0, 90",more front,both,hblock
+backside royale,-90,-90,bent away front,bent towards back,inner pointing away front,inner pointing towards back ,NA,no,no,NA,"0, 90",more front,both,hblock
+frontside farv,90,90,bent towards front,bent away back,inner pointing towards front,inner pointing away back ,NA,no,no,NA,"0, 90",more back,both,hblock
+backside farv,-90,-90,bent towards front,bent away back,inner pointing towards front,inner pointing away back ,NA,no,no,NA,"0, 90",more back,both,hblock
+frontside backslide,90,NA,bent away front,NA,inner pointing away front,NA,NA,yes,yes,NA,"0, 90",more front,back,hblock
+backside backslide,-90,NA,bent away front,NA,inner pointing away front,NA,NA,yes,yes,NA,"0, 90",more front,back,hblock
+frontside torque,NA,90,NA,bent away back,NA,inner pointing away back ,NA,yes,yes,NA,"0, 90",more back,front,hblock
+backside torque,NA,-90,NA,bent away back,NA,inner pointing away back ,NA,yes,yes,NA,"0, 90",more back,front,hblock
+frontside unity,90,90,bent towards front,bent towards back,outer pointing towards front ,outer pointing towards back ,NA,no,no,front foot,"0, 90",on top,both,hblock
+backside unity,-90,-90,bent towards front,bent towards back,outer pointing towards front ,outer pointing towards back ,NA,no,no,front foot,"0, 90",on top,both,hblock
+frontside savannah,90,90,bent towards front,bent towards back,outer pointing towards front ,outer pointing towards back ,NA,no,no,back foot,"0, 90",on top,both,hblock
+backside savannah,-90,-90,bent towards front,bent towards back,outer pointing towards front ,outer pointing towards back ,NA,no,no,back foot,"0, 90",on top,both,hblock
+frontside fastslide,NA,90,NA,bent towards back,NA,inner pointing towards back ,NA,yes,yes,NA,"0, 90",more front,front,hblock
+backside fastslide,NA,-90,NA,bent towards back,NA,inner pointing towards back ,NA,yes,yes,NA,"0, 90",more front,front,hblock
+frontside pudslide,90,NA,bent towards front,NA,inner pointing towards front,NA,NA,yes,yes,NA,"0, 90",more back,back,hblock
+backside pudslide,-90,NA,bent towards front,NA,inner pointing towards front,NA,NA,yes,yes,NA,"0, 90",more back,back,hblock
