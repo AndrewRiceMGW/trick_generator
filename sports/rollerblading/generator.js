@@ -293,6 +293,134 @@ class TrickGenerator {
 		}
 	}
 
+	/**
+	 * Calculate shortest angular distance between two angles
+	 * Normalizes to 0-180° range (we care about rotation magnitude, not direction)
+	 */
+	calculateAngularDistance(angle1, angle2) {
+		if (angle1 === null || angle2 === null) return 0;
+		
+		let diff = Math.abs(angle1 - angle2);
+		// Normalize to 0-180° (shortest path)
+		if (diff > 180) diff = 360 - diff;
+		return diff;
+	}
+
+	/**
+	 * Calculate physics-based switch-up difficulty using angular rotation and edge transitions
+	 */
+	calculatePhysicsSwitchUpDifficulty(currentGrindData, nextGrindData, trickState) {
+		// Check for topside/negative modifier
+		const hasModifier = trickState.components.some(
+			(c) =>
+				c.type === "modifier" &&
+				["topside", "negative", "true_topside", "negative_true"].includes(c.id),
+		);
+
+		// Select physics data (topside variant if applicable)
+		const currentPhysics = hasModifier && currentGrindData.physics_topside
+			? currentGrindData.physics_topside
+			: currentGrindData.physics;
+		const nextPhysics = hasModifier && nextGrindData.physics_topside
+			? nextGrindData.physics_topside
+			: nextGrindData.physics;
+
+		if (!currentPhysics || !nextPhysics) {
+			// Fallback to old system if physics data missing
+			return 0.5;
+		}
+
+		let difficulty = 0;
+
+		// 1. ANGULAR ROTATION - Calculate foot rotation difficulty
+		const backFootRotation = this.calculateAngularDistance(
+			currentPhysics.back_foot_degree,
+			nextPhysics.back_foot_degree
+		);
+		const frontFootRotation = this.calculateAngularDistance(
+			currentPhysics.front_foot_degree,
+			nextPhysics.front_foot_degree
+		);
+
+		// Apply non-linear penalty curve: 0°=0, 45°=0.3, 90°=0.8, 135°=1.3, 180°=2.0
+		const backFootPenalty = Math.pow(backFootRotation / 90, 1.5) * 1.0;
+		const frontFootPenalty = Math.pow(frontFootRotation / 90, 1.5) * 1.0;
+		difficulty += backFootPenalty + frontFootPenalty;
+
+		// 2. EDGE TRANSITIONS - Detect inner↔outer edge changes
+		const backEdgeChanged = currentPhysics.back_foot_hblock_pointing !== "NA" &&
+			nextPhysics.back_foot_hblock_pointing !== "NA" &&
+			currentPhysics.back_foot_hblock_pointing !== nextPhysics.back_foot_hblock_pointing;
+		const frontEdgeChanged = currentPhysics.front_foot_hblock_pointing !== "NA" &&
+			nextPhysics.front_foot_hblock_pointing !== "NA" &&
+			currentPhysics.front_foot_hblock_pointing !== nextPhysics.front_foot_hblock_pointing;
+
+		if (backEdgeChanged) {
+			// Edge transition adds resistance
+			// Check if edge points towards other foot (harder) or away (easier)
+			const pointsTowards = nextPhysics.back_foot_hblock_pointing.includes("towards");
+			difficulty += pointsTowards ? 0.6 : 0.4;
+		}
+		if (frontEdgeChanged) {
+			const pointsTowards = nextPhysics.front_foot_hblock_pointing.includes("towards");
+			difficulty += pointsTowards ? 0.6 : 0.4;
+		}
+
+		// 3. KNEE DIRECTION CHANGES - Harder to reverse knee bend
+		const backKneeChanged = currentPhysics.back_foot_knee !== "NA" &&
+			nextPhysics.back_foot_knee !== "NA" &&
+			currentPhysics.back_foot_knee !== nextPhysics.back_foot_knee &&
+			currentPhysics.back_foot_knee !== "neutral" &&
+			nextPhysics.back_foot_knee !== "neutral";
+		const frontKneeChanged = currentPhysics.front_foot_knee !== "NA" &&
+			nextPhysics.front_foot_knee !== "NA" &&
+			currentPhysics.front_foot_knee !== nextPhysics.front_foot_knee &&
+			currentPhysics.front_foot_knee !== "neutral" &&
+			nextPhysics.front_foot_knee !== "neutral";
+
+		if (backKneeChanged) difficulty += 0.4;
+		if (frontKneeChanged) difficulty += 0.4;
+
+		// 4. BALANCE POINT SHIFTS - Body weight distribution changes
+		if (currentPhysics.balance_point !== nextPhysics.balance_point) {
+			const balanceShift = `${currentPhysics.balance_point}_to_${nextPhysics.balance_point}`;
+			// Cross-body balance shifts are hardest
+			if (balanceShift.includes("front_to_more back") || balanceShift.includes("back_to_more front")) {
+				difficulty += 0.8;
+			} else if (balanceShift.includes("on top")) {
+				// Transitioning to/from centered position is moderate
+				difficulty += 0.3;
+			} else {
+				difficulty += 0.5;
+			}
+		}
+
+		// 5. H-BLOCK CATEGORY CHANGES - Still important (full h-block ↔ partial ↔ none)
+		if (currentPhysics.h_block_type !== nextPhysics.h_block_type) {
+			// Category transitions require major foot repositioning
+			difficulty += 1.2;
+		}
+
+		// 6. CROSSED FOOT COMPLEXITY - Uncrossing/crossing feet is disorienting
+		if (currentPhysics.crossed_foot !== nextPhysics.crossed_foot &&
+			(currentPhysics.crossed_foot === "yes" || nextPhysics.crossed_foot === "yes")) {
+			difficulty += 0.7;
+		}
+
+		// 7. TOPSIDE/NEGATIVE MODIFIER PENALTY
+		if (hasModifier) {
+			// Body position bent over/under obstacle makes all movements harder
+			difficulty *= 1.3;
+		}
+
+		// 8. GRABBED TRICKS - Single-foot h-blocks are easier when grabbed
+		if (nextPhysics.can_be_grabbed && nextPhysics.h_block_type !== "both") {
+			difficulty *= 0.9; // 10% easier if grind can be grabbed for balance
+		}
+
+		return difficulty;
+	}
+
 	addSwitchUps(trickState) {
 		const obstacleData = this.schema.obstacles[trickState.obstacle];
 		const lengthData =
@@ -330,57 +458,13 @@ class TrickGenerator {
 				// Base switch-up difficulty (grind difficulty + small switch cost)
 				let switchUpDifficulty = nextGrindData.difficulty + 0.5;
 
-				// Calculate positional difficulty based on foot placement
-				const currentPos = currentGrindData.position_relative_to_makio;
-				const nextPos = nextGrindData.position_relative_to_makio;
-
-				if (currentPos && nextPos) {
-					if (currentPos === nextPos) {
-						// Same position (e.g., makio to acid - both front) = "stepping around" = very easy
-						switchUpDifficulty += 0.2;
-					} else if (
-						(currentPos === "front" && nextPos === "back") ||
-						(currentPos === "back" && nextPos === "front")
-					) {
-						// Front to back or back to front = cross-body movement = harder
-						switchUpDifficulty += 1.0;
-					} else if (currentPos === "neutral" || nextPos === "neutral") {
-						// To/from neutral (makio) = moderate
-						switchUpDifficulty += 0.5;
-					}
-				} else {
-					// No positional data, use generic foot position difference
-					if (currentGrindData.foot_position !== nextGrindData.foot_position) {
-						switchUpDifficulty += 0.5;
-					}
-				}
-
-				// Major difficulty for switching between h-block and soul-based
-				if (currentGrindData.h_block !== nextGrindData.h_block) {
-					switchUpDifficulty += 1.5; // Category change is significantly harder
-				}
-
-				// Check if there's a modifier (topside/negative adds complexity)
-				const hasModifier = trickState.components.some(
-					(c) =>
-						c.type === "modifier" &&
-						["topside", "negative", "true_topside", "negative_true"].includes(
-							c.id,
-						),
+				// Add physics-based difficulty calculation
+				const physicsDifficulty = this.calculatePhysicsSwitchUpDifficulty(
+					currentGrindData,
+					nextGrindData,
+					trickState
 				);
-				if (hasModifier) {
-					// Topside = bending over obstacle, negative = underneath
-					// Both make switch-ups significantly harder due to body position
-					switchUpDifficulty += 0.8;
-
-					// Cross-body switch-ups with topside/negative are particularly difficult
-					if (
-						(currentPos === "front" && nextPos === "back") ||
-						(currentPos === "back" && nextPos === "front")
-					) {
-						switchUpDifficulty += 0.5; // Extra penalty for cross-body with modifier
-					}
-				}
+				switchUpDifficulty += physicsDifficulty;
 
 				// Check if there's an exit spin on this grind (switching up while spinning)
 				// This is an advanced technique - doing a switch-up mid-spin

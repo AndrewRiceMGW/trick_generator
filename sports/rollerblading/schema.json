@@ -234,11 +234,26 @@
 			"name": "Frontside",
 			"difficulty": 1,
 			"soul_based": false,
-			"h_block": false,
+			"h_block": true,
 			"foot_position": "frame",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["backslide", "soul", "mizou", "mistrial", "acid"],
-			"weight": 30
+			"weight": 30,
+			"physics": {
+				"back_foot_degree": 90,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "NA",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"soul": {
 			"id": "soul",
@@ -249,7 +264,37 @@
 			"foot_position": "inner_edge",
 			"position_relative_to_makio": "front",
 			"switch_up_to": ["frontside", "mizou", "mistrial", "makio", "acid"],
-			"weight": 25
+			"weight": 25,
+			"physics": {
+				"back_foot_degree": 0,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards back",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards back",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more back",
+				"h_block_type": "front"
+			},
+			"physics_topside": {
+				"back_foot_degree": 0,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards back",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards back",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more back",
+				"h_block_type": "front"
+			}
 		},
 		"mizou": {
 			"id": "mizou",
@@ -261,7 +306,37 @@
 			"position_relative_to_makio": "back",
 			"topside_name": "Sweatstance",
 			"switch_up_to": ["soul", "frontside", "pornstar", "mistrial", "acid"],
-			"weight": 25
+			"weight": 25,
+			"physics": {
+				"back_foot_degree": -90,
+				"front_foot_degree": 0,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "neutral",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more front",
+				"h_block_type": "back"
+			},
+			"physics_topside": {
+				"back_foot_degree": -90,
+				"front_foot_degree": 0,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "neutral",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more front",
+				"h_block_type": "back"
+			}
 		},
 		"makio": {
 			"id": "makio",
@@ -273,7 +348,37 @@
 			"position_relative_to_makio": "neutral",
 			"topside_name": "Fishbrain",
 			"switch_up_to": ["soul", "mizou", "mistrial", "acid"],
-			"weight": 20
+			"weight": 20,
+			"physics": {
+				"back_foot_degree": null,
+				"front_foot_degree": null,
+				"back_foot_knee": "NA",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "NA",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "on top",
+				"h_block_type": "NA"
+			},
+			"physics_topside": {
+				"back_foot_degree": null,
+				"front_foot_degree": null,
+				"back_foot_knee": "NA",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "NA",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "on top",
+				"h_block_type": "NA"
+			}
 		},
 		"backslide": {
 			"id": "backslide",
@@ -284,7 +389,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["frontside", "soul", "mizou"],
-			"weight": 12
+			"weight": 12,
+			"physics": {
+				"back_foot_degree": -90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "NA",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"acid": {
 			"id": "acid",
@@ -295,7 +415,37 @@
 			"foot_position": "front_backwards",
 			"position_relative_to_makio": "front",
 			"switch_up_to": ["soul", "frontside", "mizou", "mistrial"],
-			"weight": 8
+			"weight": 8,
+			"physics": {
+				"back_foot_degree": 0,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards back",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards back",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more back",
+				"h_block_type": "front"
+			},
+			"physics_topside": {
+				"back_foot_degree": 0,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards back",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards back",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more back",
+				"h_block_type": "front"
+			}
 		},
 		"royale": {
 			"id": "royale",
@@ -306,7 +456,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["frontside", "backslide", "pornstar"],
-			"weight": 12
+			"weight": 12,
+			"physics": {
+				"back_foot_degree": 90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "more back",
+				"h_block_type": "back"
+			}
 		},
 		"pornstar": {
 			"id": "pornstar",
@@ -318,7 +483,37 @@
 			"position_relative_to_makio": "back",
 			"alt_name": "Sunny Day",
 			"switch_up_to": ["royale", "frontside", "soul"],
-			"weight": 5
+			"weight": 5,
+			"physics": {
+				"back_foot_degree": -45,
+				"front_foot_degree": 45,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "yes",
+				"spin_multiplier": 180,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			},
+			"physics_topside": {
+				"back_foot_degree": -45,
+				"front_foot_degree": 45,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "yes",
+				"spin_multiplier": 180,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"torque": {
 			"id": "torque",
@@ -329,7 +524,37 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["royale", "backslide", "frontside"],
-			"weight": 8
+			"weight": 8,
+			"physics": {
+				"back_foot_degree": 90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": true,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "more back",
+				"h_block_type": "back"
+			},
+			"physics_topside": {
+				"back_foot_degree": 90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": true,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "more back",
+				"h_block_type": "back"
+			}
 		},
 		"farv": {
 			"id": "farv",
@@ -340,7 +565,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["royale", "backslide", "unity"],
-			"weight": 6
+			"weight": 6,
+			"physics": {
+				"back_foot_degree": -90,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "more front",
+				"h_block_type": "back"
+			}
 		},
 		"fastslide": {
 			"id": "fastslide",
@@ -351,7 +591,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["backslide", "royale"],
-			"weight": 8
+			"weight": 8,
+			"physics": {
+				"back_foot_degree": 90,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "NA",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"pudslide": {
 			"id": "pudslide",
@@ -362,7 +617,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["backslide", "fastslide"],
-			"weight": 4
+			"weight": 4,
+			"physics": {
+				"back_foot_degree": -90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "NA",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"savannah": {
 			"id": "savannah",
@@ -373,7 +643,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["unity", "royale"],
-			"weight": 2
+			"weight": 2,
+			"physics": {
+				"back_foot_degree": 90,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "NA",
+				"can_be_grabbed": true,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"unity": {
 			"id": "unity",
@@ -384,7 +669,22 @@
 			"foot_position": "h_block",
 			"position_relative_to_makio": "neutral",
 			"switch_up_to": ["frontside"],
-			"weight": 1
+			"weight": 1,
+			"physics": {
+				"back_foot_degree": -90,
+				"front_foot_degree": 90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "bent towards back",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "inner pointing towards back",
+				"topside_or_regular": "NA",
+				"can_be_grabbed": true,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 90,
+				"balance_point": "on top",
+				"h_block_type": "both"
+			}
 		},
 		"alleyoop_soul": {
 			"id": "alleyoop_soul",
@@ -395,7 +695,22 @@
 			"foot_position": "inner_edge",
 			"position_relative_to_makio": "front",
 			"switch_up_to": ["alleyoop_mizou", "frontside"],
-			"weight": 3
+			"weight": 3,
+			"physics": {
+				"back_foot_degree": 0,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards back",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards back",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more back",
+				"h_block_type": "front"
+			}
 		},
 		"alleyoop_mizou": {
 			"id": "alleyoop_mizou",
@@ -406,7 +721,22 @@
 			"foot_position": "outer_edge_trailing",
 			"position_relative_to_makio": "back",
 			"switch_up_to": ["alleyoop_soul", "frontside"],
-			"weight": 3
+			"weight": 3,
+			"physics": {
+				"back_foot_degree": -90,
+				"front_foot_degree": 0,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "neutral",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more front",
+				"h_block_type": "back"
+			}
 		},
 		"mistrial": {
 			"id": "mistrial",
@@ -417,7 +747,37 @@
 			"foot_position": "inner_edge",
 			"position_relative_to_makio": "back",
 			"switch_up_to": ["soul", "mizou", "makio"],
-			"weight": 15
+			"weight": 15,
+			"physics": {
+				"back_foot_degree": 90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "regular",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more front",
+				"h_block_type": "back"
+			},
+			"physics_topside": {
+				"back_foot_degree": 90,
+				"front_foot_degree": -90,
+				"back_foot_knee": "bent towards front",
+				"front_foot_knee": "NA",
+				"back_foot_hblock_pointing": "inner pointing towards front",
+				"front_foot_hblock_pointing": "NA",
+				"topside_or_regular": "topside",
+				"can_be_grabbed": false,
+				"cross_grab": false,
+				"crossed_foot": "NA",
+				"spin_multiplier": 180,
+				"balance_point": "more front",
+				"h_block_type": "back"
+			}
 		}
 	},
 
