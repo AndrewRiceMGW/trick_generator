@@ -128,8 +128,12 @@ class TrickGenerator {
 		const spinOptions = Object.values(this.schema.entry_spins).filter(
 			(spinData) => {
 				// For stairs, only allow multiples of 180° (0, 180, 360, 540, 720, 900, 1080)
-				if (trickState.obstacle === 'stairs') {
-					return spinData.degrees >= 0 && spinData.degrees <= maxSpin && spinData.degrees % 180 === 0;
+				if (trickState.obstacle === "stairs") {
+					return (
+						spinData.degrees >= 0 &&
+						spinData.degrees <= maxSpin &&
+						spinData.degrees % 180 === 0
+					);
 				}
 				return spinData.degrees > 0 && spinData.degrees <= maxSpin;
 			},
@@ -288,7 +292,7 @@ class TrickGenerator {
 	 */
 	calculateAngularDistance(angle1, angle2) {
 		if (angle1 === null || angle2 === null) return 0;
-		
+
 		let diff = Math.abs(angle1 - angle2);
 		// Normalize to 0-180° (shortest path)
 		if (diff > 180) diff = 360 - diff;
@@ -298,7 +302,11 @@ class TrickGenerator {
 	/**
 	 * Calculate physics-based switch-up difficulty using angular rotation and edge transitions
 	 */
-	calculatePhysicsSwitchUpDifficulty(currentGrindData, nextGrindData, trickState) {
+	calculatePhysicsSwitchUpDifficulty(
+		currentGrindData,
+		nextGrindData,
+		trickState,
+	) {
 		// Check for topside/negative modifier
 		const hasModifier = trickState.components.some(
 			(c) =>
@@ -307,12 +315,14 @@ class TrickGenerator {
 		);
 
 		// Select physics data (topside variant if applicable)
-		const currentPhysics = hasModifier && currentGrindData.physics_topside
-			? currentGrindData.physics_topside
-			: currentGrindData.physics;
-		const nextPhysics = hasModifier && nextGrindData.physics_topside
-			? nextGrindData.physics_topside
-			: nextGrindData.physics;
+		const currentPhysics =
+			hasModifier && currentGrindData.physics_topside
+				? currentGrindData.physics_topside
+				: currentGrindData.physics;
+		const nextPhysics =
+			hasModifier && nextGrindData.physics_topside
+				? nextGrindData.physics_topside
+				: nextGrindData.physics;
 
 		if (!currentPhysics || !nextPhysics) {
 			// Fallback to old system if physics data missing
@@ -324,35 +334,46 @@ class TrickGenerator {
 		// DETECT H-BLOCK ↔ H-BLOCK TRANSITIONS (weight transfers, not rotations)
 		// When h_block_type changes, feet are being lifted OFF or placed ON the h-block
 		// This is vertical movement (weight transfer), not horizontal rotation
-		const isHBlockTransition = currentPhysics.h_block_type !== nextPhysics.h_block_type &&
-			currentPhysics.h_block_type !== "NA" && nextPhysics.h_block_type !== "NA" &&
-			currentPhysics.h_block_type !== null && nextPhysics.h_block_type !== null;
+		const isHBlockTransition =
+			currentPhysics.h_block_type !== nextPhysics.h_block_type &&
+			currentPhysics.h_block_type !== "NA" &&
+			nextPhysics.h_block_type !== "NA" &&
+			currentPhysics.h_block_type !== null &&
+			nextPhysics.h_block_type !== null;
 
 		// 1. ANGULAR ROTATION - Calculate foot rotation difficulty
 		const backFootRotation = this.calculateAngularDistance(
 			currentPhysics.back_foot_degree,
-			nextPhysics.back_foot_degree
+			nextPhysics.back_foot_degree,
 		);
 		const frontFootRotation = this.calculateAngularDistance(
 			currentPhysics.front_foot_degree,
-			nextPhysics.front_foot_degree
+			nextPhysics.front_foot_degree,
 		);
 
 		// Determine which feet are involved in h-block category change
 		let backFootIsHBlockTransfer = false;
 		let frontFootIsHBlockTransfer = false;
-		
+
 		if (isHBlockTransition) {
 			// Check if back foot is changing h-block status
 			// e.g., "both"→"back" means front foot lifted, back foot stayed
 			// e.g., "back"→"both" means front foot placed down, back foot stayed
 			// e.g., "both"→"front" means back foot lifted, front foot stayed
-			if ((currentPhysics.h_block_type === "both" && nextPhysics.h_block_type === "front") ||
-				(currentPhysics.h_block_type === "front" && nextPhysics.h_block_type === "both")) {
+			if (
+				(currentPhysics.h_block_type === "both" &&
+					nextPhysics.h_block_type === "front") ||
+				(currentPhysics.h_block_type === "front" &&
+					nextPhysics.h_block_type === "both")
+			) {
 				backFootIsHBlockTransfer = true; // Back foot lifted/placed
 			}
-			if ((currentPhysics.h_block_type === "both" && nextPhysics.h_block_type === "back") ||
-				(currentPhysics.h_block_type === "back" && nextPhysics.h_block_type === "both")) {
+			if (
+				(currentPhysics.h_block_type === "both" &&
+					nextPhysics.h_block_type === "back") ||
+				(currentPhysics.h_block_type === "back" &&
+					nextPhysics.h_block_type === "both")
+			) {
 				frontFootIsHBlockTransfer = true; // Front foot lifted/placed
 			}
 		}
@@ -361,7 +382,7 @@ class TrickGenerator {
 		// Feet involved in h-block transfers get minimal penalty (just weight transfer difficulty)
 		let backFootPenalty = 0;
 		let frontFootPenalty = 0;
-		
+
 		if (backFootIsHBlockTransfer) {
 			// Back foot is lifting/placing, not rotating - minimal penalty
 			backFootPenalty = 0.3;
@@ -369,7 +390,7 @@ class TrickGenerator {
 			// Normal rotation: 0°=0, 45°=0.3, 90°=0.8, 135°=1.3, 180°=2.0
 			backFootPenalty = Math.pow(backFootRotation / 90, 1.5) * 1.0;
 		}
-		
+
 		if (frontFootIsHBlockTransfer) {
 			// Front foot is lifting/placing, not rotating - minimal penalty
 			frontFootPenalty = 0.3;
@@ -377,41 +398,49 @@ class TrickGenerator {
 			// Normal rotation
 			frontFootPenalty = Math.pow(frontFootRotation / 90, 1.5) * 1.0;
 		}
-		
+
 		difficulty += backFootPenalty + frontFootPenalty;
 
 		// 2. EDGE TRANSITIONS - Detect inner↔outer edge changes
-		const backEdgeChanged = currentPhysics.back_foot_hblock_pointing !== "NA" &&
+		const backEdgeChanged =
+			currentPhysics.back_foot_hblock_pointing !== "NA" &&
 			currentPhysics.back_foot_hblock_pointing !== null &&
 			nextPhysics.back_foot_hblock_pointing !== "NA" &&
 			nextPhysics.back_foot_hblock_pointing !== null &&
-			currentPhysics.back_foot_hblock_pointing !== nextPhysics.back_foot_hblock_pointing;
-		const frontEdgeChanged = currentPhysics.front_foot_hblock_pointing !== "NA" &&
+			currentPhysics.back_foot_hblock_pointing !==
+				nextPhysics.back_foot_hblock_pointing;
+		const frontEdgeChanged =
+			currentPhysics.front_foot_hblock_pointing !== "NA" &&
 			currentPhysics.front_foot_hblock_pointing !== null &&
 			nextPhysics.front_foot_hblock_pointing !== "NA" &&
 			nextPhysics.front_foot_hblock_pointing !== null &&
-			currentPhysics.front_foot_hblock_pointing !== nextPhysics.front_foot_hblock_pointing;
+			currentPhysics.front_foot_hblock_pointing !==
+				nextPhysics.front_foot_hblock_pointing;
 
 		if (backEdgeChanged) {
 			// Edge transition adds resistance
 			// Check if edge points towards other foot (harder) or away (easier)
-			const pointsTowards = nextPhysics.back_foot_hblock_pointing.includes("towards");
+			const pointsTowards =
+				nextPhysics.back_foot_hblock_pointing.includes("towards");
 			difficulty += pointsTowards ? 0.6 : 0.4;
 		}
 		if (frontEdgeChanged) {
-			const pointsTowards = nextPhysics.front_foot_hblock_pointing.includes("towards");
+			const pointsTowards =
+				nextPhysics.front_foot_hblock_pointing.includes("towards");
 			difficulty += pointsTowards ? 0.6 : 0.4;
 		}
 
 		// 3. KNEE DIRECTION CHANGES - Harder to reverse knee bend
-		const backKneeChanged = currentPhysics.back_foot_knee !== "NA" &&
+		const backKneeChanged =
+			currentPhysics.back_foot_knee !== "NA" &&
 			currentPhysics.back_foot_knee !== null &&
 			nextPhysics.back_foot_knee !== "NA" &&
 			nextPhysics.back_foot_knee !== null &&
 			currentPhysics.back_foot_knee !== nextPhysics.back_foot_knee &&
 			currentPhysics.back_foot_knee !== "neutral" &&
 			nextPhysics.back_foot_knee !== "neutral";
-		const frontKneeChanged = currentPhysics.front_foot_knee !== "NA" &&
+		const frontKneeChanged =
+			currentPhysics.front_foot_knee !== "NA" &&
 			currentPhysics.front_foot_knee !== null &&
 			nextPhysics.front_foot_knee !== "NA" &&
 			nextPhysics.front_foot_knee !== null &&
@@ -426,7 +455,10 @@ class TrickGenerator {
 		if (currentPhysics.balance_point !== nextPhysics.balance_point) {
 			const balanceShift = `${currentPhysics.balance_point}_to_${nextPhysics.balance_point}`;
 			// Cross-body balance shifts are hardest
-			if (balanceShift.includes("front_to_more back") || balanceShift.includes("back_to_more front")) {
+			if (
+				balanceShift.includes("front_to_more back") ||
+				balanceShift.includes("back_to_more front")
+			) {
 				difficulty += 0.8;
 			} else if (balanceShift.includes("on top")) {
 				// Transitioning to/from centered position is moderate
@@ -440,8 +472,9 @@ class TrickGenerator {
 		// But NOT for soul-based grinds where h_block_type just indicates which foot is in soul position
 		if (currentPhysics.h_block_type !== nextPhysics.h_block_type) {
 			// Check if both are soul-based grinds (h_block: false)
-			const bothSoulBased = currentGrindData.soul_based && nextGrindData.soul_based;
-			
+			const bothSoulBased =
+				currentGrindData.soul_based && nextGrindData.soul_based;
+
 			if (bothSoulBased) {
 				// Soul-based grinds: h_block_type change just means swapping which foot is in soul position
 				// This is a foot role swap, not a major category change - minimal penalty
@@ -454,9 +487,13 @@ class TrickGenerator {
 		}
 
 		// 6. CROSSED FOOT COMPLEXITY - Uncrossing/crossing feet is disorienting
-		if (currentPhysics.crossed_foot !== nextPhysics.crossed_foot &&
-			currentPhysics.crossed_foot !== null && nextPhysics.crossed_foot !== null &&
-			(currentPhysics.crossed_foot === "yes" || nextPhysics.crossed_foot === "yes")) {
+		if (
+			currentPhysics.crossed_foot !== nextPhysics.crossed_foot &&
+			currentPhysics.crossed_foot !== null &&
+			nextPhysics.crossed_foot !== null &&
+			(currentPhysics.crossed_foot === "yes" ||
+				nextPhysics.crossed_foot === "yes")
+		) {
 			difficulty += 0.7;
 		}
 
@@ -499,7 +536,7 @@ class TrickGenerator {
 		for (let i = 0; i < numSwitchUps; i++) {
 			// Any grind can switch to any other grind - select from all available grinds
 			const allGrinds = Object.keys(this.schema.grinds).filter(
-				grindId => grindId !== currentGrind // Don't switch to same grind (for now)
+				(grindId) => grindId !== currentGrind, // Don't switch to same grind (for now)
 			);
 
 			if (allGrinds.length > 0) {
@@ -518,7 +555,7 @@ class TrickGenerator {
 				const physicsDifficulty = this.calculatePhysicsSwitchUpDifficulty(
 					currentGrindData,
 					nextGrindData,
-					trickState
+					trickState,
 				);
 				switchUpDifficulty += physicsDifficulty;
 

@@ -19,7 +19,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "on top",
-        "h_block_type": "NA"
+        "h_block_type": "NA",
     },
     "fishbrain": {  # topside makio
         "back_foot_degree": 0,
@@ -34,7 +34,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "on top",
-        "h_block_type": "NA"
+        "h_block_type": "NA",
     },
     "soul": {
         "back_foot_degree": 0,
@@ -49,7 +49,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more back",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "topsoul": {
         "back_foot_degree": 0,
@@ -64,7 +64,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more back",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "torque_soul": {
         "back_foot_degree": 0,
@@ -79,7 +79,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "top_torque_soul": {
         "back_foot_degree": 0,
@@ -94,7 +94,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "acid_soul": {
         "back_foot_degree": 0,
@@ -109,7 +109,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more back",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "topacid": {
         "back_foot_degree": 0,
@@ -124,7 +124,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more back",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "pornstar": {
         "back_foot_degree": -90,
@@ -139,7 +139,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "top_pornstar": {
         "back_foot_degree": -90,
@@ -154,7 +154,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "mizou": {
         "back_foot_degree": -90,
@@ -169,7 +169,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "sweatstance": {  # topside mizou
         "back_foot_degree": -90,
@@ -184,7 +184,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "mistrial": {
         "back_foot_degree": -90,
@@ -199,7 +199,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "top_mistrial": {
         "back_foot_degree": -90,
@@ -214,7 +214,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     # X grinds
     "x_grind": {
@@ -230,7 +230,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "on top",
-        "h_block_type": "NA"
+        "h_block_type": "NA",
     },
     "topside_x_grind": {
         "back_foot_degree": 0,
@@ -245,7 +245,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 180,
         "balance_point": "on top",
-        "h_block_type": "NA"
+        "h_block_type": "NA",
     },
     # Full H-block tricks
     "frontside": {
@@ -261,7 +261,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "on top",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "backslide": {
         "back_foot_degree": -90,
@@ -276,7 +276,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "on top",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "frontside_royale": {
         "back_foot_degree": 90,
@@ -291,7 +291,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more front",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "backside_royale": {
         "back_foot_degree": -90,
@@ -306,7 +306,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more front",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "frontside_farv": {
         "back_foot_degree": 90,
@@ -321,7 +321,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more back",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "backside_farv": {
         "back_foot_degree": -90,
@@ -336,7 +336,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more back",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     # Single foot h-block tricks
     "frontside_torque": {
@@ -352,7 +352,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more back",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "backside_torque": {
         "back_foot_degree": None,
@@ -367,7 +367,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more back",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "frontside_unity": {
         "back_foot_degree": 90,
@@ -382,7 +382,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "front foot",
         "spin_multiplier": 90,
         "balance_point": "on top",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "backside_unity": {
         "back_foot_degree": -90,
@@ -397,7 +397,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "front foot",
         "spin_multiplier": 90,
         "balance_point": "on top",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     # Crossed foot tricks
     "frontside_savannah": {
@@ -413,7 +413,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "back foot",
         "spin_multiplier": 90,
         "balance_point": "on top",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     "backside_savannah": {
         "back_foot_degree": 90,
@@ -428,7 +428,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "back foot",
         "spin_multiplier": 90,
         "balance_point": "on top",
-        "h_block_type": "both"
+        "h_block_type": "both",
     },
     # Single foot h-block back foot tricks
     "frontside_fastslide": {
@@ -444,7 +444,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "backside_fastslide": {
         "back_foot_degree": None,
@@ -459,7 +459,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more front",
-        "h_block_type": "front"
+        "h_block_type": "front",
     },
     "frontside_pudslide": {
         "back_foot_degree": 90,
@@ -474,7 +474,7 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more front",
-        "h_block_type": "back"
+        "h_block_type": "back",
     },
     "backside_pudslide": {
         "back_foot_degree": -90,
@@ -489,10 +489,11 @@ TRICK_PHYSICS = {
         "crossed_foot": "NA",
         "spin_multiplier": 90,
         "balance_point": "more back",
-        "h_block_type": "back"
-    }
+        "h_block_type": "back",
+    },
 }
 
 if __name__ == "__main__":
     import json
+
     print(json.dumps(TRICK_PHYSICS, indent=2))
