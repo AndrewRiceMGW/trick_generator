@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#0f172a">
     <link rel="manifest" href="../../manifest.json">
     <title>Aggressive Inline Trick Generator</title>
     <style>
@@ -15,10 +15,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
             min-height: 100vh;
             padding: 20px;
-            color: #fff;
+            color: #e0f2fe;
         }
 
         .container {
@@ -31,10 +31,10 @@
             align-items: center;
             gap: 8px;
             padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.3);
             border-radius: 10px;
-            color: #fff;
+            color: #7dd3fc;
             font-size: 0.9em;
             cursor: pointer;
             margin-bottom: 20px;
@@ -43,8 +43,10 @@
         }
 
         .back-button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(14, 165, 233, 0.4);
+            border-color: rgba(14, 165, 233, 0.6);
             transform: translateX(-3px);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
         }
 
         header {
@@ -68,15 +70,94 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
             border-radius: 10px;
             font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .step-indicator .current-step {
             font-size: 1.1em;
             font-weight: bold;
-            color: #fbbf24;
+            color: #22d3ee;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        /* Step Container */
+        .step-container {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation Buttons */
+        .step-navigation {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn.prev {
+            background: rgba(30, 58, 95, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #7dd3fc;
+        }
+
+        .nav-btn.prev:hover {
+            background: rgba(30, 58, 95, 0.9);
+            border-color: rgba(59, 130, 246, 0.7);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            color: #fff;
+            border: 1px solid rgba(14, 165, 233, 0.5);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.5);
+        }
+
+        .nav-btn.next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(14, 165, 233, 0.7);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:disabled:hover {
+            transform: none;
         }
 
         /* Obstacle Selection */
@@ -88,27 +169,27 @@
         }
 
         .obstacle-card {
-            background: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(14, 165, 233, 0.3);
             position: relative;
         }
 
         .obstacle-card:hover {
             transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(6, 182, 212, 0.25) 100%);
+            border-color: rgba(14, 165, 233, 0.6);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
         }
 
         .obstacle-card.selected {
-            border-color: #fbbf24;
-            background: rgba(251, 191, 36, 0.3);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            border-color: #22d3ee;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.25) 0%, rgba(6, 182, 212, 0.25) 100%);
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.6), 0 8px 25px rgba(14, 165, 233, 0.3);
         }
 
         .obstacle-icon {
@@ -140,32 +221,37 @@
         }
 
         .feature-tag {
-            background: rgba(34, 197, 94, 0.3);
+            background: rgba(6, 182, 212, 0.3);
             padding: 4px 8px;
             border-radius: 8px;
             font-size: 0.7em;
             font-weight: 600;
-            border: 1px solid rgba(34, 197, 94, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.6);
+            color: #7dd3fc;
         }
 
         .feature-tag.limited {
-            background: rgba(251, 191, 36, 0.3);
-            border-color: rgba(251, 191, 36, 0.5);
+            background: rgba(14, 165, 233, 0.3);
+            border-color: rgba(14, 165, 233, 0.6);
+            color: #93c5fd;
         }
 
         .feature-tag.no {
-            background: rgba(239, 68, 68, 0.3);
-            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(30, 58, 95, 0.5);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #94a3b8;
         }
 
         /* Obstacle Options */
         .obstacle-options {
             display: none;
-            background: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(14, 165, 233, 0.3);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .obstacle-options.show {
@@ -190,7 +276,7 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid rgba(14, 165, 233, 0.3);
         }
 
         .options-title {
@@ -200,17 +286,19 @@
 
         .change-obstacle-btn {
             padding: 8px 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.4);
             border-radius: 8px;
-            color: #fff;
+            color: #7dd3fc;
             font-size: 0.85em;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .change-obstacle-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(14, 165, 233, 0.4);
+            border-color: rgba(14, 165, 233, 0.7);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
 
         .option-group {
@@ -231,12 +319,24 @@
         select, input[type="number"] {
             width: 100%;
             padding: 12px;
-            border: none;
+            border: 1px solid rgba(14, 165, 233, 0.3);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
+            background: rgba(15, 23, 42, 0.7);
+            color: #e0f2fe;
             font-size: 1em;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, input[type="number"]:hover {
+            border-color: rgba(14, 165, 233, 0.6);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
         }
 
         .checkbox-group {
@@ -252,12 +352,13 @@
         }
 
         .info-box {
-            background: rgba(59, 130, 246, 0.2);
-            border: 2px solid rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.5);
             padding: 12px;
             border-radius: 8px;
             font-size: 0.85em;
             line-height: 1.5;
+            color: #bae6fd;
         }
 
         /* Generate Section */
@@ -272,21 +373,29 @@
         .generate-btn {
             width: 100%;
             padding: 20px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border: none;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #0ea5e9 100%);
+            background-size: 200% 100%;
+            border: 1px solid rgba(14, 165, 233, 0.5);
             border-radius: 12px;
             color: #fff;
             font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.5);
             margin-bottom: 20px;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 30px rgba(14, 165, 233, 0.7);
+            border-color: #22d3ee;
         }
 
         .generate-btn:active {
@@ -300,13 +409,14 @@
 
         /* Trick Display */
         .trick-display {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 95, 0.95) 100%);
             padding: 30px;
             border-radius: 15px;
-            color: #333;
+            border: 2px solid rgba(14, 165, 233, 0.4);
+            color: #e0f2fe;
             min-height: 150px;
             display: none;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.3), 0 0 60px rgba(6, 182, 212, 0.2);
         }
 
         .trick-display.show {
@@ -318,9 +428,10 @@
             font-size: 1.8em;
             font-weight: bold;
             margin-bottom: 15px;
-            color: #667eea;
+            color: #22d3ee;
             text-align: center;
             line-height: 1.3;
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
         }
 
         .trick-meta {
@@ -328,7 +439,8 @@
             justify-content: space-around;
             margin-bottom: 20px;
             padding: 15px;
-            background: rgba(102, 126, 234, 0.1);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
             border-radius: 10px;
         }
 
@@ -338,28 +450,30 @@
 
         .meta-label {
             font-size: 0.8em;
-            color: #666;
+            color: #94a3b8;
             margin-bottom: 5px;
         }
 
         .meta-value {
             font-size: 1.1em;
             font-weight: bold;
-            color: #667eea;
+            color: #7dd3fc;
         }
 
         .difficulty-bar {
-            height: 8px;
-            background: rgba(102, 126, 234, 0.2);
-            border-radius: 4px;
+            height: 10px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 5px;
             overflow: hidden;
             margin-bottom: 10px;
         }
 
         .difficulty-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4ade80, #fbbf24, #f87171);
+            background: linear-gradient(90deg, #06b6d4, #0ea5e9, #3b82f6, #6366f1);
             transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
         }
 
         .trick-components {
@@ -370,10 +484,11 @@
             display: inline-block;
             padding: 6px 12px;
             margin: 5px;
-            background: rgba(102, 126, 234, 0.15);
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.4);
             border-radius: 6px;
             font-size: 0.85em;
-            color: #667eea;
+            color: #7dd3fc;
             font-weight: 500;
         }
 
@@ -386,9 +501,9 @@
         .action-btn {
             flex: 1;
             padding: 12px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
+            border: 2px solid #0ea5e9;
+            background: rgba(15, 23, 42, 0.8);
+            color: #7dd3fc;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
@@ -396,8 +511,692 @@
         }
 
         .action-btn:hover {
-            background: #667eea;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
             color: white;
+            border-color: #22d3ee;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        /* Mode Switcher */
+        .mode-switcher {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .mode-btn {
+            padding: 12px 30px;
+            background: rgba(14, 165, 233, 0.2);
+            border: 2px solid rgba(14, 165, 233, 0.4);
+            border-radius: 10px;
+            color: #7dd3fc;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            background: rgba(14, 165, 233, 0.3);
+            border-color: rgba(14, 165, 233, 0.6);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            border-color: #22d3ee;
+            color: white;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.5);
+        }
+
+        /* B.L.A.D.E. Game Mode */
+        .game-mode {
+            display: none;
+        }
+
+        .game-mode.active {
+            display: block;
+        }
+
+        .practice-mode {
+            display: block;
+        }
+
+        .practice-mode.hidden {
+            display: none;
+        }
+
+        .game-setup {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-setup h2 {
+            color: #22d3ee;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8em;
+            text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+        }
+
+        .setup-section {
+            margin-bottom: 25px;
+        }
+
+        .setup-section h3 {
+            color: #7dd3fc;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .player-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .player-input-group input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 8px;
+            color: #e0f2fe;
+            font-size: 1em;
+        }
+
+        .player-input-group input::placeholder {
+            color: #64748b;
+        }
+
+        .player-input-group button {
+            padding: 10px 20px;
+            background: rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 8px;
+            color: #fca5a5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .player-input-group button:hover {
+            background: rgba(239, 68, 68, 0.5);
+        }
+
+        .add-player-btn {
+            padding: 10px 20px;
+            background: rgba(14, 165, 233, 0.3);
+            border: 1px solid rgba(14, 165, 233, 0.5);
+            border-radius: 8px;
+            color: #7dd3fc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .add-player-btn:hover {
+            background: rgba(14, 165, 233, 0.5);
+        }
+
+        .start-game-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            border: 1px solid rgba(14, 165, 233, 0.5);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.5);
+        }
+
+        .start-game-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(14, 165, 233, 0.7);
+        }
+
+        .start-game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Active Game */
+        .active-game {
+            display: none;
+        }
+
+        .active-game.show {
+            display: block;
+        }
+
+        .game-header {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .current-trick {
+            font-size: 1.6em;
+            color: #22d3ee;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .player-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .player-card.active {
+            border-color: #22d3ee;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+        }
+
+        .player-card.eliminated {
+            opacity: 0.4;
+            border-color: rgba(239, 68, 68, 0.5);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+        }
+
+        .player-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #7dd3fc;
+            margin-bottom: 10px;
+        }
+
+        .blade-letters {
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .blade-letters .letter {
+            display: inline-block;
+            width: 30px;
+            color: #334155;
+        }
+
+        .blade-letters .letter.earned {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+        }
+
+        .turn-controls {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .attempts-display {
+            text-align: center;
+            font-size: 1.3em;
+            color: #7dd3fc;
+            margin-bottom: 20px;
+        }
+
+        .attempts-display .count {
+            font-size: 1.5em;
+            color: #22d3ee;
+            font-weight: bold;
+        }
+
+        .turn-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .success-btn {
+            flex: 1;
+            padding: 18px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+        }
+
+        .fail-btn {
+            flex: 1;
+            padding: 18px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .fail-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(239, 68, 68, 0.6);
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .game-control-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.4);
+            border-radius: 8px;
+            color: #7dd3fc;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-control-btn:hover {
+            background: rgba(14, 165, 233, 0.4);
+            border-color: rgba(14, 165, 233, 0.7);
+        }
+
+        .winner-display {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border: 2px solid #22d3ee;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 0 40px rgba(34, 211, 238, 0.5);
+        }
+
+        .winner-display h2 {
+            font-size: 2.5em;
+            color: #22d3ee;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(34, 211, 238, 0.6);
+        }
+
+        .winner-display .winner-name {
+            font-size: 2em;
+            color: #7dd3fc;
+            font-weight: bold;
+        }
+
+        /* User Profile System */
+        .user-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-info:hover {
+            border-color: rgba(14, 165, 233, 0.6);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .user-name {
+            color: #7dd3fc;
+            font-weight: 600;
+        }
+
+        .login-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            border: 1px solid rgba(14, 165, 233, 0.5);
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+            border: 2px solid rgba(14, 165, 233, 0.4);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.3);
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            color: #22d3ee;
+            font-weight: bold;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #7dd3fc;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(14, 165, 233, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #7dd3fc;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 8px;
+            color: #e0f2fe;
+            font-size: 1em;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.3);
+        }
+
+        .profile-tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            color: #7dd3fc;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .profile-tab:hover {
+            color: #22d3ee;
+        }
+
+        .profile-tab.active {
+            color: #22d3ee;
+            border-bottom-color: #22d3ee;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #22d3ee;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+
+        .trick-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .trick-log-item {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .trick-log-item .trick-title {
+            font-weight: 600;
+            color: #7dd3fc;
+            margin-bottom: 5px;
+        }
+
+        .trick-log-item .trick-date {
+            font-size: 0.85em;
+            color: #94a3b8;
+        }
+
+        .crew-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .crew-member {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .crew-member .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .crew-member .info {
+            flex: 1;
+        }
+
+        .crew-member .name {
+            font-weight: 600;
+            color: #7dd3fc;
+        }
+
+        .crew-member .level {
+            font-size: 0.85em;
+            color: #94a3b8;
+        }
+
+        .crew-member .remove-btn {
+            padding: 8px 15px;
+            background: rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 6px;
+            color: #fca5a5;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .crew-member .remove-btn:hover {
+            background: rgba(239, 68, 68, 0.5);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            border: 1px solid rgba(14, 165, 233, 0.5);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.5);
+        }
+
+        .log-trick-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .log-trick-btn:hover {
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
         }
 
         @media (max-width: 600px) {
@@ -412,6 +1211,23 @@
             .trick-name {
                 font-size: 1.4em;
             }
+
+            .user-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .players-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -419,28 +1235,87 @@
     <div class="container">
         <a href="../../index.html" class="back-button">← Back to Sports</a>
         
+        <!-- User Bar -->
+        <div class="user-bar" id="userBar">
+            <div class="user-info" id="userInfo" onclick="openProfileModal()" style="display:none;">
+                <div class="user-avatar" id="userAvatar"></div>
+                <div class="user-name" id="userName"></div>
+            </div>
+            <button class="login-btn" id="loginBtn" onclick="openLoginModal()">👤 Login / Sign Up</button>
+        </div>
+
         <header>
             <h1>⛸️ Aggressive Inline</h1>
             <p class="subtitle">🎯 Obstacle-First Trick Generator</p>
         </header>
 
+        <!-- Mode Switcher -->
+        <div class="mode-switcher">
+            <button class="mode-btn active" id="practiceModeBtn" onclick="switchMode('practice')">
+                🎲 Practice Mode
+            </button>
+            <button class="mode-btn" id="bladeModeBtn" onclick="switchMode('blade')">
+                🏆 B.L.A.D.E.
+            </button>
+        </div>
+
+        <!-- Practice Mode (Original Generator) -->
+        <div class="practice-mode" id="practiceMode">
         <div class="step-indicator" id="stepIndicator">
-            <span class="current-step">Step 1:</span> Choose Your Obstacle
+            <span class="current-step">Step 1 of 4:</span> Choose Your Obstacle
         </div>
 
-        <!-- Obstacle Selection -->
-        <div class="obstacles-grid" id="obstaclesGrid">
-            <!-- Obstacles will be dynamically generated -->
-        </div>
-
-        <!-- Obstacle Options -->
-        <div class="obstacle-options" id="obstacleOptions">
-            <div class="options-header">
-                <div class="options-title" id="selectedObstacleName"></div>
-                <button class="change-obstacle-btn" id="changeObstacleBtn">Change Obstacle</button>
+        <!-- Step 1: Obstacle Selection -->
+        <div class="step-container active" id="step1">
+            <div class="obstacles-grid" id="obstaclesGrid">
+                <!-- Obstacles will be dynamically generated -->
             </div>
-            <div id="dynamicOptions">
-                <!-- Options will be dynamically generated based on obstacle -->
+        </div>
+
+        <!-- Step 2: Obstacle Options (Length/Height) -->
+        <div class="step-container" id="step2">
+            <div class="obstacle-options show">
+                <div class="options-header">
+                    <div class="options-title" id="selectedObstacleName"></div>
+                </div>
+                <div id="dynamicOptionsStep2">
+                    <!-- Length/Height options will be dynamically generated -->
+                </div>
+            </div>
+            <div class="step-navigation">
+                <button class="nav-btn prev" onclick="previousStep()">← Previous</button>
+                <button class="nav-btn next" onclick="nextStep()">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Switch-ups (for grinds only) -->
+        <div class="step-container" id="step3">
+            <div class="obstacle-options show">
+                <div class="options-header">
+                    <div class="options-title">Switch-ups</div>
+                </div>
+                <div id="dynamicOptionsStep3">
+                    <!-- Switch-up options will be dynamically generated -->
+                </div>
+            </div>
+            <div class="step-navigation">
+                <button class="nav-btn prev" onclick="previousStep()">← Previous</button>
+                <button class="nav-btn next" onclick="nextStep()">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Difficulty & Additional Options -->
+        <div class="step-container" id="step4">
+            <div class="obstacle-options show">
+                <div class="options-header">
+                    <div class="options-title">Trick Settings</div>
+                </div>
+                <div id="dynamicOptionsStep4">
+                    <!-- Difficulty and additional options will be dynamically generated -->
+                </div>
+            </div>
+            <div class="step-navigation">
+                <button class="nav-btn prev" onclick="previousStep()">← Previous</button>
             </div>
         </div>
 
@@ -471,8 +1346,274 @@
             </div>
             <div class="trick-components" id="trickComponents"></div>
             <div class="action-buttons">
+                <button class="action-btn log-trick-btn" id="logTrickBtn" onclick="logCurrentTrick()" style="display:none;">✓ Log This Trick</button>
                 <button class="action-btn" id="generateAgainBtn">🔄 Generate Again</button>
                 <button class="action-btn" id="newObstacleBtn">📍 New Obstacle</button>
+            </div>
+        </div>
+        </div>
+        <!-- End Practice Mode -->
+
+        <!-- B.L.A.D.E. Game Mode -->
+        <div class="game-mode" id="bladeMode">
+            <!-- Game Setup -->
+            <div class="game-setup" id="gameSetup">
+                <h2>🏆 B.L.A.D.E. Setup</h2>
+                
+                <div class="setup-section">
+                    <h3>👥 Players</h3>
+                    <div id="playersInputList">
+                        <div class="player-input-group">
+                            <input type="text" placeholder="Player 1 name" class="player-name-input" />
+                            <button onclick="removePlayerInput(this)" style="display:none;">✕</button>
+                        </div>
+                        <div class="player-input-group">
+                            <input type="text" placeholder="Player 2 name" class="player-name-input" />
+                            <button onclick="removePlayerInput(this)">✕</button>
+                        </div>
+                    </div>
+                    <button class="add-player-btn" onclick="addPlayerInput()">+ Add Player</button>
+                    <button class="add-player-btn" id="loadCrewBtn" onclick="loadCrewMembers()" style="margin-top: 10px; display: none;">👥 Load from Crew</button>
+                </div>
+
+                <div class="setup-section">
+                    <h3>🎯 Game Settings</h3>
+                    <div class="option-group">
+                        <label>Obstacle</label>
+                        <select id="gameObstacleSelect">
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="option-group" id="gameLengthGroup" style="display:none;">
+                        <label>Length</label>
+                        <select id="gameLengthSelect">
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="option-group" id="gameSwitchUpsGroup" style="display:none;">
+                        <label>Switch-ups</label>
+                        <select id="gameSwitchUpsSelect">
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>Difficulty Range</label>
+                        <select id="gameDifficultySelect">
+                            <option value="any">Any Difficulty</option>
+                            <option value="beginner">Beginner (0-5)</option>
+                            <option value="intermediate">Intermediate (5-10)</option>
+                            <option value="advanced">Advanced (10-15)</option>
+                            <option value="pro">Pro (15-25)</option>
+                            <option value="insane">Insane (25+)</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>Attempts Per Trick</label>
+                        <select id="gameAttemptsSelect">
+                            <option value="1">1 Attempt</option>
+                            <option value="2">2 Attempts</option>
+                            <option value="3" selected>3 Attempts</option>
+                            <option value="4">4 Attempts</option>
+                            <option value="5">5 Attempts</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="start-game-btn" id="startGameBtn" onclick="startBladeGame()">
+                    🎮 Start B.L.A.D.E. Game
+                </button>
+            </div>
+
+            <!-- Active Game -->
+            <div class="active-game" id="activeGame">
+                <div class="game-header">
+                    <div class="current-trick" id="currentGameTrick">Loading trick...</div>
+                    <div style="color: #7dd3fc; margin-top: 10px;">
+                        <span id="currentPlayerTurn"></span>
+                    </div>
+                </div>
+
+                <div class="players-grid" id="playersGrid">
+                    <!-- Player cards will be generated dynamically -->
+                </div>
+
+                <div class="turn-controls" id="turnControls">
+                    <div class="attempts-display">
+                        Attempt <span class="count" id="currentAttempt">1</span> of <span class="count" id="maxAttempts">3</span>
+                    </div>
+                    <div class="turn-buttons">
+                        <button class="success-btn" onclick="recordSuccess()">✓ Landed!</button>
+                        <button class="fail-btn" onclick="recordFail()">✗ Missed</button>
+                    </div>
+                    <div class="game-controls">
+                        <button class="game-control-btn" onclick="generateNextTrick()">🎲 Next Trick</button>
+                        <button class="game-control-btn" onclick="changeGameObstacle()">📍 Change Obstacle</button>
+                        <button class="game-control-btn" onclick="endBladeGame()">🏁 End Game</button>
+                    </div>
+                </div>
+
+                <div class="winner-display" id="winnerDisplay" style="display:none;">
+                    <h2>🎉 Winner!</h2>
+                    <div class="winner-name" id="winnerName"></div>
+                    <button class="start-game-btn" onclick="resetBladeGame()" style="margin-top: 20px;">
+                        🔄 New Game
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- End B.L.A.D.E. Game Mode -->
+    </div>
+
+    <!-- Modals -->
+    <!-- Login/Signup Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Login / Sign Up</h2>
+                <button class="close-modal" onclick="closeModal('loginModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="loginUsername" placeholder="Choose a username" />
+            </div>
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" id="loginAge" min="5" max="100" placeholder="Your age" />
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <select id="loginGender">
+                    <option value="">Select...</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Skating Ability</label>
+                <select id="loginAbility">
+                    <option value="">Select...</option>
+                    <option value="beginner">Beginner (0-1 years)</option>
+                    <option value="intermediate">Intermediate (1-3 years)</option>
+                    <option value="advanced">Advanced (3-5 years)</option>
+                    <option value="pro">Pro (5+ years)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Years Skating</label>
+                <input type="number" id="loginYears" min="0" max="50" placeholder="Years of experience" />
+            </div>
+            <div class="form-group">
+                <label>Location (Optional)</label>
+                <input type="text" id="loginLocation" placeholder="City, Country" />
+            </div>
+            <button class="submit-btn" onclick="createProfile()">Create Profile</button>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">My Profile</h2>
+                <button class="close-modal" onclick="closeModal('profileModal')">✕</button>
+            </div>
+
+            <div class="profile-tabs">
+                <button class="profile-tab active" onclick="switchProfileTab('stats')">📊 Stats</button>
+                <button class="profile-tab" onclick="switchProfileTab('tricks')">🎯 Tricks</button>
+                <button class="profile-tab" onclick="switchProfileTab('crew')">👥 Crew</button>
+                <button class="profile-tab" onclick="switchProfileTab('settings')">⚙️ Settings</button>
+            </div>
+
+            <!-- Stats Tab -->
+            <div id="statsTab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTricksLogged">0</div>
+                        <div class="stat-label">Tricks Logged</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statYearsSkating">0</div>
+                        <div class="stat-label">Years Skating</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCrewMembers">0</div>
+                        <div class="stat-label">Crew Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statGamesPlayed">0</div>
+                        <div class="stat-label">Games Played</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <div style="color: #94a3b8; padding: 10px; background: rgba(14, 165, 233, 0.1); border-radius: 8px;" id="profileBio">
+                        <div><strong>Ability:</strong> <span id="profileAbility"></span></div>
+                        <div><strong>Location:</strong> <span id="profileLocation"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tricks Tab -->
+            <div id="tricksTab" class="tab-content">
+                <div class="trick-log" id="trickLog">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <div>No tricks logged yet!</div>
+                        <div style="font-size: 0.9em; margin-top: 10px;">Generate and land tricks to build your history</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crew Tab -->
+            <div id="crewTab" class="tab-content">
+                <div class="form-group">
+                    <label>Add Crew Member</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="crewMemberName" placeholder="Enter crew member name" style="flex: 1;" />
+                        <button class="submit-btn" onclick="addCrewMember()" style="width: auto; padding: 12px 20px; margin: 0;">Add</button>
+                    </div>
+                </div>
+                <div class="crew-list" id="crewList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <div>No crew members yet!</div>
+                        <div style="font-size: 0.9em; margin-top: 10px;">Add friends to skate with</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsTab" class="tab-content">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="settingsUsername" />
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="settingsAge" min="5" max="100" />
+                </div>
+                <div class="form-group">
+                    <label>Skating Ability</label>
+                    <select id="settingsAbility">
+                        <option value="beginner">Beginner (0-1 years)</option>
+                        <option value="intermediate">Intermediate (1-3 years)</option>
+                        <option value="advanced">Advanced (3-5 years)</option>
+                        <option value="pro">Pro (5+ years)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Years Skating</label>
+                    <input type="number" id="settingsYears" min="0" max="50" />
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="settingsLocation" placeholder="City, Country" />
+                </div>
+                <button class="submit-btn" onclick="updateProfile()">Save Changes</button>
+                <button class="submit-btn" onclick="logoutUser()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); margin-top: 10px;">Logout</button>
             </div>
         </div>
     </div>
@@ -482,6 +1623,9 @@
         let schema = null;
         let generator = null;
         let selectedObstacle = null;
+        let selectedMetadata = null;
+        let currentStep = 1;
+        const totalSteps = 4;
 
         // Load schema
         fetch('schema.json')
@@ -496,6 +1640,74 @@
                 console.error('Error loading schema:', error);
                 alert('Error loading trick data. Please check the console.');
             });
+
+        // Step navigation
+        function goToStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(s => s.classList.remove('active'));
+            
+            // Show target step
+            document.getElementById(`step${step}`).classList.add('active');
+            currentStep = step;
+            
+            // Update step indicator
+            updateStepIndicator();
+            
+            // Show/hide generate button
+            const generateSection = document.getElementById('generateSection');
+            if (step === totalSteps) {
+                generateSection.classList.add('show');
+            } else {
+                generateSection.classList.remove('show');
+            }
+            
+            // Hide trick display when changing steps
+            document.getElementById('trickDisplay').classList.remove('show');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                // Populate next step before showing it
+                if (currentStep === 1) {
+                    renderStep2();
+                } else if (currentStep === 2) {
+                    renderStep3();
+                } else if (currentStep === 3) {
+                    renderStep4();
+                }
+                goToStep(currentStep + 1);
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
+        }
+
+        function updateStepIndicator() {
+            const indicator = document.getElementById('stepIndicator');
+            const stepTitles = [
+                'Choose Your Obstacle',
+                selectedMetadata?.hasLength ? `${selectedMetadata.name} Length` : 'Stair Height',
+                'Switch-ups',
+                'Trick Settings'
+            ];
+            
+            // Skip step 3 for stairs (no grinds/switch-ups)
+            if (selectedMetadata?.noGrinds && currentStep === 3) {
+                nextStep();
+                return;
+            }
+            
+            const displayStep = selectedMetadata?.noGrinds && currentStep === 4 ? 3 : currentStep;
+            const displayTotal = selectedMetadata?.noGrinds ? 3 : 4;
+            
+            indicator.innerHTML = `<span class="current-step">Step ${displayStep} of ${displayTotal}:</span> ${stepTitles[currentStep - 1]}`;
+        }
 
         // Obstacle metadata for display
         const obstacleMetadata = {
@@ -594,35 +1806,30 @@
 
         function selectObstacle(obstacleId, metadata) {
             selectedObstacle = obstacleId;
+            selectedMetadata = metadata;
 
             // Update UI
             document.querySelectorAll('.obstacle-card').forEach(c => c.classList.remove('selected'));
             document.querySelector(`[data-obstacle="${obstacleId}"]`).classList.add('selected');
 
-            // Show options
-            document.getElementById('selectedObstacleName').textContent = metadata.name;
-            renderObstacleOptions(obstacleId, metadata);
-            document.getElementById('obstacleOptions').classList.add('show');
-            document.getElementById('generateSection').classList.add('show');
-            document.getElementById('stepIndicator').innerHTML = '<span class="current-step">Step 2:</span> Configure & Generate';
-
-            // Hide previous trick
-            document.getElementById('trickDisplay').classList.remove('show');
+            // Go to step 2
+            nextStep();
         }
 
-        function renderObstacleOptions(obstacleId, metadata) {
-            const container = document.getElementById('dynamicOptions');
+        function renderStep2() {
+            const container = document.getElementById('dynamicOptionsStep2');
             container.innerHTML = '';
 
-            const obstacleData = schema.obstacles[obstacleId];
+            const obstacleData = schema.obstacles[selectedObstacle];
+            document.getElementById('selectedObstacleName').textContent = selectedMetadata.name;
 
             // Length option (for rails, ledges, curbs)
-            if (metadata.hasLength && obstacleData.length_categories) {
+            if (selectedMetadata.hasLength && obstacleData.length_categories) {
                 const group = document.createElement('div');
                 group.className = 'option-group';
 
                 const label = document.createElement('label');
-                label.textContent = `${metadata.name} Length`;
+                label.textContent = `${selectedMetadata.name} Length`;
                 
                 const select = document.createElement('select');
                 select.id = 'lengthSelect';
@@ -630,7 +1837,7 @@
                 Object.entries(obstacleData.length_categories).forEach(([lengthId, lengthData]) => {
                     const option = document.createElement('option');
                     option.value = lengthId;
-                    option.textContent = `${lengthId.charAt(0).toUpperCase() + lengthId.slice(1)}`;
+                    option.textContent = `${lengthId.charAt(0).toUpperCase() + lengthId.slice(1)} - ${lengthData.max_switch_ups === 0 ? 'No switch-ups' : `Up to ${lengthData.max_switch_ups} switch-up${lengthData.max_switch_ups > 1 ? 's' : ''}`}`;
                     if (lengthId === 'medium') option.selected = true;
                     select.appendChild(option);
                 });
@@ -638,47 +1845,10 @@
                 group.appendChild(label);
                 group.appendChild(select);
                 container.appendChild(group);
-
-                // Add switch-up selector
-                const switchUpGroup = document.createElement('div');
-                switchUpGroup.className = 'option-group';
-
-                const switchUpLabel = document.createElement('label');
-                switchUpLabel.textContent = 'Number of Switch-Ups';
-                
-                const switchUpSelect = document.createElement('select');
-                switchUpSelect.id = 'switchUpSelect';
-
-                // Function to update switch-up options based on length
-                const updateSwitchUpOptions = (lengthId) => {
-                    const lengthData = obstacleData.length_categories[lengthId];
-                    const maxSwitchUps = lengthData.max_switch_ups;
-                    switchUpSelect.innerHTML = '';
-                    
-                    for (let i = 0; i <= maxSwitchUps; i++) {
-                        const option = document.createElement('option');
-                        option.value = i;
-                        option.textContent = i === 0 ? 'None' : i === 1 ? `1 switch-up` : `${i} switch-ups`;
-                        if (i === 0) option.selected = true;
-                        switchUpSelect.appendChild(option);
-                    }
-                };
-
-                // Update switch-up options when length changes
-                select.addEventListener('change', () => {
-                    updateSwitchUpOptions(select.value);
-                });
-
-                // Initialize with medium length
-                updateSwitchUpOptions('medium');
-
-                switchUpGroup.appendChild(switchUpLabel);
-                switchUpGroup.appendChild(switchUpSelect);
-                container.appendChild(switchUpGroup);
             }
 
             // Height option (for stairs)
-            if (metadata.hasHeight) {
+            if (selectedMetadata.hasHeight) {
                 const group = document.createElement('div');
                 group.className = 'option-group';
 
@@ -700,6 +1870,49 @@
                 group.appendChild(select);
                 container.appendChild(group);
             }
+        }
+
+        function renderStep3() {
+            // Skip this step for stairs (no grinds)
+            if (selectedMetadata.noGrinds) {
+                nextStep();
+                return;
+            }
+
+            const container = document.getElementById('dynamicOptionsStep3');
+            container.innerHTML = '';
+
+            const obstacleData = schema.obstacles[selectedObstacle];
+            const lengthSelect = document.getElementById('lengthSelect');
+            const selectedLength = lengthSelect ? lengthSelect.value : 'medium';
+            const lengthData = obstacleData.length_categories[selectedLength];
+            const maxSwitchUps = lengthData.max_switch_ups;
+
+            const group = document.createElement('div');
+            group.className = 'option-group';
+
+            const label = document.createElement('label');
+            label.textContent = 'Number of Switch-Ups';
+            
+            const select = document.createElement('select');
+            select.id = 'switchUpSelect';
+            
+            for (let i = 0; i <= maxSwitchUps; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i === 0 ? 'None' : i === 1 ? `1 switch-up` : `${i} switch-ups`;
+                if (i === 0) option.selected = true;
+                select.appendChild(option);
+            }
+
+            group.appendChild(label);
+            group.appendChild(select);
+            container.appendChild(group);
+        }
+
+        function renderStep4() {
+            const container = document.getElementById('dynamicOptionsStep4');
+            container.innerHTML = '';
 
             // Difficulty filter
             const diffGroup = document.createElement('div');
@@ -730,7 +1943,7 @@
             container.appendChild(diffGroup);
 
             // Flips option (only for stairs/airs)
-            if (metadata.noGrinds) {
+            if (selectedMetadata.noGrinds) {
                 const flipsGroup = document.createElement('div');
                 flipsGroup.className = 'option-group checkbox-group';
                 
@@ -747,30 +1960,17 @@
                 flipsGroup.appendChild(label);
                 container.appendChild(flipsGroup);
             }
-
-            // Info box about obstacle
-            const infoBox = document.createElement('div');
-            infoBox.className = 'info-box';
-            infoBox.innerHTML = `<strong>ℹ️ About this obstacle:</strong><br>${metadata.info || 'Select an obstacle to see details.'}`;
-            container.appendChild(infoBox);
         }
 
-        // Change obstacle button
-        document.getElementById('changeObstacleBtn').addEventListener('click', () => {
-            selectedObstacle = null;
-            document.getElementById('obstacleOptions').classList.remove('show');
-            document.getElementById('generateSection').classList.remove('show');
-            document.getElementById('trickDisplay').classList.remove('show');
-            document.querySelectorAll('.obstacle-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('stepIndicator').innerHTML = '<span class="current-step">Step 1:</span> Choose Your Obstacle';
-        });
-
-        // Generate trick
+        //Generate trick
         document.getElementById('generateBtn').addEventListener('click', generateTrick);
         document.getElementById('generateAgainBtn').addEventListener('click', generateTrick);
         
         document.getElementById('newObstacleBtn').addEventListener('click', () => {
-            document.getElementById('changeObstacleBtn').click();
+            // Reset to step 1 (obstacle selection)
+            selectedObstacle = null;
+            selectedMetadata = null;
+            goToStep(1);
         });
 
         function generateTrick() {
@@ -849,6 +2049,684 @@
             // Scroll to trick
             document.getElementById('trickDisplay').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
+
+        // ===== B.L.A.D.E. Game Mode Functions =====
+        let gameState = {
+            players: [],
+            currentPlayerIndex: 0,
+            currentTrick: null,
+            currentAttempt: 1,
+            maxAttempts: 3,
+            gameObstacle: null,
+            gameOptions: {}
+        };
+
+        function switchMode(mode) {
+            const practiceMode = document.getElementById('practiceMode');
+            const bladeMode = document.getElementById('bladeMode');
+            const practiceModeBtn = document.getElementById('practiceModeBtn');
+            const bladeModeBtn = document.getElementById('bladeModeBtn');
+
+            if (mode === 'practice') {
+                practiceMode.classList.remove('hidden');
+                bladeMode.classList.remove('active');
+                practiceModeBtn.classList.add('active');
+                bladeModeBtn.classList.remove('active');
+            } else {
+                practiceMode.classList.add('hidden');
+                bladeMode.classList.add('active');
+                practiceModeBtn.classList.remove('active');
+                bladeModeBtn.classList.add('active');
+                
+                // Initialize game setup
+                if (!document.getElementById('gameObstacleSelect').options.length) {
+                    populateGameObstacles();
+                }
+            }
+        }
+
+        function populateGameObstacles() {
+            const select = document.getElementById('gameObstacleSelect');
+            select.innerHTML = '';
+            
+            Object.entries(obstacleMetadata).forEach(([id, metadata]) => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = metadata.name;
+                select.appendChild(option);
+            });
+
+            select.addEventListener('change', updateGameObstacleOptions);
+            updateGameObstacleOptions();
+        }
+
+        function updateGameObstacleOptions() {
+            const obstacleId = document.getElementById('gameObstacleSelect').value;
+            const metadata = obstacleMetadata[obstacleId];
+            const obstacleData = schema.obstacles[obstacleId];
+
+            // Length options
+            const lengthGroup = document.getElementById('gameLengthGroup');
+            const lengthSelect = document.getElementById('gameLengthSelect');
+            const switchUpsGroup = document.getElementById('gameSwitchUpsGroup');
+
+            if (metadata.hasLength && obstacleData.length_categories) {
+                lengthGroup.style.display = 'block';
+                lengthSelect.innerHTML = '';
+                
+                Object.entries(obstacleData.length_categories).forEach(([lengthId, lengthData]) => {
+                    const option = document.createElement('option');
+                    option.value = lengthId;
+                    option.textContent = `${lengthId.charAt(0).toUpperCase() + lengthId.slice(1)} (Max ${lengthData.max_switch_ups} switch-ups)`;
+                    if (lengthId === 'medium') option.selected = true;
+                    lengthSelect.appendChild(option);
+                });
+
+                lengthSelect.addEventListener('change', updateGameSwitchUps);
+                switchUpsGroup.style.display = 'block';
+                updateGameSwitchUps();
+            } else {
+                lengthGroup.style.display = 'none';
+                switchUpsGroup.style.display = 'none';
+            }
+        }
+
+        function updateGameSwitchUps() {
+            const obstacleId = document.getElementById('gameObstacleSelect').value;
+            const obstacleData = schema.obstacles[obstacleId];
+            const lengthSelect = document.getElementById('gameLengthSelect');
+            const selectedLength = lengthSelect ? lengthSelect.value : 'medium';
+            const lengthData = obstacleData.length_categories[selectedLength];
+            const maxSwitchUps = lengthData.max_switch_ups;
+
+            const switchUpsSelect = document.getElementById('gameSwitchUpsSelect');
+            switchUpsSelect.innerHTML = '';
+
+            for (let i = 0; i <= maxSwitchUps; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i === 0 ? 'None' : i === 1 ? '1 switch-up' : `${i} switch-ups`;
+                if (i === 0) option.selected = true;
+                switchUpsSelect.appendChild(option);
+            }
+        }
+
+        function addPlayerInput() {
+            const list = document.getElementById('playersInputList');
+            const count = list.children.length + 1;
+            
+            const group = document.createElement('div');
+            group.className = 'player-input-group';
+            group.innerHTML = `
+                <input type="text" placeholder="Player ${count} name" class="player-name-input" />
+                <button onclick="removePlayerInput(this)">✕</button>
+            `;
+            list.appendChild(group);
+        }
+
+        function removePlayerInput(button) {
+            const list = document.getElementById('playersInputList');
+            if (list.children.length > 2) {
+                button.parentElement.remove();
+            } else {
+                alert('At least 2 players are required!');
+            }
+        }
+
+        function startBladeGame() {
+            // Collect player names
+            const inputs = document.querySelectorAll('.player-name-input');
+            const players = [];
+            
+            inputs.forEach((input, index) => {
+                const name = input.value.trim() || `Player ${index + 1}`;
+                players.push({
+                    name: name,
+                    letters: [],
+                    eliminated: false
+                });
+            });
+
+            if (players.length < 2) {
+                alert('At least 2 players are required!');
+                return;
+            }
+
+            // Get game settings
+            const obstacleId = document.getElementById('gameObstacleSelect').value;
+            const metadata = obstacleMetadata[obstacleId];
+            const maxAttempts = parseInt(document.getElementById('gameAttemptsSelect').value);
+
+            const options = {
+                obstacle: obstacleId,
+                allowSwitchUps: !metadata.noGrinds,
+                numSwitchUps: null,
+                allowFlips: metadata.noGrinds,
+                obstacleLength: 'medium'
+            };
+
+            // Get length if applicable
+            const lengthSelect = document.getElementById('gameLengthSelect');
+            if (lengthSelect && lengthSelect.style.display !== 'none') {
+                options.obstacleLength = lengthSelect.value;
+            }
+
+            // Get switch-ups if applicable
+            const switchUpsSelect = document.getElementById('gameSwitchUpsSelect');
+            if (switchUpsSelect && switchUpsSelect.style.display !== 'none') {
+                options.numSwitchUps = parseInt(switchUpsSelect.value);
+            }
+
+            // Initialize game state
+            gameState = {
+                players: players,
+                currentPlayerIndex: 0,
+                currentTrick: null,
+                currentAttempt: 1,
+                maxAttempts: maxAttempts,
+                gameObstacle: obstacleId,
+                gameOptions: options
+            };
+
+            // Hide setup, show game
+            document.getElementById('gameSetup').style.display = 'none';
+            document.getElementById('activeGame').classList.add('show');
+
+            // Generate first trick and render game
+            generateGameTrick();
+            renderPlayersGrid();
+            updateGameUI();
+        }
+
+        function generateGameTrick() {
+            const difficultyFilter = document.getElementById('gameDifficultySelect').value;
+            let trick = generator.generateTrick('random', gameState.gameOptions);
+
+            // Apply difficulty filter
+            if (difficultyFilter !== 'any') {
+                let attempts = 0;
+                const levelData = schema.difficulty_levels[difficultyFilter];
+                while ((trick.difficulty < levelData.min || trick.difficulty > levelData.max) && attempts < 50) {
+                    trick = generator.generateTrick('random', gameState.gameOptions);
+                    attempts++;
+                }
+            }
+
+            gameState.currentTrick = trick;
+            gameState.currentAttempt = 1;
+        }
+
+        function renderPlayersGrid() {
+            const grid = document.getElementById('playersGrid');
+            grid.innerHTML = '';
+
+            gameState.players.forEach((player, index) => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.id = `player-card-${index}`;
+                
+                if (index === gameState.currentPlayerIndex && !player.eliminated) {
+                    card.classList.add('active');
+                }
+                if (player.eliminated) {
+                    card.classList.add('eliminated');
+                }
+
+                const letters = ['B', 'L', 'A', 'D', 'E'];
+                const lettersHTML = letters.map(letter => {
+                    const earned = player.letters.includes(letter);
+                    return `<span class="letter ${earned ? 'earned' : ''}">${letter}</span>`;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="player-name">${player.name}</div>
+                    <div class="blade-letters">${lettersHTML}</div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function updateGameUI() {
+            const trick = gameState.currentTrick;
+            const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+
+            document.getElementById('currentGameTrick').textContent = trick.name;
+            document.getElementById('currentPlayerTurn').textContent = `${currentPlayer.name}'s Turn`;
+            document.getElementById('currentAttempt').textContent = gameState.currentAttempt;
+            document.getElementById('maxAttempts').textContent = gameState.maxAttempts;
+
+            renderPlayersGrid();
+        }
+
+        function recordSuccess() {
+            // Player landed the trick - move to next player
+            advanceToNextPlayer();
+            generateGameTrick();
+            updateGameUI();
+        }
+
+        function recordFail() {
+            gameState.currentAttempt++;
+
+            if (gameState.currentAttempt > gameState.maxAttempts) {
+                // Player failed all attempts - give them a letter
+                const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+                const letters = ['B', 'L', 'A', 'D', 'E'];
+                
+                if (currentPlayer.letters.length < 5) {
+                    currentPlayer.letters.push(letters[currentPlayer.letters.length]);
+                }
+
+                // Check if player is eliminated
+                if (currentPlayer.letters.length === 5) {
+                    currentPlayer.eliminated = true;
+                    
+                    // Check for winner
+                    const activePlayers = gameState.players.filter(p => !p.eliminated);
+                    if (activePlayers.length === 1) {
+                        showWinner(activePlayers[0]);
+                        return;
+                    }
+                }
+
+                // Move to next player
+                advanceToNextPlayer();
+                generateGameTrick();
+            }
+
+            updateGameUI();
+        }
+
+        function advanceToNextPlayer() {
+            // Find next active player
+            let nextIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+            let iterations = 0;
+            
+            while (gameState.players[nextIndex].eliminated && iterations < gameState.players.length) {
+                nextIndex = (nextIndex + 1) % gameState.players.length;
+                iterations++;
+            }
+
+            gameState.currentPlayerIndex = nextIndex;
+            gameState.currentAttempt = 1;
+        }
+
+        function showWinner(winner) {
+            document.getElementById('turnControls').style.display = 'none';
+            document.getElementById('winnerDisplay').style.display = 'block';
+            document.getElementById('winnerName').textContent = winner.name;
+            
+            // Increment games played for logged in user
+            if (currentUser) {
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                localStorage.setItem('inlineUser', JSON.stringify(currentUser));
+            }
+        }
+
+        function generateNextTrick() {
+            generateGameTrick();
+            updateGameUI();
+        }
+
+        function changeGameObstacle() {
+            // Show obstacle selection in a simplified way
+            const obstacleId = prompt('Enter obstacle (rail, ledge, curb, stairs):');
+            if (obstacleId && schema.obstacles[obstacleId]) {
+                gameState.gameObstacle = obstacleId;
+                gameState.gameOptions.obstacle = obstacleId;
+                const metadata = obstacleMetadata[obstacleId];
+                gameState.gameOptions.allowSwitchUps = !metadata.noGrinds;
+                gameState.gameOptions.allowFlips = metadata.noGrinds;
+                generateGameTrick();
+                updateGameUI();
+            }
+        }
+
+        function endBladeGame() {
+            if (confirm('Are you sure you want to end the game?')) {
+                resetBladeGame();
+            }
+        }
+
+        function resetBladeGame() {
+            document.getElementById('activeGame').classList.remove('show');
+            document.getElementById('gameSetup').style.display = 'block';
+            document.getElementById('turnControls').style.display = 'block';
+            document.getElementById('winnerDisplay').style.display = 'none';
+            
+            // Reset player inputs
+            const list = document.getElementById('playersInputList');
+            list.innerHTML = `
+                <div class="player-input-group">
+                    <input type="text" placeholder="Player 1 name" class="player-name-input" />
+                    <button onclick="removePlayerInput(this)" style="display:none;">✕</button>
+                </div>
+                <div class="player-input-group">
+                    <input type="text" placeholder="Player 2 name" class="player-name-input" />
+                    <button onclick="removePlayerInput(this)">✕</button>
+                </div>
+            `;
+        }
+
+        // ===== User Profile System =====
+        let currentUser = null;
+        let lastGeneratedTrick = null;
+
+        // Initialize profile system on page load
+        function initProfileSystem() {
+            const savedUser = localStorage.getItem('inlineUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserBar();
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+        }
+
+        function openProfileModal() {
+            if (!currentUser) return;
+            
+            // Update stats display
+            document.getElementById('statTricksLogged').textContent = currentUser.tricksLogged?.length || 0;
+            document.getElementById('statYearsSkating').textContent = currentUser.yearsSkating || 0;
+            document.getElementById('statCrewMembers').textContent = currentUser.crew?.length || 0;
+            document.getElementById('statGamesPlayed').textContent = currentUser.gamesPlayed || 0;
+            
+            document.getElementById('profileAbility').textContent = currentUser.ability || 'Not set';
+            document.getElementById('profileLocation').textContent = currentUser.location || 'Not set';
+            
+            // Load settings
+            document.getElementById('settingsUsername').value = currentUser.username;
+            document.getElementById('settingsAge').value = currentUser.age || '';
+            document.getElementById('settingsAbility').value = currentUser.ability || '';
+            document.getElementById('settingsYears').value = currentUser.yearsSkating || '';
+            document.getElementById('settingsLocation').value = currentUser.location || '';
+            
+            // Load tricks
+            renderTrickLog();
+            
+            // Load crew
+            renderCrewList();
+            
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function createProfile() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const age = document.getElementById('loginAge').value;
+            const gender = document.getElementById('loginGender').value;
+            const ability = document.getElementById('loginAbility').value;
+            const years = document.getElementById('loginYears').value;
+            const location = document.getElementById('loginLocation').value.trim();
+
+            if (!username || !age || !ability || !years) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            currentUser = {
+                username: username,
+                age: parseInt(age),
+                gender: gender,
+                ability: ability,
+                yearsSkating: parseInt(years),
+                location: location,
+                tricksLogged: [],
+                crew: [],
+                gamesPlayed: 0,
+                createdAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('inlineUser', JSON.stringify(currentUser));
+            updateUserBar();
+            closeModal('loginModal');
+            
+            alert(`Welcome, ${username}! 🎉`);
+        }
+
+        function updateUserBar() {
+            const userInfo = document.getElementById('userInfo');
+            const loginBtn = document.getElementById('loginBtn');
+            const loadCrewBtn = document.getElementById('loadCrewBtn');
+            const logTrickBtn = document.getElementById('logTrickBtn');
+
+            if (currentUser) {
+                document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+                document.getElementById('userName').textContent = currentUser.username;
+                userInfo.style.display = 'flex';
+                loginBtn.style.display = 'none';
+                
+                // Show load crew button if user has crew members
+                if (loadCrewBtn && currentUser.crew?.length > 0) {
+                    loadCrewBtn.style.display = 'block';
+                }
+                
+                // Show log trick button when tricks are generated
+                if (logTrickBtn) {
+                    logTrickBtn.style.display = 'block';
+                }
+            } else {
+                userInfo.style.display = 'none';
+                loginBtn.style.display = 'block';
+                if (loadCrewBtn) loadCrewBtn.style.display = 'none';
+                if (logTrickBtn) logTrickBtn.style.display = 'none';
+            }
+        }
+
+        function switchProfileTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.profile-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        function logCurrentTrick() {
+            if (!currentUser) {
+                alert('Please login to log tricks!');
+                openLoginModal();
+                return;
+            }
+
+            if (!lastGeneratedTrick) {
+                alert('No trick to log!');
+                return;
+            }
+
+            const trickEntry = {
+                name: lastGeneratedTrick.name,
+                difficulty: lastGeneratedTrick.difficulty,
+                obstacle: lastGeneratedTrick.obstacle,
+                stance: lastGeneratedTrick.stance,
+                date: new Date().toISOString()
+            };
+
+            currentUser.tricksLogged.push(trickEntry);
+            localStorage.setItem('inlineUser', JSON.stringify(currentUser));
+
+            alert(`✓ Logged: ${trickEntry.name}`);
+            updateUserBar();
+        }
+
+        function renderTrickLog() {
+            const logContainer = document.getElementById('trickLog');
+            
+            if (!currentUser.tricksLogged || currentUser.tricksLogged.length === 0) {
+                logContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <div>No tricks logged yet!</div>
+                        <div style="font-size: 0.9em; margin-top: 10px;">Generate and land tricks to build your history</div>
+                    </div>
+                `;
+                return;
+            }
+
+            logContainer.innerHTML = '';
+            const sortedTricks = [...currentUser.tricksLogged].reverse();
+            
+            sortedTricks.forEach(trick => {
+                const date = new Date(trick.date);
+                const item = document.createElement('div');
+                item.className = 'trick-log-item';
+                item.innerHTML = `
+                    <div class="trick-title">${trick.name}</div>
+                    <div class="trick-date">
+                        ${trick.obstacle.charAt(0).toUpperCase() + trick.obstacle.slice(1)} • 
+                        Difficulty: ${trick.difficulty.toFixed(1)} • 
+                        ${date.toLocaleDateString()}
+                    </div>
+                `;
+                logContainer.appendChild(item);
+            });
+        }
+
+        function addCrewMember() {
+            if (!currentUser) return;
+            
+            const nameInput = document.getElementById('crewMemberName');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                alert('Please enter a name');
+                return;
+            }
+            
+            if (currentUser.crew.some(member => member.name === name)) {
+                alert('This person is already in your crew!');
+                return;
+            }
+            
+            const member = {
+                name: name,
+                ability: 'intermediate',
+                addedAt: new Date().toISOString()
+            };
+            
+            currentUser.crew.push(member);
+            localStorage.setItem('inlineUser', JSON.stringify(currentUser));
+            
+            nameInput.value = '';
+            renderCrewList();
+            updateUserBar();
+        }
+
+        function removeCrewMember(name) {
+            if (!currentUser) return;
+            
+            if (confirm(`Remove ${name} from your crew?`)) {
+                currentUser.crew = currentUser.crew.filter(member => member.name !== name);
+                localStorage.setItem('inlineUser', JSON.stringify(currentUser));
+                renderCrewList();
+                updateUserBar();
+            }
+        }
+
+        function renderCrewList() {
+            const crewContainer = document.getElementById('crewList');
+            
+            if (!currentUser.crew || currentUser.crew.length === 0) {
+                crewContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <div>No crew members yet!</div>
+                        <div style="font-size: 0.9em; margin-top: 10px;">Add friends to skate with</div>
+                    </div>
+                `;
+                return;
+            }
+
+            crewContainer.innerHTML = '';
+            currentUser.crew.forEach(member => {
+                const item = document.createElement('div');
+                item.className = 'crew-member';
+                item.innerHTML = `
+                    <div class="avatar">${member.name.charAt(0).toUpperCase()}</div>
+                    <div class="info">
+                        <div class="name">${member.name}</div>
+                        <div class="level">${member.ability || 'Intermediate'}</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeCrewMember('${member.name}')">Remove</button>
+                `;
+                crewContainer.appendChild(item);
+            });
+        }
+
+        function loadCrewMembers() {
+            if (!currentUser || !currentUser.crew || currentUser.crew.length === 0) {
+                alert('Add crew members in your profile first!');
+                return;
+            }
+
+            const list = document.getElementById('playersInputList');
+            list.innerHTML = '';
+
+            // Add current user first
+            const userGroup = document.createElement('div');
+            userGroup.className = 'player-input-group';
+            userGroup.innerHTML = `
+                <input type="text" value="${currentUser.username}" class="player-name-input" />
+                <button onclick="removePlayerInput(this)" style="display:none;">✕</button>
+            `;
+            list.appendChild(userGroup);
+
+            // Add crew members
+            currentUser.crew.forEach((member, index) => {
+                const group = document.createElement('div');
+                group.className = 'player-input-group';
+                group.innerHTML = `
+                    <input type="text" value="${member.name}" class="player-name-input" />
+                    <button onclick="removePlayerInput(this)">✕</button>
+                `;
+                list.appendChild(group);
+            });
+        }
+
+        function updateProfile() {
+            if (!currentUser) return;
+
+            currentUser.username = document.getElementById('settingsUsername').value.trim();
+            currentUser.age = parseInt(document.getElementById('settingsAge').value);
+            currentUser.ability = document.getElementById('settingsAbility').value;
+            currentUser.yearsSkating = parseInt(document.getElementById('settingsYears').value);
+            currentUser.location = document.getElementById('settingsLocation').value.trim();
+
+            localStorage.setItem('inlineUser', JSON.stringify(currentUser));
+            updateUserBar();
+            
+            alert('Profile updated! ✓');
+        }
+
+        function logoutUser() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                localStorage.removeItem('inlineUser');
+                updateUserBar();
+                closeModal('profileModal');
+                alert('Logged out successfully!');
+            }
+        }
+
+        // Store generated tricks for logging
+        const originalDisplayTrick = displayTrick;
+        displayTrick = function(trick) {
+            lastGeneratedTrick = trick;
+            originalDisplayTrick(trick);
+        };
+
+        // Initialize profile system
+        initProfileSystem();
     </script>
+</invoke>
+
 </body>
 </html>
