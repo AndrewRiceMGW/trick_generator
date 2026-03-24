@@ -1,931 +1,1264 @@
 {
-	"metadata": {
-		"name": "Aggressive Inline Skating Trick Generator Schema",
-		"version": "1.0",
-		"description": "Complete data model for generating valid aggressive inline skating tricks",
-		"notes": {
-			"spin_direction": "Spins can be done as 'true spin' (out-spin, spinning away from obstacle) or 'alley-oop' (in-spin, spinning into obstacle). Alley-oop is harder and uses alleyoop_difficulty value. Spin direction depends on approach angle and obstacle side.",
-			"topside_tricks": "Topside variations involve bending over the side of the obstacle (soul tricks done with different body position). These add complexity to switch-ups.",
-			"switch_up_combinations": "Advanced skaters can switch up while spinning, which significantly increases difficulty."
-		}
-	},
-
-	"stances": {
-		"forward": { "id": "forward", "name": "Forward", "difficulty": 1 },
-		"fakie": { "id": "fakie", "name": "Fakie", "difficulty": 1.5 },
-		"switch": { "id": "switch", "name": "Switch", "difficulty": 2 }
-	},
-
-	"obstacles": {
-		"rail": {
-			"id": "rail",
-			"name": "Rail",
-			"types": ["flat", "kinked", "curved"],
-			"max_entry_spin": 450,
-			"max_exit_spin": 540,
-			"spin_difficulty_multiplier": 2.5,
-			"allows_grinds": true,
-			"length_categories": {
-				"short": { "max_switch_ups": 0, "difficulty_multiplier": 1 },
-				"medium": { "max_switch_ups": 1, "difficulty_multiplier": 1.2 },
-				"long": { "max_switch_ups": 2, "difficulty_multiplier": 1.4 },
-				"very_long": { "max_switch_ups": 3, "difficulty_multiplier": 1.6 }
-			}
-		},
-		"ledge": {
-			"id": "ledge",
-			"name": "Ledge",
-			"types": ["flat", "kinked", "round"],
-			"max_entry_spin": 540,
-			"max_exit_spin": 540,
-			"spin_difficulty_multiplier": 2.2,
-			"allows_grinds": true,
-			"length_categories": {
-				"short": { "max_switch_ups": 0, "difficulty_multiplier": 1 },
-				"medium": { "max_switch_ups": 1, "difficulty_multiplier": 1.1 },
-				"long": { "max_switch_ups": 2, "difficulty_multiplier": 1.3 }
-			}
-		},
-		"curb": {
-			"id": "curb",
-			"name": "Curb",
-			"max_entry_spin": 360,
-			"max_exit_spin": 450,
-			"spin_difficulty_multiplier": 2.8,
-			"allows_grinds": true,
-			"length_categories": {
-				"short": { "max_switch_ups": 0, "difficulty_multiplier": 0.9 },
-				"medium": { "max_switch_ups": 1, "difficulty_multiplier": 1 }
-			}
-		},
-		"stairs": {
-			"id": "stairs",
-			"name": "Stairs",
-			"allows_grinds": false,
-			"allows_airs": true,
-			"max_entry_spin": 1080,
-			"max_exit_spin": 1080,
-			"spin_difficulty_multiplier": 1.0,
-			"difficulty_multiplier": 1.5,
-			"height_multipliers": {
-				"3": 0.8,
-				"5": 1.0,
-				"7": 1.2,
-				"10": 1.5,
-				"12": 1.8,
-				"15": 2.2
-			}
-		}
-	},
-
-	"entry_spins": {
-		"0": { "degrees": 0, "name": "", "difficulty": 0, "weight": 40 },
-		"180": {
-			"degrees": 180,
-			"name": "180",
-			"difficulty": 1.5,
-			"flips_direction": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 2.0,
-			"weight": 25
-		},
-		"270": {
-			"degrees": 270,
-			"name": "270",
-			"difficulty": 2,
-			"flips_direction": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 2.5,
-			"weight": 15
-		},
-		"360": {
-			"degrees": 360,
-			"name": "360",
-			"difficulty": 2.5,
-			"flips_direction": false,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 3.5,
-			"weight": 10
-		},
-		"450": {
-			"degrees": 450,
-			"name": "450",
-			"difficulty": 3,
-			"flips_direction": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 4.0,
-			"weight": 5
-		},
-		"540": {
-			"degrees": 540,
-			"name": "540",
-			"difficulty": 3.5,
-			"flips_direction": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 5.0,
-			"weight": 3
-		},
-		"720": {
-			"degrees": 720,
-			"name": "720",
-			"difficulty": 5,
-			"flips_direction": false,
-			"air_only": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 6.5,
-			"weight": 1.5
-		},
-		"900": {
-			"degrees": 900,
-			"name": "900",
-			"difficulty": 7,
-			"flips_direction": true,
-			"air_only": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 8.5,
-			"weight": 0.4
-		},
-		"1080": {
-			"degrees": 1080,
-			"name": "1080",
-			"difficulty": 9,
-			"flips_direction": false,
-			"air_only": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 11,
-			"weight": 0.1
-		}
-	},
-
-	"exit_spins": {
-		"0": { "degrees": 0, "name": "", "difficulty": 0, "weight": 35 },
-		"180": {
-			"degrees": 180,
-			"name": "180",
-			"difficulty": 1.5,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 2.0,
-			"weight": 30
-		},
-		"270": {
-			"degrees": 270,
-			"name": "270",
-			"difficulty": 2,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 2.5,
-			"weight": 15
-		},
-		"360": {
-			"degrees": 360,
-			"name": "360",
-			"difficulty": 2.5,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 3.5,
-			"weight": 10
-		},
-		"450": {
-			"degrees": 450,
-			"name": "450",
-			"difficulty": 3,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 4.0,
-			"weight": 5
-		},
-		"540": {
-			"degrees": 540,
-			"name": "540",
-			"difficulty": 3.5,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 5.0,
-			"weight": 3
-		},
-		"720": {
-			"degrees": 720,
-			"name": "720",
-			"difficulty": 5,
-			"air_only": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 6.5,
-			"weight": 1.5
-		},
-		"900": {
-			"degrees": 900,
-			"name": "900",
-			"difficulty": 7,
-			"air_only": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 8.5,
-			"weight": 0.4
-		},
-		"1080": {
-			"degrees": 1080,
-			"name": "1080",
-			"difficulty": 9,
-			"air_only": true,
-			"has_spin_direction": true,
-			"alleyoop_difficulty": 11,
-			"weight": 0.1
-		}
-	},
-
-	"grinds": {
-		"frontside": {
-			"id": "frontside",
-			"name": "Frontside",
-			"difficulty": 1,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "frame",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["backslide", "soul", "mizou", "mistrial", "acid"],
-			"weight": 30,
-			"physics": {
-				"back_foot_degree": 90,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "NA",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"soul": {
-			"id": "soul",
-			"name": "Soul",
-			"difficulty": 1.5,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "inner_edge",
-			"position_relative_to_makio": "front",
-			"switch_up_to": ["frontside", "mizou", "mistrial", "makio", "acid"],
-			"weight": 25,
-			"physics": {
-				"back_foot_degree": 0,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards back",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards back",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more back",
-				"h_block_type": "front"
-			},
-			"physics_topside": {
-				"back_foot_degree": 0,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards back",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards back",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more back",
-				"h_block_type": "front"
-			}
-		},
-		"mizou": {
-			"id": "mizou",
-			"name": "Mizou",
-			"difficulty": 1.5,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "outer_edge_trailing",
-			"position_relative_to_makio": "back",
-			"topside_name": "Sweatstance",
-			"switch_up_to": ["soul", "frontside", "pornstar", "mistrial", "acid"],
-			"weight": 25,
-			"physics": {
-				"back_foot_degree": -90,
-				"front_foot_degree": 0,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "neutral",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more front",
-				"h_block_type": "back"
-			},
-			"physics_topside": {
-				"back_foot_degree": -90,
-				"front_foot_degree": 0,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "neutral",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more front",
-				"h_block_type": "back"
-			}
-		},
-		"makio": {
-			"id": "makio",
-			"name": "Makio",
-			"difficulty": 1.5,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "outer_edge",
-			"position_relative_to_makio": "neutral",
-			"topside_name": "Fishbrain",
-			"switch_up_to": ["soul", "mizou", "mistrial", "acid"],
-			"weight": 20,
-			"physics": {
-				"back_foot_degree": null,
-				"front_foot_degree": null,
-				"back_foot_knee": "NA",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "NA",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "on top",
-				"h_block_type": "NA"
-			},
-			"physics_topside": {
-				"back_foot_degree": null,
-				"front_foot_degree": null,
-				"back_foot_knee": "NA",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "NA",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "on top",
-				"h_block_type": "NA"
-			}
-		},
-		"backslide": {
-			"id": "backslide",
-			"name": "Backslide",
-			"difficulty": 2,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["frontside", "soul", "mizou"],
-			"weight": 12,
-			"physics": {
-				"back_foot_degree": -90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "NA",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"acid": {
-			"id": "acid",
-			"name": "Acid",
-			"difficulty": 2.5,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "front_backwards",
-			"position_relative_to_makio": "front",
-			"switch_up_to": ["soul", "frontside", "mizou", "mistrial"],
-			"weight": 8,
-			"physics": {
-				"back_foot_degree": 0,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards back",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards back",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more back",
-				"h_block_type": "front"
-			},
-			"physics_topside": {
-				"back_foot_degree": 0,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards back",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards back",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more back",
-				"h_block_type": "front"
-			}
-		},
-		"royale": {
-			"id": "royale",
-			"name": "Royale",
-			"difficulty": 2,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["frontside", "backslide", "pornstar"],
-			"weight": 12,
-			"physics": {
-				"back_foot_degree": 90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "more back",
-				"h_block_type": "back"
-			}
-		},
-		"pornstar": {
-			"id": "pornstar",
-			"name": "Pornstar",
-			"difficulty": 3,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "mixed",
-			"position_relative_to_makio": "back",
-			"alt_name": "Sunny Day",
-			"switch_up_to": ["royale", "frontside", "soul"],
-			"weight": 5,
-			"physics": {
-				"back_foot_degree": -45,
-				"front_foot_degree": 45,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "yes",
-				"spin_multiplier": 180,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			},
-			"physics_topside": {
-				"back_foot_degree": -45,
-				"front_foot_degree": 45,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "yes",
-				"spin_multiplier": 180,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"torque": {
-			"id": "torque",
-			"name": "Torque",
-			"difficulty": 2.5,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["royale", "backslide", "frontside"],
-			"weight": 8,
-			"physics": {
-				"back_foot_degree": 90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": true,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "more back",
-				"h_block_type": "back"
-			},
-			"physics_topside": {
-				"back_foot_degree": 90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": true,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "more back",
-				"h_block_type": "back"
-			}
-		},
-		"farv": {
-			"id": "farv",
-			"name": "Farv",
-			"difficulty": 2.5,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["royale", "backslide", "unity"],
-			"weight": 6,
-			"physics": {
-				"back_foot_degree": -90,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "more front",
-				"h_block_type": "back"
-			}
-		},
-		"fastslide": {
-			"id": "fastslide",
-			"name": "Fastslide",
-			"difficulty": 2,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["backslide", "royale"],
-			"weight": 8,
-			"physics": {
-				"back_foot_degree": 90,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "NA",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"pudslide": {
-			"id": "pudslide",
-			"name": "Pudslide",
-			"difficulty": 2.5,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["backslide", "fastslide"],
-			"weight": 4,
-			"physics": {
-				"back_foot_degree": -90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "NA",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"savannah": {
-			"id": "savannah",
-			"name": "Savannah",
-			"difficulty": 3,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["unity", "royale"],
-			"weight": 2,
-			"physics": {
-				"back_foot_degree": 90,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "NA",
-				"can_be_grabbed": true,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"unity": {
-			"id": "unity",
-			"name": "Unity",
-			"difficulty": 3.5,
-			"soul_based": false,
-			"h_block": true,
-			"foot_position": "h_block",
-			"position_relative_to_makio": "neutral",
-			"switch_up_to": ["frontside"],
-			"weight": 1,
-			"physics": {
-				"back_foot_degree": -90,
-				"front_foot_degree": 90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "bent towards back",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "inner pointing towards back",
-				"topside_or_regular": "NA",
-				"can_be_grabbed": true,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 90,
-				"balance_point": "on top",
-				"h_block_type": "both"
-			}
-		},
-		"alleyoop_soul": {
-			"id": "alleyoop_soul",
-			"name": "Alley-Oop Soul",
-			"difficulty": 3,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "inner_edge",
-			"position_relative_to_makio": "front",
-			"switch_up_to": ["alleyoop_mizou", "frontside"],
-			"weight": 3,
-			"physics": {
-				"back_foot_degree": 0,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards back",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards back",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more back",
-				"h_block_type": "front"
-			}
-		},
-		"alleyoop_mizou": {
-			"id": "alleyoop_mizou",
-			"name": "Alley-Op Mizou",
-			"difficulty": 3,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "outer_edge_trailing",
-			"position_relative_to_makio": "back",
-			"switch_up_to": ["alleyoop_soul", "frontside"],
-			"weight": 3,
-			"physics": {
-				"back_foot_degree": -90,
-				"front_foot_degree": 0,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "neutral",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more front",
-				"h_block_type": "back"
-			}
-		},
-		"mistrial": {
-			"id": "mistrial",
-			"name": "Mistrial",
-			"difficulty": 2,
-			"soul_based": true,
-			"h_block": false,
-			"foot_position": "inner_edge",
-			"position_relative_to_makio": "back",
-			"switch_up_to": ["soul", "mizou", "makio"],
-			"weight": 15,
-			"physics": {
-				"back_foot_degree": 90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "regular",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more front",
-				"h_block_type": "back"
-			},
-			"physics_topside": {
-				"back_foot_degree": 90,
-				"front_foot_degree": -90,
-				"back_foot_knee": "bent towards front",
-				"front_foot_knee": "NA",
-				"back_foot_hblock_pointing": "inner pointing towards front",
-				"front_foot_hblock_pointing": "NA",
-				"topside_or_regular": "topside",
-				"can_be_grabbed": false,
-				"cross_grab": false,
-				"crossed_foot": "NA",
-				"spin_multiplier": 180,
-				"balance_point": "more front",
-				"h_block_type": "back"
-			}
-		}
-	},
-
-	"modifiers": {
-		"topside": {
-			"id": "topside",
-			"name": "Topside",
-			"difficulty": 1.5,
-			"requires_soul_based": true,
-			"cannot_apply_to_h_block": true,
-			"weight": 10
-		},
-		"true_topside": {
-			"id": "true_topside",
-			"name": "True Topside",
-			"difficulty": 2,
-			"requires_soul_based": true,
-			"cannot_apply_to_h_block": true,
-			"weight": 3
-		},
-		"negative": {
-			"id": "negative",
-			"name": "Negative",
-			"difficulty": 1.5,
-			"requires_soul_based": true,
-			"cannot_apply_to_h_block": true,
-			"weight": 8
-		},
-		"negative_true": {
-			"id": "negative_true",
-			"name": "Negative True",
-			"difficulty": 2.5,
-			"requires_soul_based": true,
-			"cannot_apply_to_h_block": true,
-			"weight": 2
-		},
-		"backside": {
-			"id": "backside",
-			"name": "Backside",
-			"difficulty": 0.5,
-			"applies_to_h_block": true,
-			"weight": 15
-		},
-		"frontside": {
-			"id": "frontside",
-			"name": "Frontside",
-			"difficulty": 0.5,
-			"applies_to_h_block": true,
-			"weight": 15
-		}
-	},
-
-	"grabs": {
-		"mute": { "id": "mute", "name": "Mute", "difficulty": 1.5, "weight": 30 },
-		"rocket": {
-			"id": "rocket",
-			"name": "Rocket",
-			"difficulty": 1.5,
-			"weight": 30
-		},
-		"japan": { "id": "japan", "name": "Japan", "difficulty": 2, "weight": 20 },
-		"stale": {
-			"id": "stale",
-			"name": "Stalefish",
-			"difficulty": 2,
-			"weight": 15
-		},
-		"cross_rocket": {
-			"id": "cross_rocket",
-			"name": "Cross Rocket",
-			"difficulty": 2.5,
-			"weight": 4
-		},
-		"christ_air": {
-			"id": "christ_air",
-			"name": "Christ Air",
-			"difficulty": 3,
-			"weight": 1
-		}
-	},
-
-	"rolls": {
-		"toe_roll": {
-			"id": "toe_roll",
-			"name": "Toe Roll",
-			"difficulty": 1.5,
-			"type": "toe"
-		},
-		"heel_roll": {
-			"id": "heel_roll",
-			"name": "Heel Roll",
-			"difficulty": 1.5,
-			"type": "heel"
-		},
-		"fast_slide": {
-			"id": "fast_slide",
-			"name": "Fast Slide",
-			"difficulty": 2,
-			"type": "toe"
-		}
-	},
-
-	"flips": {
-		"540_flip": {
-			"id": "540_flip",
-			"name": "540 Flip",
-			"difficulty": 4,
-			"weight": 3
-		},
-		"720_flip": {
-			"id": "720_flip",
-			"name": "720 Flip",
-			"difficulty": 5,
-			"weight": 1
-		},
-		"misty": {
-			"id": "misty",
-			"name": "Misty Flip",
-			"difficulty": 4.5,
-			"weight": 2
-		},
-		"bio": { "id": "bio", "name": "Bio", "difficulty": 4, "weight": 3 }
-	},
-
-	"naming_rules": {
-		"cab": {
-			"condition": "fakie stance + 360 spin",
-			"replacement": "Cab"
-		},
-		"half_cab": {
-			"condition": "fakie stance + 180 spin",
-			"replacement": "Half Cab"
-		},
-		"alley_oop": {
-			"condition": "spin opposite to natural direction",
-			"prefix": "Alley-Oop"
-		},
-		"switch": {
-			"condition": "switch stance",
-			"prefix": "Switch"
-		}
-	},
-
-	"difficulty_levels": {
-		"beginner": { "min": 0, "max": 5, "label": "Beginner" },
-		"intermediate": { "min": 5, "max": 10, "label": "Intermediate" },
-		"advanced": { "min": 10, "max": 15, "label": "Advanced" },
-		"pro": { "min": 15, "max": 25, "label": "Pro" },
-		"insane": { "min": 25, "max": 100, "label": "Insane" }
-	}
+  "metadata": {
+    "name": "Aggressive Inline Skating Trick Generator Schema",
+    "version": "1.0",
+    "description": "Complete data model for generating valid aggressive inline skating tricks",
+    "notes": {
+      "spin_direction": "Spins can be done as 'true spin' (out-spin, spinning away from obstacle) or 'alley-oop' (in-spin, spinning into obstacle). Alley-oop is harder and uses alleyoop_difficulty value. Spin direction depends on approach angle and obstacle side.",
+      "topside_tricks": "Topside variations involve bending over the side of the obstacle (soul tricks done with different body position). These add complexity to switch-ups.",
+      "switch_up_combinations": "Advanced skaters can switch up while spinning, which significantly increases difficulty."
+    }
+  },
+  "stances": {
+    "forward": {
+      "id": "forward",
+      "name": "Forward",
+      "difficulty": 1
+    },
+    "fakie": {
+      "id": "fakie",
+      "name": "Fakie",
+      "difficulty": 1.5
+    },
+    "switch": {
+      "id": "switch",
+      "name": "Switch",
+      "difficulty": 2
+    }
+  },
+  "obstacles": {
+    "rail": {
+      "id": "rail",
+      "name": "Rail",
+      "types": [
+        "flat",
+        "kinked",
+        "curved"
+      ],
+      "max_entry_spin": 450,
+      "max_exit_spin": 540,
+      "spin_difficulty_multiplier": 2.5,
+      "allows_grinds": true,
+      "length_categories": {
+        "short": {
+          "max_switch_ups": 0,
+          "difficulty_multiplier": 1
+        },
+        "medium": {
+          "max_switch_ups": 1,
+          "difficulty_multiplier": 1.2
+        },
+        "long": {
+          "max_switch_ups": 2,
+          "difficulty_multiplier": 1.4
+        },
+        "very_long": {
+          "max_switch_ups": 3,
+          "difficulty_multiplier": 1.6
+        }
+      }
+    },
+    "ledge": {
+      "id": "ledge",
+      "name": "Ledge",
+      "types": [
+        "flat",
+        "kinked",
+        "round"
+      ],
+      "max_entry_spin": 540,
+      "max_exit_spin": 540,
+      "spin_difficulty_multiplier": 2.2,
+      "allows_grinds": true,
+      "length_categories": {
+        "short": {
+          "max_switch_ups": 0,
+          "difficulty_multiplier": 1
+        },
+        "medium": {
+          "max_switch_ups": 1,
+          "difficulty_multiplier": 1.1
+        },
+        "long": {
+          "max_switch_ups": 2,
+          "difficulty_multiplier": 1.3
+        }
+      }
+    },
+    "curb": {
+      "id": "curb",
+      "name": "Curb",
+      "max_entry_spin": 360,
+      "max_exit_spin": 450,
+      "spin_difficulty_multiplier": 2.8,
+      "allows_grinds": true,
+      "length_categories": {
+        "short": {
+          "max_switch_ups": 0,
+          "difficulty_multiplier": 0.9
+        },
+        "medium": {
+          "max_switch_ups": 1,
+          "difficulty_multiplier": 1
+        }
+      }
+    },
+    "stairs": {
+      "id": "stairs",
+      "name": "Stairs",
+      "allows_grinds": false,
+      "allows_airs": true,
+      "max_entry_spin": 1080,
+      "max_exit_spin": 1080,
+      "spin_difficulty_multiplier": 1.0,
+      "difficulty_multiplier": 1.5,
+      "height_multipliers": {
+        "3": 0.8,
+        "5": 1.0,
+        "7": 1.2,
+        "10": 1.5,
+        "12": 1.8,
+        "15": 2.2
+      }
+    }
+  },
+  "entry_spins": {
+    "0": {
+      "degrees": 0,
+      "name": "",
+      "difficulty": 0,
+      "weight": 40
+    },
+    "180": {
+      "degrees": 180,
+      "name": "180",
+      "difficulty": 1.5,
+      "flips_direction": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 2.0,
+      "weight": 25
+    },
+    "270": {
+      "degrees": 270,
+      "name": "270",
+      "difficulty": 2,
+      "flips_direction": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 2.5,
+      "weight": 15
+    },
+    "360": {
+      "degrees": 360,
+      "name": "360",
+      "difficulty": 2.5,
+      "flips_direction": false,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 3.5,
+      "weight": 10
+    },
+    "450": {
+      "degrees": 450,
+      "name": "450",
+      "difficulty": 3,
+      "flips_direction": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 4.0,
+      "weight": 5
+    },
+    "540": {
+      "degrees": 540,
+      "name": "540",
+      "difficulty": 3.5,
+      "flips_direction": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 5.0,
+      "weight": 3
+    },
+    "720": {
+      "degrees": 720,
+      "name": "720",
+      "difficulty": 5,
+      "flips_direction": false,
+      "air_only": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 6.5,
+      "weight": 1.5
+    },
+    "900": {
+      "degrees": 900,
+      "name": "900",
+      "difficulty": 7,
+      "flips_direction": true,
+      "air_only": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 8.5,
+      "weight": 0.4
+    },
+    "1080": {
+      "degrees": 1080,
+      "name": "1080",
+      "difficulty": 9,
+      "flips_direction": false,
+      "air_only": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 11,
+      "weight": 0.1
+    }
+  },
+  "exit_spins": {
+    "0": {
+      "degrees": 0,
+      "name": "",
+      "difficulty": 0,
+      "weight": 35
+    },
+    "180": {
+      "degrees": 180,
+      "name": "180",
+      "difficulty": 1.5,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 2.0,
+      "weight": 30
+    },
+    "270": {
+      "degrees": 270,
+      "name": "270",
+      "difficulty": 2,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 2.5,
+      "weight": 15
+    },
+    "360": {
+      "degrees": 360,
+      "name": "360",
+      "difficulty": 2.5,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 3.5,
+      "weight": 10
+    },
+    "450": {
+      "degrees": 450,
+      "name": "450",
+      "difficulty": 3,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 4.0,
+      "weight": 5
+    },
+    "540": {
+      "degrees": 540,
+      "name": "540",
+      "difficulty": 3.5,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 5.0,
+      "weight": 3
+    },
+    "720": {
+      "degrees": 720,
+      "name": "720",
+      "difficulty": 5,
+      "air_only": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 6.5,
+      "weight": 1.5
+    },
+    "900": {
+      "degrees": 900,
+      "name": "900",
+      "difficulty": 7,
+      "air_only": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 8.5,
+      "weight": 0.4
+    },
+    "1080": {
+      "degrees": 1080,
+      "name": "1080",
+      "difficulty": 9,
+      "air_only": true,
+      "has_spin_direction": true,
+      "alleyoop_difficulty": 11,
+      "weight": 0.1
+    }
+  },
+  "grinds": {
+    "makio": {
+      "id": "makio",
+      "name": "Makio",
+      "difficulty": 1.5,
+      "soul_based": true,
+      "h_block": false,
+      "foot_position": "mixed",
+      "weight": 30,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": null,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": null,
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "regular",
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "on top",
+        "h_block_type": null
+      }
+    },
+    "fishbrain": {
+      "id": "fishbrain",
+      "name": "Fishbrain",
+      "difficulty": 2.5,
+      "soul_based": true,
+      "h_block": false,
+      "foot_position": "mixed",
+      "weight": 12,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": null,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": null,
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "topside",
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "on top",
+        "h_block_type": null
+      }
+    },
+    "soul": {
+      "id": "soul",
+      "name": "Soul",
+      "difficulty": 1.5,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 30,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": 90,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more back",
+        "h_block_type": "front"
+      }
+    },
+    "topsoul": {
+      "id": "topsoul",
+      "name": "Topsoul",
+      "difficulty": 2.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": -90,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more back",
+        "h_block_type": "front"
+      }
+    },
+    "torque_soul": {
+      "id": "torque_soul",
+      "name": "Torque Soul",
+      "difficulty": 2.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": 90,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "bent away back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing away back",
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "front"
+      }
+    },
+    "top_torque_soul": {
+      "id": "top_torque_soul",
+      "name": "Top Torque Soul",
+      "difficulty": 2.5,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 12,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": -90,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "bent away back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing away back",
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "front"
+      }
+    },
+    "acid_soul": {
+      "id": "acid_soul",
+      "name": "Acid Soul",
+      "difficulty": 2.5,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": -90,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "outer pointing towards back",
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more back",
+        "h_block_type": "front"
+      }
+    },
+    "topacid": {
+      "id": "topacid",
+      "name": "Topacid",
+      "difficulty": 2.5,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": 90,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "outer pointing towards back",
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more back",
+        "h_block_type": "front"
+      }
+    },
+    "pstar": {
+      "id": "pstar",
+      "name": "Pstar",
+      "difficulty": 3.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": 0,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": "outer pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "top_pstar": {
+      "id": "top_pstar",
+      "name": "Top Pstar",
+      "difficulty": 3.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 0,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": "outer pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "mizou": {
+      "id": "mizou",
+      "name": "Mizou",
+      "difficulty": 1.5,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 30,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": 0,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "sweatstance": {
+      "id": "sweatstance",
+      "name": "Sweatstance",
+      "difficulty": 3.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 0,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "mistrial": {
+      "id": "mistrial",
+      "name": "Mistrial",
+      "difficulty": 2.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": 0,
+        "back_foot_knee": "bent away front",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "top_mistrial": {
+      "id": "top_mistrial",
+      "name": "Top Mistrial",
+      "difficulty": 3.0,
+      "soul_based": true,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 0,
+        "back_foot_knee": "bent away front",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "x_grind": {
+      "id": "x_grind",
+      "name": "X Grind",
+      "difficulty": 2.0,
+      "soul_based": true,
+      "h_block": false,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": 0,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "regular",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "on top",
+        "h_block_type": null
+      }
+    },
+    "topside_x_grind": {
+      "id": "topside_x_grind",
+      "name": "Topside X Grind",
+      "difficulty": 2.5,
+      "soul_based": true,
+      "h_block": false,
+      "foot_position": "mixed",
+      "weight": 12,
+      "physics": {
+        "back_foot_degree": 0,
+        "front_foot_degree": 0,
+        "back_foot_knee": "neutral",
+        "front_foot_knee": "neutral",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": "topside",
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 180,
+        "balance_point": "on top",
+        "h_block_type": null
+      }
+    },
+    "frontside": {
+      "id": "frontside",
+      "name": "Frontside",
+      "difficulty": 1.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 30,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "on top",
+        "h_block_type": "both"
+      }
+    },
+    "backside": {
+      "id": "backside",
+      "name": "Backside",
+      "difficulty": 1.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 30,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": -90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "on top",
+        "h_block_type": "both"
+      }
+    },
+    "frontside_royale": {
+      "id": "frontside_royale",
+      "name": "Frontside Royale",
+      "difficulty": 2.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 90,
+        "back_foot_knee": "bent away front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "inner pointing away front",
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more front",
+        "h_block_type": "both"
+      }
+    },
+    "backside_royale": {
+      "id": "backside_royale",
+      "name": "Backside Royale",
+      "difficulty": 2.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": -90,
+        "back_foot_knee": "bent away front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "inner pointing away front",
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more front",
+        "h_block_type": "both"
+      }
+    },
+    "frontside_farv": {
+      "id": "frontside_farv",
+      "name": "Frontside Farv",
+      "difficulty": 2.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent away back",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": "inner pointing away back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more back",
+        "h_block_type": "both"
+      }
+    },
+    "backside_farv": {
+      "id": "backside_farv",
+      "name": "Backside Farv",
+      "difficulty": 2.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": -90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent away back",
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": "inner pointing away back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more back",
+        "h_block_type": "both"
+      }
+    },
+    "frontside_backslide": {
+      "id": "frontside_backslide",
+      "name": "Frontside Backslide",
+      "difficulty": 2.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": null,
+        "back_foot_knee": "bent away front",
+        "front_foot_knee": null,
+        "back_foot_hblock_pointing": "inner pointing away front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "backside_backslide": {
+      "id": "backside_backslide",
+      "name": "Backside Backslide",
+      "difficulty": 2.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": null,
+        "back_foot_knee": "bent away front",
+        "front_foot_knee": null,
+        "back_foot_hblock_pointing": "inner pointing away front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more front",
+        "h_block_type": "back"
+      }
+    },
+    "frontside_torque": {
+      "id": "frontside_torque",
+      "name": "Frontside Torque",
+      "difficulty": 2.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": null,
+        "front_foot_degree": 90,
+        "back_foot_knee": null,
+        "front_foot_knee": "bent away back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing away back",
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more back",
+        "h_block_type": "front"
+      }
+    },
+    "backside_torque": {
+      "id": "backside_torque",
+      "name": "Backside Torque",
+      "difficulty": 2.5,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 15,
+      "physics": {
+        "back_foot_degree": null,
+        "front_foot_degree": -90,
+        "back_foot_knee": null,
+        "front_foot_knee": "bent away back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing away back",
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more back",
+        "h_block_type": "front"
+      }
+    },
+    "frontside_unity": {
+      "id": "frontside_unity",
+      "name": "Frontside Unity",
+      "difficulty": 3.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "outer pointing towards front",
+        "front_foot_hblock_pointing": "outer pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": "front foot",
+        "spin_multiplier": 90,
+        "balance_point": "on top",
+        "h_block_type": "both"
+      }
+    },
+    "backside_unity": {
+      "id": "backside_unity",
+      "name": "Backside Unity",
+      "difficulty": 3.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": -90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "outer pointing towards front",
+        "front_foot_hblock_pointing": "outer pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": "front foot",
+        "spin_multiplier": 90,
+        "balance_point": "on top",
+        "h_block_type": "both"
+      }
+    },
+    "frontside_savannah": {
+      "id": "frontside_savannah",
+      "name": "Frontside Savannah",
+      "difficulty": 3.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": 90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "outer pointing towards front",
+        "front_foot_hblock_pointing": "outer pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": "back foot",
+        "spin_multiplier": 90,
+        "balance_point": "on top",
+        "h_block_type": "both"
+      }
+    },
+    "backside_savannah": {
+      "id": "backside_savannah",
+      "name": "Backside Savannah",
+      "difficulty": 3.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 10,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": -90,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": "outer pointing towards front",
+        "front_foot_hblock_pointing": "outer pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": false,
+        "cross_grab": false,
+        "crossed_foot": "back foot",
+        "spin_multiplier": 90,
+        "balance_point": "on top",
+        "h_block_type": "both"
+      }
+    },
+    "frontside_fastslide": {
+      "id": "frontside_fastslide",
+      "name": "Frontside Fastslide",
+      "difficulty": 2.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": null,
+        "front_foot_degree": 90,
+        "back_foot_knee": null,
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more front",
+        "h_block_type": "front"
+      }
+    },
+    "backside_fastslide": {
+      "id": "backside_fastslide",
+      "name": "Backside Fastslide",
+      "difficulty": 2.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": null,
+        "front_foot_degree": -90,
+        "back_foot_knee": null,
+        "front_foot_knee": "bent towards back",
+        "back_foot_hblock_pointing": null,
+        "front_foot_hblock_pointing": "inner pointing towards back",
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more front",
+        "h_block_type": "front"
+      }
+    },
+    "frontside_pudslide": {
+      "id": "frontside_pudslide",
+      "name": "Frontside Pudslide",
+      "difficulty": 2.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": 90,
+        "front_foot_degree": null,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": null,
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more back",
+        "h_block_type": "back"
+      }
+    },
+    "backside_pudslide": {
+      "id": "backside_pudslide",
+      "name": "Backside Pudslide",
+      "difficulty": 2.0,
+      "soul_based": false,
+      "h_block": true,
+      "foot_position": "mixed",
+      "weight": 20,
+      "physics": {
+        "back_foot_degree": -90,
+        "front_foot_degree": null,
+        "back_foot_knee": "bent towards front",
+        "front_foot_knee": null,
+        "back_foot_hblock_pointing": "inner pointing towards front",
+        "front_foot_hblock_pointing": null,
+        "topside_or_regular": null,
+        "can_be_grabbed": true,
+        "cross_grab": true,
+        "crossed_foot": null,
+        "spin_multiplier": 90,
+        "balance_point": "more back",
+        "h_block_type": "back"
+      }
+    }
+  },
+  "modifiers": {
+    "topside": {
+      "id": "topside",
+      "name": "Topside",
+      "difficulty": 1.5,
+      "requires_soul_based": true,
+      "cannot_apply_to_h_block": true,
+      "weight": 10
+    },
+    "true_topside": {
+      "id": "true_topside",
+      "name": "True Topside",
+      "difficulty": 2,
+      "requires_soul_based": true,
+      "cannot_apply_to_h_block": true,
+      "weight": 3
+    },
+    "negative": {
+      "id": "negative",
+      "name": "Negative",
+      "difficulty": 1.5,
+      "requires_soul_based": true,
+      "cannot_apply_to_h_block": true,
+      "weight": 8
+    },
+    "negative_true": {
+      "id": "negative_true",
+      "name": "Negative True",
+      "difficulty": 2.5,
+      "requires_soul_based": true,
+      "cannot_apply_to_h_block": true,
+      "weight": 2
+    }
+  },
+  "grabs": {
+    "mute": {
+      "id": "mute",
+      "name": "Mute",
+      "difficulty": 1.5,
+      "weight": 30
+    },
+    "rocket": {
+      "id": "rocket",
+      "name": "Rocket",
+      "difficulty": 1.5,
+      "weight": 30
+    },
+    "japan": {
+      "id": "japan",
+      "name": "Japan",
+      "difficulty": 2,
+      "weight": 20
+    },
+    "stale": {
+      "id": "stale",
+      "name": "Stalefish",
+      "difficulty": 2,
+      "weight": 15
+    },
+    "cross_rocket": {
+      "id": "cross_rocket",
+      "name": "Cross Rocket",
+      "difficulty": 2.5,
+      "weight": 4
+    },
+    "christ_air": {
+      "id": "christ_air",
+      "name": "Christ Air",
+      "difficulty": 3,
+      "weight": 1
+    }
+  },
+  "rolls": {
+    "toe_roll": {
+      "id": "toe_roll",
+      "name": "Toe Roll",
+      "difficulty": 1.5,
+      "type": "toe"
+    },
+    "heel_roll": {
+      "id": "heel_roll",
+      "name": "Heel Roll",
+      "difficulty": 1.5,
+      "type": "heel"
+    },
+    "fast_slide": {
+      "id": "fast_slide",
+      "name": "Fast Slide",
+      "difficulty": 2,
+      "type": "toe"
+    }
+  },
+  "flips": {
+    "540_flip": {
+      "id": "540_flip",
+      "name": "540 Flip",
+      "difficulty": 4,
+      "weight": 3
+    },
+    "720_flip": {
+      "id": "720_flip",
+      "name": "720 Flip",
+      "difficulty": 5,
+      "weight": 1
+    },
+    "misty": {
+      "id": "misty",
+      "name": "Misty Flip",
+      "difficulty": 4.5,
+      "weight": 2
+    },
+    "bio": {
+      "id": "bio",
+      "name": "Bio",
+      "difficulty": 4,
+      "weight": 3
+    }
+  },
+  "naming_rules": {
+    "cab": {
+      "condition": "fakie stance + 360 spin",
+      "replacement": "Cab"
+    },
+    "half_cab": {
+      "condition": "fakie stance + 180 spin",
+      "replacement": "Half Cab"
+    },
+    "alley_oop": {
+      "condition": "spin opposite to natural direction",
+      "prefix": "Alley-Oop"
+    },
+    "switch": {
+      "condition": "switch stance",
+      "prefix": "Switch"
+    }
+  },
+  "difficulty_levels": {
+    "beginner": {
+      "min": 0,
+      "max": 5,
+      "label": "Beginner"
+    },
+    "intermediate": {
+      "min": 5,
+      "max": 10,
+      "label": "Intermediate"
+    },
+    "advanced": {
+      "min": 10,
+      "max": 15,
+      "label": "Advanced"
+    },
+    "pro": {
+      "min": 15,
+      "max": 25,
+      "label": "Pro"
+    },
+    "insane": {
+      "min": 25,
+      "max": 100,
+      "label": "Insane"
+    }
+  }
 }

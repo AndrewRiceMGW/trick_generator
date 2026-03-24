@@ -94,10 +94,8 @@ class TrickGenerator {
 			this.addSwitchUps(trickState);
 		}
 
-		// Add modifiers only for non-h-block tricks (h-block modifiers already added)
-		if (!primaryGrindData || !primaryGrindData.h_block) {
-			this.addModifiers(trickState);
-		}
+		// Add modifiers (only applies to soul-based tricks now)
+		this.addModifiers(trickState);
 
 		this.addExitSpin(trickState);
 
@@ -253,21 +251,8 @@ class TrickGenerator {
 				trickState.components.splice(entrySpinIndex, 1);
 			}
 		}
-
-		// Force backside or frontside modifier (mandatory for h-block)
-		const backsideFrontside = Object.values(this.schema.modifiers).filter(
-			(mod) => mod.applies_to_h_block === true,
-		);
-
-		if (backsideFrontside.length > 0) {
-			const modData = this.weightedRandomChoice(backsideFrontside);
-			trickState.components.push({
-				type: "modifier",
-				value: modData.name,
-				id: modData.id,
-			});
-			trickState.difficulty += modData.difficulty;
-		}
+		// Note: Frontside/backside are now part of trick names (e.g., frontside_royale),
+		// not modifiers, so we don't add them here
 	}
 
 	enforceSoulBasedConstraints(trickState) {
@@ -549,21 +534,14 @@ class TrickGenerator {
 
 			const currentGrindData = this.schema.grinds[currentGrind];
 
-			// Filter valid modifiers based on grind type
+			// Only soul-based tricks can have modifiers (topside, negative, etc.)
+			// H-block tricks now have frontside/backside as part of their trick name
 			const validModifiers = Object.values(this.schema.modifiers).filter(
 				(mod) => {
-					// H-block tricks can ONLY have frontside/backside (no topsides/negatives)
-					if (currentGrindData.h_block) {
-						return mod.applies_to_h_block === true;
-					}
-
-					// Soul-based tricks can ONLY have topside/negative modifiers (not backside/frontside)
 					if (currentGrindData.soul_based) {
 						return mod.requires_soul_based === true;
 					}
-
-					// Frontside (neither h-block nor soul-based) can have any modifier that doesn't require soul_based or h_block
-					return !mod.requires_soul_based && !mod.applies_to_h_block;
+					return false;
 				},
 			);
 
