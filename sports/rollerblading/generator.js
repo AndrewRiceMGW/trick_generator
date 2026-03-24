@@ -127,6 +127,10 @@ class TrickGenerator {
 		// Add spin - filter by obstacle max and use weighted selection
 		const spinOptions = Object.values(this.schema.entry_spins).filter(
 			(spinData) => {
+				// For stairs, only allow multiples of 180° (0, 180, 360, 540, 720, 900, 1080)
+				if (trickState.obstacle === 'stairs') {
+					return spinData.degrees >= 0 && spinData.degrees <= maxSpin && spinData.degrees % 180 === 0;
+				}
 				return spinData.degrees > 0 && spinData.degrees <= maxSpin;
 			},
 		);

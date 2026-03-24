@@ -1390,6 +1390,12 @@
                             <!-- Will be populated dynamically -->
                         </select>
                     </div>
+                    <div class="option-group" id="gameHeightGroup" style="display:none;">
+                        <label>Height</label>
+                        <select id="gameHeightSelect">
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
                     <div class="option-group" id="gameSwitchUpsGroup" style="display:none;">
                         <label>Switch-ups</label>
                         <select id="gameSwitchUpsSelect">
@@ -1674,7 +1680,15 @@
                 if (currentStep === 1) {
                     renderStep2();
                 } else if (currentStep === 2) {
-                    renderStep3();
+                    // Check if we should skip step 3
+                    if (selectedMetadata && selectedMetadata.noGrinds) {
+                        // Skip step 3 for obstacles without grinds
+                        renderStep4();
+                        goToStep(4);
+                        return;
+                    } else {
+                        renderStep3();
+                    }
                 } else if (currentStep === 3) {
                     renderStep4();
                 }
@@ -1743,6 +1757,42 @@
                 noGrinds: true,
                 hasHeight: true,
                 info: 'Pure air tricks - no grinds! <strong>Max spin: 1080° (3 full rotations)</strong>. Standard spin multiplier (1.0x). Height increases difficulty: bigger gaps = harder tricks!'
+            },
+            jumpbox: {
+                icon: '▭',
+                name: 'Jump Box',
+                description: 'Launch platform for technical airs',
+                features: ['Spins ≤720°', 'Grabs', 'Flips'],
+                noGrinds: true,
+                hasHeight: true,
+                info: 'Elevated flat surfaces for launching airs. <strong>Max spin: 720° (2 rotations)</strong>. Spin multiplier: 1.2x. Great for perfecting grab combos and spins!'
+            },
+            quarterpipe: {
+                icon: '◠',
+                name: 'Quarter Pipe',
+                description: 'Curved transition ramp',
+                features: ['Grinds', 'Switch-ups', 'Airs', 'Spins ≤540°'],
+                hasLength: true,
+                hasHeight: true,
+                info: 'Single transition wall with coping for grinds. <strong>Max spin: 540° (1.5 rotations)</strong>. Spin multiplier: 1.1x. Grind the coping or go for airs!'
+            },
+            halfpipe: {
+                icon: '◡◠',
+                name: 'Half Pipe',
+                description: 'U-shaped ramp with two walls',
+                features: ['Grinds', 'Switch-ups', 'Airs', 'Spins ≤1080°'],
+                hasLength: true,
+                hasHeight: true,
+                info: 'Classic vert transition with coping for technical grinds. <strong>Max spin: 1080° (3 rotations)</strong>. Standard spin multiplier (1.0x). Grind wall-to-wall or send big airs!'
+            },
+            bowl: {
+                icon: '⌒',
+                name: 'Bowl',
+                description: 'Rounded pool-style transition',
+                features: ['Grinds', 'Switch-ups', 'Airs', 'Spins ≤720°'],
+                hasLength: true,
+                hasHeight: true,
+                info: 'Curved concrete bowls with coping. <strong>Max spin: 720° (2 rotations)</strong>. Spin multiplier: 1.15x. Grind the curves or flow through with airs!'
             }
         };
 
@@ -1847,24 +1897,53 @@
                 container.appendChild(group);
             }
 
-            // Height option (for stairs)
+            // Height option (for stairs and ramps)
             if (selectedMetadata.hasHeight) {
                 const group = document.createElement('div');
                 group.className = 'option-group';
 
                 const label = document.createElement('label');
-                label.textContent = 'Stair Count';
+                
+                // Set label based on obstacle type
+                if (selectedObstacle === 'stairs') {
+                    label.textContent = 'Stair Count';
+                } else if (selectedObstacle === 'jumpbox') {
+                    label.textContent = 'Box Size';
+                } else if (selectedObstacle === 'quarterpipe') {
+                    label.textContent = 'Quarter Pipe Height';
+                } else if (selectedObstacle === 'halfpipe') {
+                    label.textContent = 'Half Pipe Height';
+                } else if (selectedObstacle === 'bowl') {
+                    label.textContent = 'Bowl Depth';
+                } else {
+                    label.textContent = 'Height';
+                }
                 
                 const select = document.createElement('select');
                 select.id = 'heightSelect';
                 
-                [3, 5, 7, 10, 12, 15].forEach(stairs => {
-                    const option = document.createElement('option');
-                    option.value = stairs;
-                    option.textContent = `${stairs} stairs`;
-                    if (stairs === 7) option.selected = true;
-                    select.appendChild(option);
-                });
+                // Get height options from schema
+                if (obstacleData.height_multipliers) {
+                    Object.keys(obstacleData.height_multipliers).forEach((height, index) => {
+                        const option = document.createElement('option');
+                        option.value = height;
+                        
+                        // Format display text based on obstacle
+                        if (selectedObstacle === 'stairs') {
+                            option.textContent = `${height} stairs`;
+                        } else if (selectedObstacle === 'jumpbox') {
+                            option.textContent = height.charAt(0).toUpperCase() + height.slice(1);
+                        } else {
+                            option.textContent = height.charAt(0).toUpperCase() + height.slice(1);
+                        }
+                        
+                        // Set default selection (usually middle option)
+                        if (index === Math.floor(Object.keys(obstacleData.height_multipliers).length / 2)) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                }
 
                 group.appendChild(label);
                 group.appendChild(select);
@@ -1873,12 +1952,6 @@
         }
 
         function renderStep3() {
-            // Skip this step for stairs (no grinds)
-            if (selectedMetadata.noGrinds) {
-                nextStep();
-                return;
-            }
-
             const container = document.getElementById('dynamicOptionsStep3');
             container.innerHTML = '';
 
@@ -1994,6 +2067,12 @@
                 options.obstacleLength = lengthSelect.value;
             }
 
+            // Get height if applicable
+            const heightSelect = document.getElementById('heightSelect');
+            if (heightSelect) {
+                options.obstacleHeight = heightSelect.value;
+            }
+
             // Get switch-up count if applicable
             const switchUpSelect = document.getElementById('switchUpSelect');
             if (switchUpSelect) {
@@ -2105,10 +2184,12 @@
             const metadata = obstacleMetadata[obstacleId];
             const obstacleData = schema.obstacles[obstacleId];
 
-            // Length options
+            // Length options (for grinds)
             const lengthGroup = document.getElementById('gameLengthGroup');
             const lengthSelect = document.getElementById('gameLengthSelect');
             const switchUpsGroup = document.getElementById('gameSwitchUpsGroup');
+            const heightGroup = document.getElementById('gameHeightGroup');
+            const heightSelect = document.getElementById('gameHeightSelect');
 
             if (metadata.hasLength && obstacleData.length_categories) {
                 lengthGroup.style.display = 'block';
@@ -2128,6 +2209,49 @@
             } else {
                 lengthGroup.style.display = 'none';
                 switchUpsGroup.style.display = 'none';
+            }
+
+            // Height options (for ramps/transitions)
+            if (metadata.hasHeight && obstacleData.height_multipliers) {
+                heightGroup.style.display = 'block';
+                heightSelect.innerHTML = '';
+                
+                // Update label
+                const heightLabel = heightGroup.querySelector('label');
+                if (heightLabel) {
+                    if (obstacleId === 'stairs') {
+                        heightLabel.textContent = 'Stair Count';
+                    } else if (obstacleId === 'jumpbox') {
+                        heightLabel.textContent = 'Box Size';
+                    } else if (obstacleId === 'quarterpipe') {
+                        heightLabel.textContent = 'Quarter Pipe Height';
+                    } else if (obstacleId === 'halfpipe') {
+                        heightLabel.textContent = 'Half Pipe Height';
+                    } else if (obstacleId === 'bowl') {
+                        heightLabel.textContent = 'Bowl Depth';
+                    } else {
+                        heightLabel.textContent = 'Height';
+                    }
+                }
+                
+                Object.keys(obstacleData.height_multipliers).forEach((height, index) => {
+                    const option = document.createElement('option');
+                    option.value = height;
+                    
+                    if (obstacleId === 'stairs') {
+                        option.textContent = `${height} stairs`;
+                    } else {
+                        option.textContent = height.charAt(0).toUpperCase() + height.slice(1);
+                    }
+                    
+                    // Select middle option by default
+                    if (index === Math.floor(Object.keys(obstacleData.height_multipliers).length / 2)) {
+                        option.selected = true;
+                    }
+                    heightSelect.appendChild(option);
+                });
+            } else {
+                heightGroup.style.display = 'none';
             }
         }
 
@@ -2207,13 +2331,21 @@
 
             // Get length if applicable
             const lengthSelect = document.getElementById('gameLengthSelect');
-            if (lengthSelect && lengthSelect.style.display !== 'none') {
+            if (lengthSelect && lengthGroup.style.display !== 'none') {
                 options.obstacleLength = lengthSelect.value;
+            }
+
+            // Get height if applicable
+            const heightSelect = document.getElementById('gameHeightSelect');
+            const heightGroup = document.getElementById('gameHeightGroup');
+            if (heightSelect && heightGroup.style.display !== 'none') {
+                options.obstacleHeight = heightSelect.value;
             }
 
             // Get switch-ups if applicable
             const switchUpsSelect = document.getElementById('gameSwitchUpsSelect');
-            if (switchUpsSelect && switchUpsSelect.style.display !== 'none') {
+            const switchUpsGroup = document.getElementById('gameSwitchUpsGroup');
+            if (switchUpsSelect && switchUpsGroup.style.display !== 'none') {
                 options.numSwitchUps = parseInt(switchUpsSelect.value);
             }
 
