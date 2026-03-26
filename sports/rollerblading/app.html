@@ -2046,8 +2046,8 @@
             goToStep(1);
         });
 
-        function generateTrick() {
-            if (!generator || !selectedObstacle) {
+        async function generateTrick() {
+            if (!selectedObstacle) {
                 alert('Please select an obstacle first');
                 return;
             }
@@ -2056,9 +2056,8 @@
             const options = {
                 obstacle: selectedObstacle,
                 obstacleLength: 'medium',
-                allowSwitchUps: true,
-                numSwitchUps: null, // null means random
-                allowFlips: false
+                numSwitchUps: 2,
+                difficulty: 'advanced'
             };
 
             // Get length if applicable
@@ -2079,49 +2078,88 @@
                 options.numSwitchUps = parseInt(switchUpSelect.value);
             }
 
-            // Get flips option if applicable
-            const flipsCheck = document.getElementById('flipsCheck');
-            if (flipsCheck) {
-                options.allowFlips = flipsCheck.checked;
-            }
-
-            // Generate trick
-            let trick = generator.generateTrick('random', options);
-
-            // Filter by difficulty if set
+            // Get difficulty filter
             const difficultyFilter = document.getElementById('difficultyFilter').value;
             if (difficultyFilter !== 'any') {
-                let attempts = 0;
-                const levelData = schema.difficulty_levels[difficultyFilter];
-                while ((trick.difficulty < levelData.min || trick.difficulty > levelData.max) && attempts < 50) {
-                    trick = generator.generateTrick('random', options);
-                    attempts++;
-                }
+                options.difficulty = difficultyFilter;
             }
 
-            displayTrick(trick);
+            // Show loading state
+            const generateBtn = document.getElementById('generateBtn');
+            const originalText = generateBtn.textContent;
+            generateBtn.textContent = '🎲 Generating...';
+            generateBtn.disabled = true;
+
+            try {
+                // Call Flask API
+                const response = await fetch('http://localhost:5000/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        difficulty: options.difficulty,
+                        numSwitchUps: options.numSwitchUps,
+                        obstacle: options.obstacle,
+                        obstacleLength: options.obstacleLength
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayTrick(data.trick);
+                } else {
+                    alert('Failed to generate trick: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error generating trick:', error);
+                alert('Failed to connect to trick generator API. Make sure the server is running on http://localhost:5000');
+            } finally {
+                generateBtn.textContent = originalText;
+                generateBtn.disabled = false;
+            }
         }
 
         function displayTrick(trick) {
             document.getElementById('trickName').textContent = trick.name;
-            document.getElementById('trickObstacle').textContent = trick.obstacle.charAt(0).toUpperCase() + trick.obstacle.slice(1);
+            
+            // Use selected obstacle from UI
+            const obstacleName = selectedObstacle ? selectedObstacle.charAt(0).toUpperCase() + selectedObstacle.slice(1) : 'Rail/Ledge';
+            document.getElementById('trickObstacle').textContent = obstacleName;
+            
+            // Display difficulty
             document.getElementById('trickDifficulty').textContent = trick.difficulty.toFixed(1);
-            document.getElementById('trickStance').textContent = trick.stance.charAt(0).toUpperCase() + trick.stance.slice(1);
+            
+            // Extract stance from trick name (if present)
+            let stance = 'Regular';
+            if (trick.name.toLowerCase().includes('fakie')) {
+                stance = 'Fakie';
+            } else if (trick.name.toLowerCase().includes('switch')) {
+                stance = 'Switch';
+            }
+            document.getElementById('trickStance').textContent = stance;
 
-            // Set difficulty bar
-            const maxDifficulty = 25;
+            // Set difficulty bar (adjusted for new scale ~1-8 instead of 0-25)
+            const maxDifficulty = 8;
             const percentage = Math.min((trick.difficulty / maxDifficulty) * 100, 100);
             document.getElementById('difficultyFill').style.width = percentage + '%';
 
             // Display components
             const componentsDiv = document.getElementById('trickComponents');
             componentsDiv.innerHTML = '';
-            trick.components.forEach(comp => {
-                const span = document.createElement('span');
-                span.className = 'component';
-                span.textContent = `${comp.type}: ${comp.value}`;
-                componentsDiv.appendChild(span);
-            });
+            if (trick.components && trick.components.length > 0) {
+                trick.components.forEach(comp => {
+                    const span = document.createElement('span');
+                    span.className = 'component';
+                    span.textContent = `${comp.trick} (${comp.difficulty.toFixed(1)})`;
+                    componentsDiv.appendChild(span);
+                });
+            }
 
             document.getElementById('trickDisplay').classList.add('show');
 
@@ -2137,7 +2175,8 @@
             currentAttempt: 1,
             maxAttempts: 3,
             gameObstacle: null,
-            gameOptions: {}
+            gameOptions: {},
+            playersCompletedTrick: [] // Track which players have attempted current trick
         };
 
         function switchMode(mode) {
@@ -2297,7 +2336,7 @@
             }
         }
 
-        function startBladeGame() {
+        async function startBladeGame() {
             // Collect player names
             const inputs = document.querySelectorAll('.player-name-input');
             const players = [];
@@ -2358,7 +2397,8 @@
                 currentAttempt: 1,
                 maxAttempts: maxAttempts,
                 gameObstacle: obstacleId,
-                gameOptions: options
+                gameOptions: options,
+                playersCompletedTrick: []
             };
 
             // Hide setup, show game
@@ -2366,27 +2406,45 @@
             document.getElementById('activeGame').classList.add('show');
 
             // Generate first trick and render game
-            generateGameTrick();
+            await generateGameTrick();
             renderPlayersGrid();
             updateGameUI();
         }
 
-        function generateGameTrick() {
+        async function generateGameTrick() {
             const difficultyFilter = document.getElementById('gameDifficultySelect').value;
-            let trick = generator.generateTrick('random', gameState.gameOptions);
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        difficulty: difficultyFilter !== 'any' ? difficultyFilter : 'advanced',
+                        numSwitchUps: parseInt(gameState.gameOptions.numSwitchUps || 2),
+                        obstacle: gameState.gameObstacle
+                    })
+                });
 
-            // Apply difficulty filter
-            if (difficultyFilter !== 'any') {
-                let attempts = 0;
-                const levelData = schema.difficulty_levels[difficultyFilter];
-                while ((trick.difficulty < levelData.min || trick.difficulty > levelData.max) && attempts < 50) {
-                    trick = generator.generateTrick('random', gameState.gameOptions);
-                    attempts++;
+                const data = await response.json();
+                
+                if (data.success) {
+                    gameState.currentTrick = data.trick;
+                    gameState.currentAttempt = 1;
+                    gameState.playersCompletedTrick = []; // Reset for new trick
+                } else {
+                    console.error('Failed to generate game trick:', data.error);
+                    // Fallback: use a simple trick
+                    gameState.currentTrick = { name: 'Soul Grind', difficulty: 3.5 };
+                    gameState.playersCompletedTrick = [];
                 }
+            } catch (error) {
+                console.error('Error generating game trick:', error);
+                // Fallback: use a simple trick
+                gameState.currentTrick = { name: 'Soul Grind', difficulty: 3.5 };
+                gameState.playersCompletedTrick = [];
             }
-
-            gameState.currentTrick = trick;
-            gameState.currentAttempt = 1;
         }
 
         function renderPlayersGrid() {
@@ -2432,23 +2490,41 @@
             renderPlayersGrid();
         }
 
-        function recordSuccess() {
-            // Player landed the trick - move to next player
+        async function recordSuccess() {
+            // Player landed the trick - mark as completed
+            const currentPlayerIndex = gameState.currentPlayerIndex;
+            if (!gameState.playersCompletedTrick.includes(currentPlayerIndex)) {
+                gameState.playersCompletedTrick.push(currentPlayerIndex);
+            }
+
+            // Check if all active players have completed this trick
+            const activePlayers = gameState.players.filter(p => !p.eliminated);
+            if (gameState.playersCompletedTrick.length >= activePlayers.length) {
+                // All players completed - generate new trick for next round
+                await generateGameTrick();
+            }
+
+            // Move to next player
             advanceToNextPlayer();
-            generateGameTrick();
             updateGameUI();
         }
 
-        function recordFail() {
+        async function recordFail() {
             gameState.currentAttempt++;
 
             if (gameState.currentAttempt > gameState.maxAttempts) {
                 // Player failed all attempts - give them a letter
                 const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+                const currentPlayerIndex = gameState.currentPlayerIndex;
                 const letters = ['B', 'L', 'A', 'D', 'E'];
                 
                 if (currentPlayer.letters.length < 5) {
                     currentPlayer.letters.push(letters[currentPlayer.letters.length]);
+                }
+
+                // Mark this player as completed for this trick
+                if (!gameState.playersCompletedTrick.includes(currentPlayerIndex)) {
+                    gameState.playersCompletedTrick.push(currentPlayerIndex);
                 }
 
                 // Check if player is eliminated
@@ -2463,9 +2539,17 @@
                     }
                 }
 
+                // Check if all active players have completed this trick
+                const activePlayers = gameState.players.filter(p => !p.eliminated);
+                const shouldGenerateNew = gameState.playersCompletedTrick.length >= activePlayers.length;
+
                 // Move to next player
                 advanceToNextPlayer();
-                generateGameTrick();
+                
+                // Generate new trick if all players have completed current one
+                if (shouldGenerateNew) {
+                    await generateGameTrick();
+                }
             }
 
             updateGameUI();
@@ -2497,12 +2581,12 @@
             }
         }
 
-        function generateNextTrick() {
-            generateGameTrick();
+        async function generateNextTrick() {
+            await generateGameTrick();
             updateGameUI();
         }
 
-        function changeGameObstacle() {
+        async function changeGameObstacle() {
             // Show obstacle selection in a simplified way
             const obstacleId = prompt('Enter obstacle (rail, ledge, curb, stairs):');
             if (obstacleId && schema.obstacles[obstacleId]) {
@@ -2511,7 +2595,7 @@
                 const metadata = obstacleMetadata[obstacleId];
                 gameState.gameOptions.allowSwitchUps = !metadata.noGrinds;
                 gameState.gameOptions.allowFlips = metadata.noGrinds;
-                generateGameTrick();
+                await generateGameTrick();
                 updateGameUI();
             }
         }
@@ -2858,6 +2942,19 @@
 
         // Initialize profile system
         initProfileSystem();
+
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful:', registration.scope);
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed:', err);
+                    });
+            });
+        }
     </script>
 </invoke>
 

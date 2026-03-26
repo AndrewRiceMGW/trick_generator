@@ -3,7 +3,7 @@
  * Enables offline functionality and app-like experience
  */
 
-const CACHE_NAME = "trick-generator-v0.9.1-beta";
+const CACHE_NAME = "trick-generator-v0.9.2-beta";
 const urlsToCache = [
 	"/",
 	"/index.html",
